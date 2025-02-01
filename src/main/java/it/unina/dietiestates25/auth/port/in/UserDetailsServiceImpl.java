@@ -1,7 +1,8 @@
-package it.unina.dietiestates25.auth.domain.port.in;
+package it.unina.dietiestates25.auth.port.in;
 
-import it.unina.dietiestates25.auth.domain.model.User;
-import it.unina.dietiestates25.auth.domain.port.out.UserRepository;
+import it.unina.dietiestates25.model.User;
+import it.unina.dietiestates25.auth.port.out.UserRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-  private final UserRepository repository;
+  @Qualifier("userRepository")
+  private final UserRepository<User> repository;
 
-  public UserDetailsServiceImpl(UserRepository repository) {
+  public UserDetailsServiceImpl(UserRepository<User> repository) {
     this.repository = repository;
   }
 

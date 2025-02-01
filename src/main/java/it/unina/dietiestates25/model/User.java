@@ -1,4 +1,4 @@
-package it.unina.dietiestates25.auth.domain.model;
+package it.unina.dietiestates25.model;
 
 import jakarta.persistence.*;
 
@@ -7,12 +7,9 @@ import java.time.LocalDate;
 @Entity
 @Table(
 //          user is not a valid table name for most dbs
-        name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(name = "user_email_unique",
-                        columnNames = "email")
-        }
+        name = "users"
 )
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
     @Id
@@ -35,7 +32,8 @@ public class User {
     @Column(
             name = "email",
             nullable = false,
-            columnDefinition = "TEXT"
+            columnDefinition = "TEXT",
+            unique = true
     )
     private String email;
 
@@ -108,5 +106,34 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public void update(User user) {
+        if (!this.firstName.equals(user.firstName)) {
+            this.firstName = user.firstName;
+        }
+        if (!this.lastName.equals(user.lastName)) {
+            this.lastName = user.lastName;
+        }
+        if (!this.email.equals(user.email)) {
+            this.email = user.email;
+        }
+        if (!this.dob.equals(user.dob)) {
+            this.dob = user.dob;
+        }
+        if (!this.passwordHash.equals(user.passwordHash)) {
+            this.passwordHash = user.passwordHash;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", dob=" + dob +
+                '}';
     }
 }
