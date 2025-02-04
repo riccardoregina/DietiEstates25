@@ -6,9 +6,22 @@ import java.time.LocalDate;
 
 @Entity
 @DiscriminatorValue("MANAGER")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@PrimaryKeyJoinColumn(
+        name = "user_id",
+        foreignKey = @ForeignKey(
+                name = "manager_user_fk"
+        )
+)
 public class Manager extends User {
     @ManyToOne
+    @JoinColumn(
+            name = "agency_id",
+            nullable = false,
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(
+                    name = "manager_agency_fk"
+            )
+    )
     private Agency agency;
     public Manager() {}
     public Manager(String firstName,
@@ -27,16 +40,5 @@ public class Manager extends User {
 
     public void setAgency(Agency agency) {
         this.agency = agency;
-    }
-
-    @Override
-    public void update(User manager) {
-        if (!(manager instanceof Manager)) {
-            throw new IllegalArgumentException("Cannot update a Manager with a User.");
-        }
-        super.update(manager);
-        if (!this.agency.equals(((Manager) manager).agency)) {
-            this.agency = ((Manager) manager).agency;
-        }
     }
 }

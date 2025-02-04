@@ -1,5 +1,6 @@
 package it.unina.dietiestates25.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -48,6 +49,7 @@ public class User {
             nullable = false,
             columnDefinition = "TEXT"
     )
+    @JsonIgnore
     private String passwordHash;
 
     public User() {}
@@ -106,24 +108,6 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
-    }
-
-    public void update(User user) {
-        if (!this.firstName.equals(user.firstName)) {
-            this.firstName = user.firstName;
-        }
-        if (!this.lastName.equals(user.lastName)) {
-            this.lastName = user.lastName;
-        }
-        if (!this.email.equals(user.email)) {
-            this.email = user.email;
-        }
-        if (!this.dob.equals(user.dob)) {
-            this.dob = user.dob;
-        }
-        if (!this.passwordHash.equals(user.passwordHash)) {
-            this.passwordHash = user.passwordHash;
-        }
     }
 
     @Override

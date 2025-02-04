@@ -1,8 +1,10 @@
 package it.unina.dietiestates25.manager.port.out;
 
 import it.unina.dietiestates25.auth.port.out.UserRepository;
+import it.unina.dietiestates25.model.Agency;
 import it.unina.dietiestates25.model.Manager;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,6 +12,16 @@ import java.util.Optional;
 
 @Repository
 public interface ManagerRepository extends UserRepository<Manager> {
-    @Query("SELECT m FROM Manager m WHERE m.agency = :agency")
-    List<Manager> findAllByAgency(String agency);
+    @Query("SELECT m FROM Manager m WHERE m.agency.id = :agencyId AND m.email <> :adminEmail")
+    List<Manager> findAllByAgency(String agencyId, String adminEmail);
+
+    @Query(
+            value = "SELECT m.agency FROM Manager m WHERE m.email = :email"
+    )
+    Agency findAgencyByManagerEmail(@Param("email") String email);
+
+    @Query(
+            value = "SELECT m FROM Manager m WHERE m.agency = :agency AND m.id = :managerId"
+    )
+    Optional<Manager> findManagerByIdAndAgency(Agency agency, String managerId);
 }

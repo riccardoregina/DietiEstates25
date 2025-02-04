@@ -45,7 +45,12 @@ public class SecurityConfig {
 //            our public endpoints
             .requestMatchers(HttpMethod.POST, "/api/auth/signup/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/auth/login/**").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/signup-agency/**").permitAll()
 //            our private endpoints
+            .requestMatchers(HttpMethod.POST, "/api/managers/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/api/managers/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, "/api/managers/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/api/managers/**").hasRole("ADMIN")
             .anyRequest().authenticated())
         .authenticationManager(authenticationManager)
 
