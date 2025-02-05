@@ -21,6 +21,14 @@ public class AdminService {
 
     @Transactional
     public void createAdminAndAgency(Admin admin) {
+        if (agencyRepository.existsByPartitaIvaOrRagioneSociale(admin.getAgency().getPartitaIva(),
+                admin.getAgency().getRagioneSociale())) {
+            throw new IllegalStateException(String.format("Agency already exists: %s, %s",
+                    admin.getAgency().getPartitaIva(), admin.getAgency().getRagioneSociale()));
+        }
+        if (adminRepository.existsByEmail(admin.getEmail())) {
+            throw new IllegalStateException(String.format("Admin already exists, email: %s", admin.getEmail()));
+        }
         agencyRepository.save(admin.getAgency());
         adminRepository.save(admin);
     }

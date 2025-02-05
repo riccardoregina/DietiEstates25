@@ -4,4 +4,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdminRepository extends ManagerRepository {
+    boolean existsByEmail(String email);
 }

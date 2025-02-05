@@ -27,21 +27,11 @@ public class ManagerService {
     public void updateManager(ManagerDto managerDto, String id) {
         Manager existingManager = repository.findById(id).orElseThrow(() ->
                 new IllegalStateException(String.format("Manager does not exist, email: %s", managerDto.email())));
-        if (managerDto.email() != null && !managerDto.email().isEmpty()) {
-            existingManager.setEmail(managerDto.email());
-        }
-        if (managerDto.firstName() != null && !managerDto.firstName().isEmpty()) {
-            existingManager.setFirstName(managerDto.firstName());
-        }
-        if (managerDto.lastName() != null && !managerDto.lastName().isEmpty()) {
-            existingManager.setLastName(managerDto.lastName());
-        }
-        if (managerDto.dob() != null) {
-            existingManager.setDob(managerDto.dob());
-        }
-        if (managerDto.password() != null && !managerDto.password().isEmpty()) {
-            existingManager.setPasswordHash(managerDto.password());
-        }
+        existingManager.setEmail(managerDto.email());
+        existingManager.setFirstName(managerDto.firstName());
+        existingManager.setLastName(managerDto.lastName());
+        existingManager.setDob(managerDto.dob());
+        existingManager.setPasswordHash(managerDto.password());
     }
 
     public List<Manager> getManagers(String agencyId, String adminEmail) {
@@ -51,7 +41,7 @@ public class ManagerService {
     public Manager getManager(Agency agency, String id) {
         return repository.findManagerByIdAndAgency(agency, id).orElseThrow(() ->
                 new IllegalStateException(String.format("Manager %s of agency %s does not exist",
-                        agency.getId(), agency.getRagioneSociale())));
+                        id, agency.getRagioneSociale())));
     }
 
     public Agency getAgencyByManagerEmail(String managerEmail) {

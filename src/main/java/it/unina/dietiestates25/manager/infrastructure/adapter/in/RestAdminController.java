@@ -5,6 +5,7 @@ import it.unina.dietiestates25.manager.infrastructure.adapter.in.dto.SignUpAgenc
 import it.unina.dietiestates25.manager.port.in.AdminService;
 import it.unina.dietiestates25.model.Admin;
 import it.unina.dietiestates25.model.Agency;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ public class RestAdminController {
     }
 
     @PostMapping
-    public ResponseEntity<SignUpAgencyResponse> signUpAgency(@RequestBody SignUpAgencyRequest requestDto) {
+    public ResponseEntity<SignUpAgencyResponse> signUpAgency(@Valid @RequestBody SignUpAgencyRequest requestDto) {
         service.createAdminAndAgency(new Admin(
                 requestDto.firstName(),
                 requestDto.lastName(),
