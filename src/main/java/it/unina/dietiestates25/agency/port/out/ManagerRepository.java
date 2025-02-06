@@ -1,4 +1,4 @@
-package it.unina.dietiestates25.manager.port.out;
+package it.unina.dietiestates25.agency.port.out;
 
 import it.unina.dietiestates25.auth.port.out.UserRepository;
 import it.unina.dietiestates25.model.Agency;
