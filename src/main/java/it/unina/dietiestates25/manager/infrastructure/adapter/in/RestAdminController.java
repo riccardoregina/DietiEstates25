@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/api/signup-agency")
+@RequestMapping(path = "/api/agencies")
 public class RestAdminController {
     private final AdminService service;
     private final PasswordEncoder passwordEncoder;

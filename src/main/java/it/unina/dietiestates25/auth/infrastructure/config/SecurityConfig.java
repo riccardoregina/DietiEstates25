@@ -27,6 +27,14 @@ public class SecurityConfig {
     this.jwtAuthFilter = jwtAuthFilter;
   }
 
+  private static final String LOGIN_PATH = "/api/auth/**";
+  private static final String CUSTOMERS_PATH = "/api/customers/**";
+  private static final String AGENCIES_PATH = "/api/agencies/**";
+  private static final String MANAGERS_PATH = "/api/managers/**";
+  private enum Role {
+    ADMIN
+  }
+
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
@@ -43,14 +51,14 @@ public class SecurityConfig {
 //        Set permissions on endpoints
         .authorizeHttpRequests(auth -> auth
 //            our public endpoints
-            .requestMatchers(HttpMethod.POST, "/api/auth/signup/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/auth/login/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/signup-agency/**").permitAll()
+            .requestMatchers(HttpMethod.POST, LOGIN_PATH).permitAll()
+            .requestMatchers(HttpMethod.POST, CUSTOMERS_PATH).permitAll()
+            .requestMatchers(HttpMethod.POST, AGENCIES_PATH).permitAll()
 //            our private endpoints
-            .requestMatchers(HttpMethod.POST, "/api/managers/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.PUT, "/api/managers/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.GET, "/api/managers/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/api/managers/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, MANAGERS_PATH).hasRole(Role.ADMIN.toString())
+            .requestMatchers(HttpMethod.PUT, MANAGERS_PATH).hasRole(Role.ADMIN.toString())
+            .requestMatchers(HttpMethod.GET, MANAGERS_PATH).hasRole(Role.ADMIN.toString())
+            .requestMatchers(HttpMethod.DELETE, MANAGERS_PATH).hasRole(Role.ADMIN.toString())
             .anyRequest().authenticated())
         .authenticationManager(authenticationManager)
 
