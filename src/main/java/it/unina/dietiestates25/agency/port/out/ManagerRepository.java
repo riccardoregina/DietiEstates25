@@ -18,10 +18,7 @@ public interface ManagerRepository extends UserRepository<Manager> {
     @Query(
             value = "SELECT m.agency FROM Manager m WHERE m.email = :email"
     )
-    Agency findAgencyByManagerEmail(@Param("email") String email);
+    Optional<Agency> findAgencyByManagerEmail(@Param("email") String email);
 
-    @Query(
-            value = "SELECT m FROM Manager m WHERE m.agency = :agency AND m.id = :managerId"
-    )
-    Optional<Manager> findManagerByIdAndAgency(Agency agency, String managerId);
+    Optional<Manager> findByEmail(String email);
 }

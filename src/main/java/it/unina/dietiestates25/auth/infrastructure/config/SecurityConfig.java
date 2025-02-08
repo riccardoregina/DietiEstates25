@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
   private final UserDetailsService userDetailsService;
@@ -30,10 +32,6 @@ public class SecurityConfig {
   private static final String LOGIN_PATH = "/api/auth/**";
   private static final String CUSTOMERS_PATH = "/api/customers/**";
   private static final String AGENCIES_PATH = "/api/agencies/**";
-  private static final String MANAGERS_PATH = "/api/managers/**";
-  private enum Role {
-    ADMIN
-  }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -51,14 +49,13 @@ public class SecurityConfig {
 //        Set permissions on endpoints
         .authorizeHttpRequests(auth -> auth
 //            our public endpoints
-            .requestMatchers(HttpMethod.POST, LOGIN_PATH).permitAll()
-            .requestMatchers(HttpMethod.POST, CUSTOMERS_PATH).permitAll()
-            .requestMatchers(HttpMethod.POST, AGENCIES_PATH).permitAll()
+            .requestMatchers(HttpMethod.POST, LOGIN_PATH)
+                .permitAll()
+            .requestMatchers(HttpMethod.POST, CUSTOMERS_PATH)
+                .permitAll()
+            .requestMatchers(HttpMethod.POST, AGENCIES_PATH)
+                .permitAll()
 //            our private endpoints
-            .requestMatchers(HttpMethod.POST, MANAGERS_PATH).hasRole(Role.ADMIN.toString())
-            .requestMatchers(HttpMethod.PUT, MANAGERS_PATH).hasRole(Role.ADMIN.toString())
-            .requestMatchers(HttpMethod.GET, MANAGERS_PATH).hasRole(Role.ADMIN.toString())
-            .requestMatchers(HttpMethod.DELETE, MANAGERS_PATH).hasRole(Role.ADMIN.toString())
             .anyRequest().authenticated())
         .authenticationManager(authenticationManager)
 
@@ -66,6 +63,9 @@ public class SecurityConfig {
 //        Since we need every request to be authenticated before going through spring security filter.
 //        (UsernamePasswordAuthenticationFilter creates a UsernamePasswordAuthenticationToken from a username and password that are submitted in the HttpServletRequest.)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling(exception -> exception
+                .accessDeniedHandler(new AccessDeniedHandlerImpl())
+        )
         .build();
   }
 

@@ -5,6 +5,7 @@ import it.unina.dietiestates25.auth.port.out.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,10 +19,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String email) {
+  public UserDetails loadUserByUsername(String email)
+          throws UsernameNotFoundException {
 
     User user = repository.findUserByEmail(email).orElseThrow(() ->
-        new IllegalStateException(String.format("User does not exist, email: %s", email)));
+        new UsernameNotFoundException(String.format("User does not exist, email: %s", email)));
 
     return org.springframework.security.core.userdetails.User.builder()
         .username(user.getEmail())

@@ -2,6 +2,7 @@ package it.unina.dietiestates25.customer.infrastructure.adapter.in;
 
 import it.unina.dietiestates25.customer.infrastructure.adapter.in.dto.CustomerDto;
 import it.unina.dietiestates25.customer.port.in.CustomerService;
+import it.unina.dietiestates25.exception.EntityAlreadyExistsException;
 import it.unina.dietiestates25.model.Customer;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,8 @@ public class RestCustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> signUp(@Valid @RequestBody CustomerDto customerDto) {
+    public ResponseEntity<Void> signUp(@Valid @RequestBody CustomerDto customerDto)
+            throws EntityAlreadyExistsException {
         customerService.signUp(new Customer(
                 customerDto.firstName(),
                 customerDto.lastName(),
@@ -30,10 +32,5 @@ public class RestCustomerController {
                 customerDto.dob(),
                 passwordEncoder.encode(customerDto.password())));
         return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<String> handleIllegalStateException(IllegalStateException e) {
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
     }
 }

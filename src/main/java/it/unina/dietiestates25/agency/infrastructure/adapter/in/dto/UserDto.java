@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Past;
 
 import java.time.LocalDate;
 
-public record ManagerDto(
+public record UserDto(
         @NotNull
         @NotBlank
         String firstName,
