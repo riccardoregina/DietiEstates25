@@ -63,9 +63,11 @@ public class SecurityConfig {
 //        Since we need every request to be authenticated before going through spring security filter.
 //        (UsernamePasswordAuthenticationFilter creates a UsernamePasswordAuthenticationToken from a username and password that are submitted in the HttpServletRequest.)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-        .exceptionHandling(exception -> exception
-                .accessDeniedHandler(new AccessDeniedHandlerImpl())
-        )
+//        .formLogin(login ->
+//                login.failureHandler(new AuthenticationFailureHandlerImpl()))
+//        .exceptionHandling(exception ->
+//                exception.accessDeniedHandler(new AccessDeniedHandlerImpl())
+//        )
         .build();
   }
 

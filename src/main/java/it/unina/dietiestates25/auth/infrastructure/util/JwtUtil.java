@@ -5,6 +5,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.www.NonceExpiredException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -45,7 +46,7 @@ public class JwtUtil {
           .parseSignedClaims(token)
           .getPayload();
     } catch (JwtException e) { // Invalid signature or expired token
-      throw new IllegalStateException("Access denied: " + e.getMessage());
+      throw new NonceExpiredException("Access denied: " + e.getMessage());
     }
   }
 
