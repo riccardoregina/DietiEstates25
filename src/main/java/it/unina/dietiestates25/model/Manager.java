@@ -1,5 +1,6 @@
 package it.unina.dietiestates25.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ public class Manager extends User {
                     name = "manager_agency_fk"
             )
     )
+    @JsonIgnore
     private Agency agency;
     public Manager() {}
     public Manager(String firstName,

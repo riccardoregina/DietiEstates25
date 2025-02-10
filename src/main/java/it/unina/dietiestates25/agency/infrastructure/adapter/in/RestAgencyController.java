@@ -1,5 +1,6 @@
 package it.unina.dietiestates25.agency.infrastructure.adapter.in;
 
+import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.SignUpAgencyResponse;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UserDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.SignUpAgencyRequest;
 import it.unina.dietiestates25.agency.port.in.AgencyService;
@@ -38,7 +39,7 @@ public class RestAgencyController {
     }
 
     @PostMapping
-    public ResponseEntity<Admin> signUpAgency(@Valid @RequestBody SignUpAgencyRequest requestDto)
+    public ResponseEntity<SignUpAgencyResponse> signUpAgency(@Valid @RequestBody SignUpAgencyRequest requestDto)
             throws EntityAlreadyExistsException {
         Admin admin = agencyService.createAdminAndAgency(new Admin(
                 requestDto.firstName(),
@@ -52,7 +53,8 @@ public class RestAgencyController {
                 )
         ));
         return ResponseEntity.created(URI.create(PATH_AGENCIES +
-                admin.getAgency().getId() + "/managers/" + admin.getId())).body(admin);
+                admin.getAgency().getId() + "/managers/" + admin.getId()))
+                .body(new SignUpAgencyResponse(admin, admin.getAgency()));
     }
 
     @PostMapping("/{agency-id}/managers")
