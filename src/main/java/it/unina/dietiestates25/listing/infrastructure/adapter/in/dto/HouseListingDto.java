@@ -2,7 +2,6 @@ package it.unina.dietiestates25.listing.infrastructure.adapter.in.dto;
 
 import it.unina.dietiestates25.model.EnergyClass;
 import it.unina.dietiestates25.model.ListingType;
-import it.unina.dietiestates25.model.Location;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
