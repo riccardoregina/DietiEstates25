@@ -3,6 +3,8 @@ package it.unina.dietiestates25.model;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
+import java.util.Map;
+
 @Entity
 @DiscriminatorValue("LAND")
 public class LandListing extends Listing {
@@ -10,8 +12,23 @@ public class LandListing extends Listing {
 
     public LandListing() {}
 
-    public LandListing(Agent agent, String title, int price, String description, int squareMeters, ListingType listingType, Location location, boolean building) {
-        super(agent, title, price, description, squareMeters, listingType, location);
+    public LandListing(Agent agent,
+                       String title,
+                       int price,
+                       String description,
+                       int squareMeters,
+                       ListingType listingType,
+                       Location location,
+                       boolean building,
+                       Map<String, String> otherFeatures) {
+        super(agent,
+                title,
+                price,
+                description,
+                squareMeters,
+                listingType,
+                location,
+                otherFeatures);
         this.building = building;
     }
 

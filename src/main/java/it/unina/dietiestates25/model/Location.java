@@ -1,24 +1,23 @@
 package it.unina.dietiestates25.model;
 
 import jakarta.persistence.*;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class Location implements Serializable {
-    @Column(
-            name = "address",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    private String address;
+
     @Column(
             name = "region",
             nullable = false,
             columnDefinition = "TEXT"
     )
     private String region;
+
     @Column(
             name = "city",
             nullable = false,
@@ -26,25 +25,24 @@ public class Location implements Serializable {
     )
     private String city;
 
-    // TODO Replace latitude and longitude columns with GEOGRAPHY
     @Column(
-            name = "latitude",
-            nullable = false
+            name = "address",
+            nullable = false,
+            columnDefinition = "TEXT"
     )
-    private double latitude;
-    @Column(
-            name = "longitude",
-            nullable = false
-    )
-    private double longitude;
+    private String address;
+
+    @Column(nullable = false,
+            columnDefinition = "geography(Point,4326)")
+    private Point coordinates;
+
     public Location() {}
 
-    public Location(String address, String region, String city, double latitude, double longitude) {
-        this.address = address;
+    public Location(String region, String city, String address, Point coordinates) {
         this.region = region;
         this.city = city;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.address = address;
+        this.coordinates = coordinates;
     }
 
     public String getAddress() {
@@ -71,17 +69,32 @@ public class Location implements Serializable {
         this.city = city;
     }
 
+    public void setCoordinates(double longitude, double latitude) {
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+        this.coordinates = geometryFactory.createPoint(new org.locationtech.jts.geom.Coordinate(longitude, latitude));
+    }
+
+    public double getLongitude() {
+        return coordinates.getX();
+    }
+
+    public double getLatitude() {
+        return coordinates.getY();
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Location location = (Location) o;
-        return Double.compare(latitude, location.latitude) == 0 && Double.compare(longitude, location.longitude) == 0 && Objects.equals(address, location.address) && Objects.equals(region, location.region) && Objects.equals(city, location.city);
+        return Objects.equals(address, location.address) &&
+                Objects.equals(region, location.region) &&
+                Objects.equals(city, location.city) &&
+                Objects.equals(coordinates, location.coordinates);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(address, region, city, latitude, longitude);
+        return Objects.hash(address, region, city, coordinates);
     }
 
     @Override
@@ -90,8 +103,7 @@ public class Location implements Serializable {
                 "address='" + address + '\'' +
                 ", region='" + region + '\'' +
                 ", city='" + city + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
+                ", coordinates=" + coordinates +
                 '}';
     }
 }

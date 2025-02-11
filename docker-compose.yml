@@ -1,7 +1,7 @@
 services:
-  postgres:
-    image: postgres:17.2
-    container_name: postgres
+  postgis:
+    image: postgis/postgis:17-3.5
+    container_name: postgis
     restart: always
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -16,7 +16,7 @@ services:
     container_name: dietiestates25
     restart: always
     depends_on:
-      - postgres
+      - postgis
     environment:
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: "postgres"

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
+@Table(name = "listing")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Listing {
     @Id
@@ -63,7 +64,14 @@ public class Listing {
 
     public Listing() {}
 
-    public Listing(Agent agent, String title, int price, String description, int squareMeters, ListingType listingType, Location location) {
+    public Listing(Agent agent,
+                   String title,
+                   int price,
+                   String description,
+                   int squareMeters,
+                   ListingType listingType,
+                   Location location,
+                   Map<String, String> otherFeatures) {
         this.agent = agent;
         this.title = title;
         this.price = price;
@@ -71,6 +79,11 @@ public class Listing {
         this.squareMeters = squareMeters;
         this.listingType = listingType;
         this.location = location;
+        this.otherFeatures = (otherFeatures == null) ? new HashMap<>() : otherFeatures;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public Agent getAgent() {
@@ -135,6 +148,21 @@ public class Listing {
 
     public void setOtherFeatures(Map<String, String> otherFeatures) {
         this.otherFeatures = otherFeatures;
+    }
+
+    @Override
+    public String toString() {
+        return "Listing{" +
+                "id='" + id + '\'' +
+                ", agent=" + agent +
+                ", title='" + title + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", squareMeters=" + squareMeters +
+                ", listingType=" + listingType +
+                ", location=" + location +
+                ", otherFeatures=" + otherFeatures +
+                '}';
     }
 }
 
