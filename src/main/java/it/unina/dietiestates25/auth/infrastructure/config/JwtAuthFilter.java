@@ -1,11 +1,13 @@
 package it.unina.dietiestates25.auth.infrastructure.config;
 
 import it.unina.dietiestates25.auth.infrastructure.util.JwtUtil;
+import it.unina.dietiestates25.exception.ErrorDetails;
+import it.unina.dietiestates25.exception.InvalidTokenException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,11 +61,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       }
 
       filterChain.doFilter(request, response);
-    } catch (AccessDeniedException ex) {
-      response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-      response.getWriter().write(ex.getMessage());
+    } catch (InvalidTokenException e) {
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.setContentType("application/json");
+      var errorDetails = new ErrorDetails(
+              HttpStatus.UNAUTHORIZED.value(),
+              HttpStatus.UNAUTHORIZED.name(),
+              e.getMessage(),
+              request.getRequestURI());
+      response.getWriter().write(errorDetails.toJson());
     }
-
   }
 
 }

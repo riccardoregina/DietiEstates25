@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import it.unina.dietiestates25.exception.InvalidTokenException;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
@@ -26,16 +27,19 @@ public class JwtUtil {
         .compact();
   }
 
-  public static String extractUsername(String token) {
+  public static String extractUsername(String token)
+          throws InvalidTokenException {
     return getTokenBody(token).getSubject();
   }
 
-  public static Boolean isTokenValid(String token, UserDetails userDetails) {
+  public static Boolean isTokenValid(String token, UserDetails userDetails)
+          throws InvalidTokenException {
     final String username = extractUsername(token);
     return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
   }
 
-  private static Claims getTokenBody(String token) {
+  private static Claims getTokenBody(String token)
+          throws InvalidTokenException {
     var secretKey = Keys.hmacShaKeyFor(SECRET.getBytes());
     try {
       return Jwts
@@ -45,11 +49,12 @@ public class JwtUtil {
           .parseSignedClaims(token)
           .getPayload();
     } catch (JwtException e) { // Invalid signature or expired token
-      throw new IllegalStateException("Access denied: " + e.getMessage());
+      throw new InvalidTokenException("Access denied: " + e.getMessage());
     }
   }
 
-  private static boolean isTokenExpired(String token) {
+  private static boolean isTokenExpired(String token)
+          throws InvalidTokenException {
     Claims claims = getTokenBody(token);
     return claims.getExpiration().before(new Date());
   }

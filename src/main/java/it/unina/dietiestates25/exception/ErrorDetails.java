@@ -1,8 +1,10 @@
 package it.unina.dietiestates25.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ErrorDetails implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -38,6 +40,22 @@ public class ErrorDetails implements Serializable {
 
     public String getPath() {
         return path;
+    }
+
+    public String toJson() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return "{" +
+                "\"timestamp\": \"" + (timestamp != null ? timestamp.format(formatter) : null) + "\"," +
+                "\"status\": " + status + "," +
+                "\"error\": \"" + escapeJson(error) + "\"," +
+                "\"message\": \"" + escapeJson(message) + "\"," +
+                "\"path\": \"" + escapeJson(path) + "\"" +
+                "}";
+    }
+
+    private String escapeJson(String value) {
+        if (value == null) return null;
+        return value.replace("\"", "\\\"");
     }
 }
 

@@ -2,8 +2,7 @@ package it.unina.dietiestates25.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -46,21 +45,9 @@ public class GlobalExceptionHandler {
                         request.getDescription(false)));
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorDetails> handleAccessDeniedException(AccessDeniedException e,
-                                                                 WebRequest request) {
-        return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
-                .body(new ErrorDetails(
-                        HttpStatus.FORBIDDEN.value(),
-                        HttpStatus.FORBIDDEN.name(),
-                        e.getMessage(),
-                        request.getDescription(false)));
-    }
-
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ErrorDetails> handleUsernameNotFoundException(UsernameNotFoundException e,
-                                                                        WebRequest request) {
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorDetails> handleAuthenticationException(AuthenticationException e,
+                                                                    WebRequest request) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorDetails(
