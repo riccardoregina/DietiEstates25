@@ -5,10 +5,11 @@ import it.unina.dietiestates25.customer.port.in.CustomerService;
 import it.unina.dietiestates25.exception.EntityAlreadyExistsException;
 import it.unina.dietiestates25.model.Customer;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -23,14 +24,14 @@ public class RestCustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> signUp(@Valid @RequestBody CustomerDto customerDto)
+    public ResponseEntity<Customer> signUp(@Valid @RequestBody CustomerDto customerDto)
             throws EntityAlreadyExistsException {
-        customerService.signUp(new Customer(
+        Customer customer = customerService.signUp(new Customer(
                 customerDto.firstName(),
                 customerDto.lastName(),
                 customerDto.email(),
                 customerDto.dob(),
                 passwordEncoder.encode(customerDto.password())));
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.created(URI.create("/api/customers/" + customer.getId())).body(customer);
     }
 }

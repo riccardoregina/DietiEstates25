@@ -16,13 +16,13 @@ public class CustomerService {
         this.repository = repository;
     }
 
-    public void signUp(Customer customer)
+    public Customer signUp(Customer customer)
             throws EntityAlreadyExistsException {
         String email = customer.getEmail();
         Optional<User> existingUser = repository.findUserByEmail(email);
         if (existingUser.isPresent()) {
             throw new EntityAlreadyExistsException(String.format("User with the email address '%s' already exists", email));
         }
-        repository.save(customer);
+        return repository.save(customer);
     }
 }
