@@ -221,11 +221,19 @@ public class ListingService {
         buildingListing.setOtherFeatures(buildingListingDto.otherFeatures());
     }
 
+    @Transactional
+    public void deleteListing(String listingId, String agentEmail)
+            throws EntityNotExistsException, ForbiddenException {
+        Agent agent = agencyService.getAgentByEmail(agentEmail);
+        Listing listing = listingRepository.findById(listingId)
+                .orElseThrow(() -> new EntityNotExistsException(String.format(ENTITY_NOT_EXIST_LISTING_MSG, listingId)));
+        validateAgent(agent, listing);
+        listingRepository.delete(listing);
+    }
+
     private void validateAgent(Agent agent, Listing listing) throws ForbiddenException {
         if (!agent.equals(listing.getAgent())) {
             throw new ForbiddenException("Agents can only modify their listings");
         }
     }
-
-
 }

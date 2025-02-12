@@ -101,4 +101,18 @@ public class RestListingController {
         listingService.updateBuildingListing(listingId, buildingListingDto, userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping({
+            "/houses/{listing-id}",
+            "/garages/{listing-id}",
+            "/lands/{listing-id}",
+            "/buildings/{listing-id}"
+    })
+    @PreAuthorize("hasRole('AGENT')")
+    public ResponseEntity<Void> deleteListing(@PathVariable("listing-id") String listingId,
+                                              @AuthenticationPrincipal UserDetails userDetails)
+            throws EntityNotExistsException, ForbiddenException {
+        listingService.deleteListing(listingId, userDetails.getUsername());
+        return ResponseEntity.noContent().build();
+    }
 }
