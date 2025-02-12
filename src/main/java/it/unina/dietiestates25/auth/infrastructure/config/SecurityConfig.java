@@ -32,6 +32,7 @@ public class SecurityConfig {
   private static final String LOGIN_PATH = "/api/auth/**";
   private static final String CUSTOMERS_PATH = "/api/customers/**";
   private static final String AGENCIES_PATH = "/api/agencies/**";
+  private static final String LISTINGS_PATH = "/api/listings/**";
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -54,6 +55,8 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, CUSTOMERS_PATH)
                 .permitAll()
             .requestMatchers(HttpMethod.POST, AGENCIES_PATH)
+                .permitAll()
+            .requestMatchers(HttpMethod.GET, LISTINGS_PATH)
                 .permitAll()
 //            our private endpoints
             .anyRequest().authenticated())

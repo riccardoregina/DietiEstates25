@@ -236,4 +236,9 @@ public class ListingService {
             throw new ForbiddenException("Agents can only modify their listings");
         }
     }
+
+    public Listing getListing(String listingId) throws EntityNotExistsException {
+        return listingRepository.findById(listingId)
+                .orElseThrow(() -> new EntityNotExistsException(String.format(ENTITY_NOT_EXIST_LISTING_MSG, listingId)));
+    }
 }

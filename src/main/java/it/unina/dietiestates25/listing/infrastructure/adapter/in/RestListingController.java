@@ -115,4 +115,15 @@ public class RestListingController {
         listingService.deleteListing(listingId, userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping({
+            "/houses/{listing-id}",
+            "/garages/{listing-id}",
+            "/lands/{listing-id}",
+            "/buildings/{listing-id}"
+    })
+    public ResponseEntity<Listing> getListing(@PathVariable("listing-id") String listingId)
+            throws EntityNotExistsException {
+        return ResponseEntity.ok().body(listingService.getListing(listingId));
+    }
 }
