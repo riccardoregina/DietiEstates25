@@ -82,6 +82,11 @@ public class Location implements Serializable {
         return coordinates.getY();
     }
 
+    public static Point createPoint(double longitude, double latitude) {
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+        return geometryFactory.createPoint(new org.locationtech.jts.geom.Coordinate(longitude, latitude));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

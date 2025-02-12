@@ -1,6 +1,7 @@
 package it.unina.dietiestates25.listing.infrastructure.adapter.in;
 
 import it.unina.dietiestates25.exception.EntityNotExistsException;
+import it.unina.dietiestates25.exception.ForbiddenException;
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.BuildingListingDto;
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.GarageListingDto;
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.HouseListingDto;
@@ -59,5 +60,45 @@ public class RestListingController {
             throws EntityNotExistsException {
         BuildingListing buildingListing = listingService.createBuildingListing(buildingListingDto, userDetails.getUsername());
         return ResponseEntity.created(URI.create("/api/listings/buildings" + buildingListing.getId())).body(buildingListing);
+    }
+
+    @PutMapping("/houses/{listing-id}")
+    @PreAuthorize("hasRole('AGENT')")
+    public ResponseEntity<Void> updateHouseListing(@Valid @RequestBody HouseListingDto houseListingDto,
+                                                   @PathVariable("listing-id") String listingId,
+                                                   @AuthenticationPrincipal UserDetails userDetails)
+            throws EntityNotExistsException, ForbiddenException {
+        listingService.updateHouseListing(listingId, houseListingDto, userDetails.getUsername());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/garage/{listing-id}")
+    @PreAuthorize("hasRole('AGENT')")
+    public ResponseEntity<Void> updateGarageListing(@Valid @RequestBody GarageListingDto garageListingDto,
+                                                   @PathVariable("listing-id") String listingId,
+                                                   @AuthenticationPrincipal UserDetails userDetails)
+            throws EntityNotExistsException, ForbiddenException {
+        listingService.updateGarageListing(listingId, garageListingDto, userDetails.getUsername());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/lands/{listing-id}")
+    @PreAuthorize("hasRole('AGENT')")
+    public ResponseEntity<Void> updateLandListing(@Valid @RequestBody LandListingDto landListingDto,
+                                                   @PathVariable("listing-id") String listingId,
+                                                   @AuthenticationPrincipal UserDetails userDetails)
+            throws EntityNotExistsException, ForbiddenException {
+        listingService.updateLandListing(listingId, landListingDto, userDetails.getUsername());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/buildings/{listing-id}")
+    @PreAuthorize("hasRole('AGENT')")
+    public ResponseEntity<Void> updateBuildingListing(@Valid @RequestBody BuildingListingDto buildingListingDto,
+                                                   @PathVariable("listing-id") String listingId,
+                                                   @AuthenticationPrincipal UserDetails userDetails)
+            throws EntityNotExistsException, ForbiddenException {
+        listingService.updateBuildingListing(listingId, buildingListingDto, userDetails.getUsername());
+        return ResponseEntity.noContent().build();
     }
 }
