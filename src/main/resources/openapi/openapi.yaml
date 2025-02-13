@@ -1,0 +1,37 @@
+openapi: 3.0.0
+info:
+ title: DietiEstates25
+ version: 1.0.0
+paths:
+  /api/auth/login:
+    $ref: './paths/login.yaml'
+  /api/customers:
+    $ref: './paths/customers.yaml'
+  /api/agencies:
+    $ref: './paths/agencies/agencies.yaml'
+  /api/agencies/{agency-id}/managers:
+    $ref: './paths/agencies/managers.yaml'
+  /api/agencies/{agency-id}/managers/{manager-id}:
+    $ref: './paths/agencies/manager-id.yaml'
+  /api/agencies/{agency-id}/agents/:
+    $ref: './paths/agencies/agents.yaml'
+  /api/agencies/{agency-id}/agents/{agent-id}:
+    $ref: './paths/agencies/agent-id.yaml'
+  /api/listings/houses:
+    $ref: './paths/listings/houses.yaml'
+  /api/listings/buildings:
+    $ref: './paths/listings/buildings.yaml'
+  /api/listings/garages:
+    $ref: './paths/listings/garages.yaml'
+  /api/listings/{listing-type}/{listing-id}:
+    $ref: './paths/listings/listing-id.yaml'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    $ref: './components/schemas.yaml'
+  responses:
+    $ref: './components/responses.yaml'

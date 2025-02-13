@@ -1,0 +1,145 @@
+get:
+  tags:
+    - Get manager
+  description: Only admins can make this request
+  operationId: get-manager
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: agency-id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: manager-id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas.yaml#/User'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+put:
+  tags:
+    - Update manager
+  operationId: update-manager
+  description: Only the admin and the manager himself can make this request
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: agency-id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: manager-id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/dtos.yaml#/UserDto'
+    required: true
+  responses:
+    '204':
+      description: Ok
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+delete:
+  tags:
+    - Delete manager
+  operationId: delete-manager
+  description: Only admins can make this request
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: agency-id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: manager-id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '204':
+      description: Ok
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'

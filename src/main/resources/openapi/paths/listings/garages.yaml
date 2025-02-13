@@ -1,0 +1,35 @@
+post:
+  tags:
+    - Create garage listing
+  operationId: create-garage-listing
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/dtos.yaml#/GarageListingDto'
+    required: true
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas.yaml#/GarageListing'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'

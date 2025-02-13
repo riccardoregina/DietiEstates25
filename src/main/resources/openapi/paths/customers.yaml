@@ -1,0 +1,29 @@
+post:
+  tags:
+    - Customer sign-up
+  operationId: customer-signup
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../components/dtos.yaml#/UserDto'
+    required: true
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/User'
+    '409':
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '../components/responses.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../components/responses.yaml#/ErrorDetails'

@@ -1,0 +1,127 @@
+LogInRequest:
+  type: object
+  properties:
+    email:
+      type: string
+    password:
+      type: string
+SignUpAgencyRequest:
+  type: object
+  properties:
+    firstName:
+      type: string
+    lastName:
+      type: string
+    dob:
+      type: string
+    email:
+      type: string
+    tempPassword:
+      type: string
+    ragioneSociale:
+      type: string
+    partitaIva:
+      type: string
+UserDto:
+  type: object
+  properties:
+    firstName:
+      type: string
+    lastName:
+      type: string
+    dob:
+      type: string
+    email:
+      type: string
+    password:
+      type: string
+HouseListingDto:
+  type: object
+  properties:
+    title:
+      type: string
+    price:
+      type: integer
+    description:
+      type: string
+    squareMeters:
+      type: integer
+    listingType:
+      type: string
+      enum: ['BUY', 'RENT']
+    locationDto:
+      $ref: '#/LocationDto'
+    nRooms:
+      type: integer
+    nBathrooms:
+      type: integer
+    floor:
+      type: integer
+    energyClass:
+      type: string
+      enum: ['A', 'A_PLUS', 'A1', 'A2', 'A3', 'A4', 'B', 'C', 'D', 'E', 'F', 'G']
+    otherFeatures:
+      type: object
+      example: {
+        "garden": true,
+        "furnished": true
+      }
+BuildingListingDto:
+  type: object
+  properties:
+    title:
+      type: string
+    price:
+      type: integer
+    description:
+      type: string
+    squareMeters:
+      type: integer
+    listingType:
+      type: string
+      enum: [ 'BUY', 'RENT' ]
+    locationDto:
+      $ref: '#/LocationDto'
+    otherFeatures:
+      type: object
+      example: {
+        "garden": true,
+        "furnished": true
+      }
+GarageListingDto:
+  type: object
+  properties:
+    title:
+      type: string
+    price:
+      type: integer
+    description:
+      type: string
+    squareMeters:
+      type: integer
+    listingType:
+      type: string
+      enum: [ 'BUY', 'RENT' ]
+    locationDto:
+      $ref: '#/LocationDto'
+    floor:
+      type: integer
+    otherFeatures:
+      type: object
+      example: {
+        "garden": true,
+        "furnished": true
+      }
+LocationDto:
+  type: object
+  properties:
+    region:
+      type: string
+    city:
+      type: string
+    address:
+      type: string
+    longitude:
+      type: number
+    latitude:
+      type: number

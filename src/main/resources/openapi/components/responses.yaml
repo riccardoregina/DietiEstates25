@@ -1,0 +1,27 @@
+LoginResponse:
+  type: object
+  properties:
+    email:
+      type: string
+    token:
+      type: string
+SignUpAgencyResponse:
+  type: object
+  properties:
+    admin:
+      $ref: './schemas.yaml#/Agency'
+    agency:
+      $ref: './schemas.yaml#/User'
+ErrorDetails:
+  type: object
+  properties:
+    timestamp:
+      type: string
+    status:
+      type: integer
+    error:
+      type: string
+    message:
+      type: string
+    path:
+      type: string

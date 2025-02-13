@@ -1,0 +1,118 @@
+User:
+  type: object
+  properties:
+    firstName:
+      type: string
+    lastName:
+      type: string
+    dob:
+      type: string
+    email:
+      type: string
+Agency:
+  type: object
+  properties:
+    id:
+      type: string
+    ragioneSociale:
+      type: string
+    partitaIva:
+      type: string
+Agent:
+  type: object
+  properties:
+    firstName:
+      type: string
+    lastName:
+      type: string
+    dob:
+      type: string
+    email:
+      type: string
+    agency:
+      $ref: './schemas.yaml#/Agency'
+    manager:
+      $ref: './schemas.yaml#/User'
+GarageListing:
+  type: object
+  properties:
+    id:
+      type: string
+    title:
+      type: string
+    price:
+      type: integer
+    description:
+      type: string
+    squareMeters:
+      type: integer
+    listingType:
+      type: string
+      enum: [ 'BUY', 'RENT' ]
+    locationDto:
+      $ref: './dtos.yaml#/LocationDto'
+    floor:
+      type: integer
+    otherFeatures:
+      type: object
+      example: {
+        "garden": true,
+        "furnished": true
+      }
+BuildingListing:
+  type: object
+  properties:
+    id:
+      type: string
+    title:
+      type: string
+    price:
+      type: integer
+    description:
+      type: string
+    squareMeters:
+      type: integer
+    listingType:
+      type: string
+      enum: [ 'BUY', 'RENT' ]
+    locationDto:
+      $ref: './dtos.yaml#/LocationDto'
+    otherFeatures:
+      type: object
+      example: {
+        "garden": true,
+        "furnished": true
+      }
+HouseListing:
+  type: object
+  properties:
+    id:
+      type: string
+    title:
+      type: string
+    price:
+      type: integer
+    description:
+      type: string
+    squareMeters:
+      type: integer
+    listingType:
+      type: string
+      enum: [ 'BUY', 'RENT' ]
+    locationDto:
+      $ref: './dtos.yaml#/LocationDto'
+    nRooms:
+      type: integer
+    nBathrooms:
+      type: integer
+    floor:
+      type: integer
+    energyClass:
+      type: string
+      enum: [ 'A', 'A_PLUS', 'A1', 'A2', 'A3', 'A4', 'B', 'C', 'D', 'E', 'F', 'G' ]
+    otherFeatures:
+      type: object
+      example: {
+        "garden": true,
+        "furnished": true
+      }

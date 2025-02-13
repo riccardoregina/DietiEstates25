@@ -1,0 +1,29 @@
+post:
+  tags:
+    - Agency sign-up
+  operationId: agency-signup
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/dtos.yaml#/SignUpAgencyRequest'
+    required: true
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/SignUpAgencyRequest'
+    '409':
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'

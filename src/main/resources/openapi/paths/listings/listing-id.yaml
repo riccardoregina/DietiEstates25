@@ -1,0 +1,42 @@
+delete:
+  summary: Delete a listing
+  description: Deletes a listing
+  parameters:
+    - name: listing-type
+      in: path
+      required: true
+      schema:
+        type: string
+        enum: [ houses, buildings, garages, lands ]
+    - name: listing-id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '204':
+      description: Ok
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
