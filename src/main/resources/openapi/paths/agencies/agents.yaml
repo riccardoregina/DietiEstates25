@@ -1,0 +1,89 @@
+post:
+  tags:
+    - Create agent
+  operationId: create-agent
+  security:
+    - BearerAuth: [ ]
+  parameters:
+    - name: agency-id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/dtos.yaml#/UserDto'
+    required: true
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas.yaml#/Agent'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '409':
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+get:
+  tags:
+    - Get agents
+  description: Only admins and managers can make this request
+  operationId: get-agents
+  security:
+    - BearerAuth: [ ]
+  parameters:
+    - name: agency-id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Ok
+      content:
+        application/json:
+          schema:
+            type: object
+            items:
+              $ref: '../../components/schemas.yaml#/Agent'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'

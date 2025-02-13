@@ -1,0 +1,35 @@
+post:
+  tags:
+    - Create house listing
+  operationId: create-house-listing
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/dtos.yaml#/HouseListingDto'
+    required: true
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas.yaml#/HouseListing'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/responses.yaml#/ErrorDetails'
