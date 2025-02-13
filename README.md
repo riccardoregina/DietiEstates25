@@ -1,4 +1,12 @@
 ## Running with Docker
+
+If you are on Windows run the script `deploy.ps1`
+```powershell
+.\deploy.ps1
+```
+
+Otherwise, you can build manually.
+
 First, build the jar (skip the tests not to have problems with dependencies)
 ```bash
 ./mvnw clean package -DskipTests
