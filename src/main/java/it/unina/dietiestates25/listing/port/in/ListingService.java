@@ -13,6 +13,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ListingService {
     public static final String ENTITY_NOT_EXIST_LISTING_MSG = "Listing does not exist, id: %s";
@@ -26,19 +28,22 @@ public class ListingService {
     private final LandListingRepository landListingRepository;
     @Qualifier("buildingListingRepository")
     private final BuildingListingRepository buildingListingRepository;
+    private final SearchRepository searchRepository;
 
     public ListingService(AgencyService agencyService,
                           ListingRepository<Listing> listingRepository,
                           @Qualifier("houseListingRepository") HouseListingRepository houseListingRepository,
                           @Qualifier("garageListingRepository") GarageListingRepository garageListingRepository,
                           @Qualifier("landListingRepository") LandListingRepository landListingRepository,
-                          @Qualifier("buildingListingRepository") BuildingListingRepository buildingListingRepository) {
+                          @Qualifier("buildingListingRepository") BuildingListingRepository buildingListingRepository,
+                          SearchRepository searchRepository) {
         this.agencyService = agencyService;
         this.listingRepository = listingRepository;
         this.houseListingRepository = houseListingRepository;
         this.garageListingRepository = garageListingRepository;
         this.landListingRepository = landListingRepository;
         this.buildingListingRepository = buildingListingRepository;
+        this.searchRepository = searchRepository;
     }
 
     public HouseListing createHouseListing(HouseListingDto houseListingDto,
@@ -52,9 +57,9 @@ public class ListingService {
                 houseListingDto.description(),
                 houseListingDto.squareMeters(),
                 houseListingDto.listingType(),
-                new Location(houseListingDto.locationDto().address(),
-                        houseListingDto.locationDto().region(),
+                new Location(houseListingDto.locationDto().region(),
                         houseListingDto.locationDto().city(),
+                        houseListingDto.locationDto().address(),
                         Location.createPoint(houseListingDto.locationDto().longitude(),
                                 houseListingDto.locationDto().latitude())),
                 houseListingDto.nRooms(),
@@ -76,9 +81,9 @@ public class ListingService {
                 garageListingDto.description(),
                 garageListingDto.squareMeters(),
                 garageListingDto.listingType(),
-                new Location(garageListingDto.locationDto().address(),
-                        garageListingDto.locationDto().region(),
+                new Location(garageListingDto.locationDto().region(),
                         garageListingDto.locationDto().city(),
+                        garageListingDto.locationDto().address(),
                         Location.createPoint(garageListingDto.locationDto().longitude(),
                                 garageListingDto.locationDto().latitude())),
                 garageListingDto.floor(),
@@ -97,9 +102,9 @@ public class ListingService {
                 landListingDto.description(),
                 landListingDto.squareMeters(),
                 landListingDto.listingType(),
-                new Location(landListingDto.locationDto().address(),
-                        landListingDto.locationDto().region(),
+                new Location(landListingDto.locationDto().region(),
                         landListingDto.locationDto().city(),
+                        landListingDto.locationDto().address(),
                         Location.createPoint(landListingDto.locationDto().longitude(),
                                 landListingDto.locationDto().latitude())),
                 landListingDto.building(),
@@ -118,9 +123,9 @@ public class ListingService {
                 buildingListingDto.description(),
                 buildingListingDto.squareMeters(),
                 buildingListingDto.listingType(),
-                new Location(buildingListingDto.locationDto().address(),
-                        buildingListingDto.locationDto().region(),
+                new Location(buildingListingDto.locationDto().region(),
                         buildingListingDto.locationDto().city(),
+                        buildingListingDto.locationDto().address(),
                         Location.createPoint(buildingListingDto.locationDto().longitude(),
                                 buildingListingDto.locationDto().latitude())),
                 buildingListingDto.otherFeatures()
@@ -141,9 +146,9 @@ public class ListingService {
         houseListing.setDescription(houseListingDto.description());
         houseListing.setSquareMeters(houseListingDto.squareMeters());
         houseListing.setListingType(houseListingDto.listingType());
-        houseListing.setLocation(new Location(houseListingDto.locationDto().address(),
-                houseListingDto.locationDto().region(),
+        houseListing.setLocation(new Location(houseListingDto.locationDto().region(),
                 houseListingDto.locationDto().city(),
+                houseListingDto.locationDto().address(),
                 Location.createPoint(houseListingDto.locationDto().longitude(),
                         houseListingDto.locationDto().latitude())));
         houseListing.setnRooms(houseListingDto.nRooms());
@@ -167,9 +172,9 @@ public class ListingService {
         garageListing.setDescription(garageListingDto.description());
         garageListing.setSquareMeters(garageListingDto.squareMeters());
         garageListing.setListingType(garageListingDto.listingType());
-        garageListing.setLocation(new Location(garageListingDto.locationDto().address(),
-                garageListingDto.locationDto().region(),
+        garageListing.setLocation(new Location(garageListingDto.locationDto().region(),
                 garageListingDto.locationDto().city(),
+                garageListingDto.locationDto().address(),
                 Location.createPoint(garageListingDto.locationDto().longitude(),
                         garageListingDto.locationDto().latitude())));
         garageListing.setFloor(garageListingDto.floor());
@@ -190,9 +195,9 @@ public class ListingService {
         landListing.setDescription(landListingDto.description());
         landListing.setSquareMeters(landListingDto.squareMeters());
         landListing.setListingType(landListingDto.listingType());
-        landListing.setLocation(new Location(landListingDto.locationDto().address(),
-                landListingDto.locationDto().region(),
+        landListing.setLocation(new Location(landListingDto.locationDto().region(),
                 landListingDto.locationDto().city(),
+                landListingDto.locationDto().address(),
                 Location.createPoint(landListingDto.locationDto().longitude(),
                         landListingDto.locationDto().latitude())));
         landListing.setBuilding(landListingDto.building());
@@ -213,9 +218,9 @@ public class ListingService {
         buildingListing.setDescription(buildingListingDto.description());
         buildingListing.setSquareMeters(buildingListingDto.squareMeters());
         buildingListing.setListingType(buildingListingDto.listingType());
-        buildingListing.setLocation(new Location(buildingListingDto.locationDto().address(),
-                buildingListingDto.locationDto().region(),
+        buildingListing.setLocation(new Location(buildingListingDto.locationDto().region(),
                 buildingListingDto.locationDto().city(),
+                buildingListingDto.locationDto().address(),
                 Location.createPoint(buildingListingDto.locationDto().longitude(),
                         buildingListingDto.locationDto().latitude())));
         buildingListing.setOtherFeatures(buildingListingDto.otherFeatures());
@@ -240,5 +245,30 @@ public class ListingService {
     public Listing getListing(String listingId) throws EntityNotExistsException {
         return listingRepository.findById(listingId)
                 .orElseThrow(() -> new EntityNotExistsException(String.format(ENTITY_NOT_EXIST_LISTING_MSG, listingId)));
+    }
+
+    @Transactional
+    public List<HouseListing> getHouseListings(HouseSearch houseSearch) {
+
+        List<HouseListing> listings = houseListingRepository
+                .findAllByFilters(houseSearch.getListingType(),
+                        houseSearch.getRegion(),
+                        houseSearch.getCity(),
+                        houseSearch.getPriceMin(),
+                        houseSearch.getPriceMax(),
+                        houseSearch.getSquareMetersMin(),
+                        houseSearch.getSquareMetersMax(),
+                        houseSearch.getnRoomsMin(),
+                        houseSearch.getnRoomsMax(),
+                        houseSearch.getnBathroomsMin(),
+                        houseSearch.getnBathroomsMax(),
+                        houseSearch.getFloorMin(),
+                        houseSearch.getFloorMax(),
+                        houseSearch.getEnergyClassMin(),
+                        houseSearch.getAgentId());
+        if (houseSearch.getUser() != null) {
+            searchRepository.save(houseSearch);
+        }
+        return listings;
     }
 }
