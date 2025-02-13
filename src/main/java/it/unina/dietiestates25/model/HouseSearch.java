@@ -49,7 +49,7 @@ public class HouseSearch extends Search {
                        String region,
                        String city,
                        Point centerCoordinates,
-                       Double radius,
+                       Integer radius,
                        Double priceMin,
                        Double priceMax,
                        Double squareMetersMin,

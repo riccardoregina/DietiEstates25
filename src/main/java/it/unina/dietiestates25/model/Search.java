@@ -48,7 +48,7 @@ public class Search {
     @Column(
             name = "radius"
     )
-    private Double radius;
+    private Integer radius;
 
     @Column(
             name = "price_min"
@@ -81,7 +81,7 @@ public class Search {
                   String region,
                   String city,
                   Point centerCoordinates,
-                  Double radius,
+                  Integer radius,
                   Double priceMin,
                   Double priceMax,
                   Double squareMetersMin,
@@ -120,7 +120,7 @@ public class Search {
         return centerCoordinates;
     }
 
-    public Double getRadius() {
+    public Integer getRadius() {
         return radius;
     }
 

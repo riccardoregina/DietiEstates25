@@ -249,23 +249,43 @@ public class ListingService {
 
     @Transactional
     public List<HouseListing> getHouseListings(HouseSearch houseSearch) {
+        List<HouseListing> listings;
+        if (houseSearch.getCenterCoordinates() != null && houseSearch.getRadius() != null) {
+            listings = houseListingRepository
+                    .findAllByFiltersAndLocation(houseSearch.getListingType(),
+                            houseSearch.getPriceMin(),
+                            houseSearch.getPriceMax(),
+                            houseSearch.getSquareMetersMin(),
+                            houseSearch.getSquareMetersMax(),
+                            houseSearch.getnRoomsMin(),
+                            houseSearch.getnRoomsMax(),
+                            houseSearch.getnBathroomsMin(),
+                            houseSearch.getnBathroomsMax(),
+                            houseSearch.getFloorMin(),
+                            houseSearch.getFloorMax(),
+                            houseSearch.getEnergyClassMin(),
+                            houseSearch.getAgentId(),
+                            houseSearch.getCenterCoordinates(),
+                            houseSearch.getRadius());
+        } else {
+            listings = houseListingRepository
+                    .findAllByFilters(houseSearch.getListingType(),
+                            houseSearch.getRegion(),
+                            houseSearch.getCity(),
+                            houseSearch.getPriceMin(),
+                            houseSearch.getPriceMax(),
+                            houseSearch.getSquareMetersMin(),
+                            houseSearch.getSquareMetersMax(),
+                            houseSearch.getnRoomsMin(),
+                            houseSearch.getnRoomsMax(),
+                            houseSearch.getnBathroomsMin(),
+                            houseSearch.getnBathroomsMax(),
+                            houseSearch.getFloorMin(),
+                            houseSearch.getFloorMax(),
+                            houseSearch.getEnergyClassMin(),
+                            houseSearch.getAgentId());
+        }
 
-        List<HouseListing> listings = houseListingRepository
-                .findAllByFilters(houseSearch.getListingType(),
-                        houseSearch.getRegion(),
-                        houseSearch.getCity(),
-                        houseSearch.getPriceMin(),
-                        houseSearch.getPriceMax(),
-                        houseSearch.getSquareMetersMin(),
-                        houseSearch.getSquareMetersMax(),
-                        houseSearch.getnRoomsMin(),
-                        houseSearch.getnRoomsMax(),
-                        houseSearch.getnBathroomsMin(),
-                        houseSearch.getnBathroomsMax(),
-                        houseSearch.getFloorMin(),
-                        houseSearch.getFloorMax(),
-                        houseSearch.getEnergyClassMin(),
-                        houseSearch.getAgentId());
         if (houseSearch.getUser() != null) {
             searchRepository.save(houseSearch);
         }

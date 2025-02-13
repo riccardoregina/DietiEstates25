@@ -140,7 +140,7 @@ public class RestListingController {
             @RequestParam(required = false) String city,
             @RequestParam(required = false) Double centerLongitude,
             @RequestParam(required = false) Double centerLatitude,
-            @RequestParam(required = false) Double radius,
+            @RequestParam(required = false) Integer radius,
             @RequestParam(required = false) Double priceMin,
             @RequestParam(required = false) Double priceMax,
             @RequestParam(required = false) Double squareMetersMin,
