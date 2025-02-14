@@ -88,6 +88,30 @@ BuildingListingDto:
         "garden": true,
         "furnished": true
       }
+LandListingDto:
+  type: object
+  properties:
+    title:
+      type: string
+    price:
+      type: integer
+    description:
+      type: string
+    squareMeters:
+      type: integer
+    listingType:
+      type: string
+      enum: [ 'BUY', 'RENT' ]
+    locationDto:
+      $ref: '#/LocationDto'
+    building:
+      type: boolean
+    otherFeatures:
+      type: object
+      example: {
+        "garden": true,
+        "furnished": true
+      }
 GarageListingDto:
   type: object
   properties:
@@ -125,3 +149,44 @@ LocationDto:
       type: number
     latitude:
       type: number
+HouseSearchDto:
+  type: object
+  properties:
+    listingType:
+      type: string
+      enum: ['BUY', 'RENT']
+    region:
+      type: string
+    city:
+      type: string
+    centerLongitude:
+      type: number
+    centerLatitude:
+      type: number
+    radius:
+      type: integer
+    priceMin:
+      type: integer
+    priceMax:
+      type: integer
+    squareMetersMin:
+      type: integer
+    squareMetersMax:
+      type: integer
+    nRoomsMin:
+      type: integer
+    nRoomsMax:
+      type: integer
+    nBathroomsMin:
+      type: integer
+    nBathroomsMax:
+      type: integer
+    floorMin:
+      type: integer
+    floorMax:
+      type: integer
+    energyClassMin:
+      type: string
+      enum: [ 'A4', 'A3, 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G' ]
+    agentId:
+      type: string

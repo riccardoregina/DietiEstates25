@@ -23,6 +23,8 @@ paths:
     $ref: './paths/listings/buildings.yaml'
   /api/listings/garages:
     $ref: './paths/listings/garages.yaml'
+  /api/listings/lands:
+    $ref: './paths/listings/lands.yaml'
   /api/listings/{listing-type}/{listing-id}:
     $ref: './paths/listings/listing-id.yaml'
 components:
