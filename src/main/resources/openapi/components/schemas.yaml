@@ -109,7 +109,7 @@ HouseListing:
       type: integer
     energyClass:
       type: string
-      enum: [ 'A4', 'A3, 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G' ]
+      enum: [ 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G' ]
     otherFeatures:
       type: object
       example: {
