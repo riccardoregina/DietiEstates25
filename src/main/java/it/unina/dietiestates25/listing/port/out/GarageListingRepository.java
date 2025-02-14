@@ -3,11 +3,11 @@ package it.unina.dietiestates25.listing.port.out;
 import it.unina.dietiestates25.model.GarageListing;
 import it.unina.dietiestates25.model.ListingType;
 import org.locationtech.jts.geom.Point;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface GarageListingRepository extends ListingRepository<GarageListing> {
@@ -22,7 +22,7 @@ public interface GarageListingRepository extends ListingRepository<GarageListing
             "AND (:floorMin IS NULL OR l.floor >= :floorMin) " +
             "AND (:floorMax IS NULL OR l.floor <= :floorMax) " +
             "AND (:agentId IS NULL OR l.agent.id = :agentId) ")
-    List<GarageListing> findAllByFilters(
+    Page<GarageListing> findAllByFilters(
             @Param("listingType") ListingType listingType,
             @Param("region") String region,
             @Param("city") String city,
@@ -32,7 +32,8 @@ public interface GarageListingRepository extends ListingRepository<GarageListing
             @Param("squareMetersMax") Integer squareMetersMax,
             @Param("floorMin") Integer floorMin,
             @Param("floorMax") Integer floorMax,
-            @Param("agentId") String agentId
+            @Param("agentId") String agentId,
+            Pageable pageable
     );
 
     @Query("SELECT l FROM GarageListing l WHERE " +
@@ -45,7 +46,7 @@ public interface GarageListingRepository extends ListingRepository<GarageListing
             "AND (:floorMin IS NULL OR l.floor >= :floorMin) " +
             "AND (:floorMax IS NULL OR l.floor <= :floorMax) " +
             "AND (:agentId IS NULL OR l.agent.id = :agentId) ")
-    List<GarageListing> findAllByFiltersAndLocation(
+    Page<GarageListing> findAllByFiltersAndLocation(
             @Param("listingType") ListingType listingType,
             @Param("priceMin") Integer priceMin,
             @Param("priceMax") Integer priceMax,
@@ -55,6 +56,7 @@ public interface GarageListingRepository extends ListingRepository<GarageListing
             @Param("floorMax") Integer floorMax,
             @Param("agentId") String agentId,
             @Param("center") Point center,
-            @Param("radius") Integer radiusInMeters
+            @Param("radius") Integer radiusInMeters,
+            Pageable pageable
     );
 }

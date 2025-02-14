@@ -4,11 +4,11 @@ import it.unina.dietiestates25.model.EnergyClass;
 import it.unina.dietiestates25.model.HouseListing;
 import it.unina.dietiestates25.model.ListingType;
 import org.locationtech.jts.geom.Point;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface HouseListingRepository extends ListingRepository<HouseListing> {
@@ -29,7 +29,7 @@ public interface HouseListingRepository extends ListingRepository<HouseListing> 
             "AND (:floorMax IS NULL OR l.floor <= :floorMax) " +
             "AND (:energyClassMin IS NULL OR l.energyClass >= :energyClassMin)" +
             "AND (:agentId IS NULL OR l.agent.id = :agentId) ")
-    List<HouseListing> findAllByFilters(
+    Page<HouseListing> findAllByFilters(
             @Param("listingType") ListingType listingType,
             @Param("region") String region,
             @Param("city") String city,
@@ -44,7 +44,8 @@ public interface HouseListingRepository extends ListingRepository<HouseListing> 
             @Param("floorMin") Integer floorMin,
             @Param("floorMax") Integer floorMax,
             @Param("energyClassMin") EnergyClass energyClassMin,
-            @Param("agentId") String agentId
+            @Param("agentId") String agentId,
+            Pageable pageable
     );
 
     @Query("SELECT l FROM HouseListing l WHERE " +
@@ -62,7 +63,7 @@ public interface HouseListingRepository extends ListingRepository<HouseListing> 
             "AND (:floorMax IS NULL OR l.floor <= :floorMax) " +
             "AND (:energyClassMin IS NULL OR l.energyClass >= :energyClassMin)" +
             "AND (:agentId IS NULL OR l.agent.id = :agentId) ")
-    List<HouseListing> findAllByFiltersAndLocation(
+    Page<HouseListing> findAllByFiltersAndLocation(
             @Param("listingType") ListingType listingType,
             @Param("priceMin") Integer priceMin,
             @Param("priceMax") Integer priceMax,
@@ -77,6 +78,7 @@ public interface HouseListingRepository extends ListingRepository<HouseListing> 
             @Param("energyClassMin") EnergyClass energyClassMin,
             @Param("agentId") String agentId,
             @Param("center") Point center,
-            @Param("radius") Integer radiusInMeters
+            @Param("radius") Integer radiusInMeters,
+            Pageable pageable
     );
 }

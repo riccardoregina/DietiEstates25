@@ -3,11 +3,12 @@ package it.unina.dietiestates25.listing.port.out;
 import it.unina.dietiestates25.model.BuildingListing;
 import it.unina.dietiestates25.model.ListingType;
 import org.locationtech.jts.geom.Point;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
 public interface BuildingListingRepository extends ListingRepository<BuildingListing> {
@@ -20,7 +21,7 @@ public interface BuildingListingRepository extends ListingRepository<BuildingLis
             "AND (:squareMetersMin IS NULL OR l.squareMeters >= :squareMetersMin) " +
             "AND (:squareMetersMax IS NULL OR l.squareMeters <= :squareMetersMax) " +
             "AND (:agentId IS NULL OR l.agent.id = :agentId) ")
-    List<BuildingListing> findAllByFilters(
+    Page<BuildingListing> findAllByFilters(
             @Param("listingType") ListingType listingType,
             @Param("region") String region,
             @Param("city") String city,
@@ -28,7 +29,8 @@ public interface BuildingListingRepository extends ListingRepository<BuildingLis
             @Param("priceMax") Integer priceMax,
             @Param("squareMetersMin") Integer squareMetersMin,
             @Param("squareMetersMax") Integer squareMetersMax,
-            @Param("agentId") String agentId
+            @Param("agentId") String agentId,
+            Pageable pageable
     );
 
     @Query("SELECT l FROM BuildingListing l WHERE " +
@@ -39,7 +41,7 @@ public interface BuildingListingRepository extends ListingRepository<BuildingLis
             "AND (:squareMetersMin IS NULL OR l.squareMeters >= :squareMetersMin) " +
             "AND (:squareMetersMax IS NULL OR l.squareMeters <= :squareMetersMax) " +
             "AND (:agentId IS NULL OR l.agent.id = :agentId) ")
-    List<BuildingListing> findAllByFiltersAndLocation(
+    Page<BuildingListing> findAllByFiltersAndLocation(
             @Param("listingType") ListingType listingType,
             @Param("priceMin") Integer priceMin,
             @Param("priceMax") Integer priceMax,
@@ -47,6 +49,7 @@ public interface BuildingListingRepository extends ListingRepository<BuildingLis
             @Param("squareMetersMax") Integer squareMetersMax,
             @Param("agentId") String agentId,
             @Param("center") Point center,
-            @Param("radius") Integer radiusInMeters
+            @Param("radius") Integer radiusInMeters,
+            Pageable pageable
     );
 }
