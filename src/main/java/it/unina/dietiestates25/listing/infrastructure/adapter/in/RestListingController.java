@@ -11,6 +11,8 @@ import it.unina.dietiestates25.listing.port.in.ListingService;
 import it.unina.dietiestates25.model.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,12 +21,27 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(path = "/api/listings")
 public class RestListingController {
     private final ListingService listingService;
     private final UserService userService;
+    private static final int PAGE_SIZE = 5;
+    private final List<String> basicSortingCriteria = List.of(
+            "timestamp",
+            "price",
+            "squareMeters",
+            "pricePerSquareMeter");
+    private final Map<String, List<String>> sortingCriteriaMap = Map.of(
+            "house", Stream.concat(basicSortingCriteria.stream(),
+                    Stream.of("nRooms", "nBathrooms", "floor", "energyClass")).toList(),
+            "garage", Stream.concat(basicSortingCriteria.stream(), Stream.of("floor")).toList(),
+            "land", basicSortingCriteria,
+            "building", basicSortingCriteria
+    );
 
     public RestListingController(ListingService listingService,
                                  UserService userService) {
@@ -153,6 +170,9 @@ public class RestListingController {
             @RequestParam(required = false) Integer floorMax,
             @RequestParam(required = false) EnergyClass energyClassMin,
             @RequestParam(required = false) String agentId,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "timestamp") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String ordering,
             @AuthenticationPrincipal UserDetails userDetails
     ) throws EntityNotExistsException {
         User user = (userDetails == null) ? null : userService.getUser(userDetails.getUsername());
@@ -177,8 +197,13 @@ public class RestListingController {
                 energyClassMin,
                 agentId
         );
-
-        List<HouseListing> listings = listingService.getHouseListings(houseSearch);
+        if (!isValidSortingCriteria(sortBy, "house")) {
+            sortBy = "timestamp";
+        }
+        Sort sort = ordering.equalsIgnoreCase("asc") ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        List<HouseListing> listings = listingService
+                .getHouseListings(houseSearch, PageRequest.of(page, PAGE_SIZE, sort));
         return ResponseEntity.ok().body(listings);
     }
 
@@ -197,6 +222,9 @@ public class RestListingController {
             @RequestParam(required = false) Integer floorMin,
             @RequestParam(required = false) Integer floorMax,
             @RequestParam(required = false) String agentId,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "timestamp") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String ordering,
             @AuthenticationPrincipal UserDetails userDetails
     ) throws EntityNotExistsException {
         User user = (userDetails == null) ? null : userService.getUser(userDetails.getUsername());
@@ -216,8 +244,13 @@ public class RestListingController {
                 floorMin,
                 floorMax
         );
-
-        List<GarageListing> listings = listingService.getGarageListings(garageSearch);
+        if (!isValidSortingCriteria(sortBy, "garage")) {
+            sortBy = "timestamp";
+        }
+        Sort sort = ordering.equalsIgnoreCase("asc") ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        List<GarageListing> listings = listingService
+                .getGarageListings(garageSearch, PageRequest.of(page, PAGE_SIZE, sort));
         return ResponseEntity.ok().body(listings);
     }
 
@@ -235,6 +268,9 @@ public class RestListingController {
             @RequestParam(required = false) Integer squareMetersMax,
             @RequestParam(required = false) String agentId,
             @RequestParam(required = false) Boolean building,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "timestamp") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String ordering,
             @AuthenticationPrincipal UserDetails userDetails
     ) throws EntityNotExistsException {
         User user = (userDetails == null) ? null : userService.getUser(userDetails.getUsername());
@@ -253,8 +289,13 @@ public class RestListingController {
                 agentId,
                 building
         );
-
-        List<LandListing> listings = listingService.getLandListings(landSearch);
+        if (!isValidSortingCriteria(sortBy, "land")) {
+            sortBy = "timestamp";
+        }
+        Sort sort = ordering.equalsIgnoreCase("asc") ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        List<LandListing> listings = listingService
+                .getLandListings(landSearch, PageRequest.of(page, PAGE_SIZE, sort));
         return ResponseEntity.ok().body(listings);
     }
 
@@ -271,6 +312,9 @@ public class RestListingController {
             @RequestParam(required = false) Integer squareMetersMin,
             @RequestParam(required = false) Integer squareMetersMax,
             @RequestParam(required = false) String agentId,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "timestamp") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String ordering,
             @AuthenticationPrincipal UserDetails userDetails
     ) throws EntityNotExistsException {
         User user = (userDetails == null) ? null : userService.getUser(userDetails.getUsername());
@@ -288,8 +332,18 @@ public class RestListingController {
                 squareMetersMax,
                 agentId
         );
-
-        List<BuildingListing> listings = listingService.getBuildingListings(buildingSearch);
+        if (!isValidSortingCriteria(sortBy, "building")) {
+            sortBy = "timestamp";
+        }
+        Sort sort = ordering.equalsIgnoreCase("asc") ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        List<BuildingListing> listings = listingService
+                .getBuildingListings(buildingSearch, PageRequest.of(page, PAGE_SIZE, sort));
         return ResponseEntity.ok().body(listings);
+    }
+
+    boolean isValidSortingCriteria(String sortBy, String listingType) {
+        List<String> criteria = sortingCriteriaMap.get(listingType);
+        return criteria != null && criteria.contains(sortBy);
     }
 }

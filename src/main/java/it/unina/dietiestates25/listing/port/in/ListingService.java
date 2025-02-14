@@ -11,6 +11,8 @@ import it.unina.dietiestates25.listing.port.out.*;
 import it.unina.dietiestates25.model.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -248,8 +250,8 @@ public class ListingService {
     }
 
     @Transactional
-    public List<HouseListing> getHouseListings(HouseSearch houseSearch) {
-        List<HouseListing> listings;
+    public List<HouseListing> getHouseListings(HouseSearch houseSearch, Pageable pageable) {
+        Page<HouseListing> listings;
         if (houseSearch.getCenterCoordinates() != null && houseSearch.getRadius() != null) {
             listings = houseListingRepository
                     .findAllByFiltersAndLocation(houseSearch.getListingType(),
@@ -266,7 +268,8 @@ public class ListingService {
                             houseSearch.getEnergyClassMin(),
                             houseSearch.getAgentId(),
                             houseSearch.getCenterCoordinates(),
-                            houseSearch.getRadius());
+                            houseSearch.getRadius(),
+                            pageable);
         } else {
             listings = houseListingRepository
                     .findAllByFilters(houseSearch.getListingType(),
@@ -283,18 +286,19 @@ public class ListingService {
                             houseSearch.getFloorMin(),
                             houseSearch.getFloorMax(),
                             houseSearch.getEnergyClassMin(),
-                            houseSearch.getAgentId());
+                            houseSearch.getAgentId(),
+                            pageable);
         }
 
         if (houseSearch.getUser() != null) {
             recentSearchService.saveSearch(houseSearch);
         }
-        return listings;
+        return listings.getContent();
     }
 
     @Transactional
-    public List<GarageListing> getGarageListings(GarageSearch garageSearch) {
-        List<GarageListing> listings;
+    public List<GarageListing> getGarageListings(GarageSearch garageSearch, Pageable pageable) {
+        Page<GarageListing> listings;
         if (garageSearch.getCenterCoordinates() != null && garageSearch.getRadius() != null) {
             listings = garageListingRepository
                     .findAllByFiltersAndLocation(garageSearch.getListingType(),
@@ -306,7 +310,8 @@ public class ListingService {
                             garageSearch.getFloorMax(),
                             garageSearch.getAgentId(),
                             garageSearch.getCenterCoordinates(),
-                            garageSearch.getRadius());
+                            garageSearch.getRadius(),
+                            pageable);
         } else {
             listings = garageListingRepository
                     .findAllByFilters(garageSearch.getListingType(),
@@ -318,18 +323,19 @@ public class ListingService {
                             garageSearch.getSquareMetersMax(),
                             garageSearch.getFloorMin(),
                             garageSearch.getFloorMax(),
-                            garageSearch.getAgentId());
+                            garageSearch.getAgentId(),
+                            pageable);
         }
 
         if (garageSearch.getUser() != null) {
             recentSearchService.saveSearch(garageSearch);
         }
-        return listings;
+        return listings.getContent();
     }
 
     @Transactional
-    public List<LandListing> getLandListings(LandSearch landSearch) {
-        List<LandListing> listings;
+    public List<LandListing> getLandListings(LandSearch landSearch, Pageable pageable) {
+        Page<LandListing> listings;
         if (landSearch.getCenterCoordinates() != null && landSearch.getRadius() != null) {
             listings = landListingRepository
                     .findAllByFiltersAndLocation(landSearch.getListingType(),
@@ -340,7 +346,8 @@ public class ListingService {
                             landSearch.getBuilding(),
                             landSearch.getAgentId(),
                             landSearch.getCenterCoordinates(),
-                            landSearch.getRadius());
+                            landSearch.getRadius(),
+                            pageable);
         } else {
             listings = landListingRepository
                     .findAllByFilters(landSearch.getListingType(),
@@ -351,18 +358,19 @@ public class ListingService {
                             landSearch.getSquareMetersMin(),
                             landSearch.getSquareMetersMax(),
                             landSearch.getBuilding(),
-                            landSearch.getAgentId());
+                            landSearch.getAgentId(),
+                            pageable);
         }
 
         if (landSearch.getUser() != null) {
             recentSearchService.saveSearch(landSearch);
         }
-        return listings;
+        return listings.getContent();
     }
 
     @Transactional
-    public List<BuildingListing> getBuildingListings(BuildingSearch buildingSearch) {
-        List<BuildingListing> listings;
+    public List<BuildingListing> getBuildingListings(BuildingSearch buildingSearch, Pageable pageable) {
+        Page<BuildingListing> listings;
         if (buildingSearch.getCenterCoordinates() != null && buildingSearch.getRadius() != null) {
             listings = buildingListingRepository
                     .findAllByFiltersAndLocation(buildingSearch.getListingType(),
@@ -372,7 +380,8 @@ public class ListingService {
                             buildingSearch.getSquareMetersMax(),
                             buildingSearch.getAgentId(),
                             buildingSearch.getCenterCoordinates(),
-                            buildingSearch.getRadius());
+                            buildingSearch.getRadius(),
+                            pageable);
         } else {
             listings = buildingListingRepository
                     .findAllByFilters(buildingSearch.getListingType(),
@@ -382,12 +391,13 @@ public class ListingService {
                             buildingSearch.getPriceMax(),
                             buildingSearch.getSquareMetersMin(),
                             buildingSearch.getSquareMetersMax(),
-                            buildingSearch.getAgentId());
+                            buildingSearch.getAgentId(),
+                            pageable);
         }
 
         if (buildingSearch.getUser() != null) {
             recentSearchService.saveSearch(buildingSearch);
         }
-        return listings;
+        return listings.getContent();
     }
 }
