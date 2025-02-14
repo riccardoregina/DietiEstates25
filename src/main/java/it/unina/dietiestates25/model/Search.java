@@ -2,6 +2,7 @@ package it.unina.dietiestates25.model;
 
 import jakarta.persistence.*;
 import org.locationtech.jts.geom.Point;
+import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -73,6 +74,12 @@ public class Search {
     @Transient
     private String agentId;
 
+    @Column(
+            name = "timestamp",
+            nullable = false
+    )
+    private LocalDateTime timestamp;
+
     public Search() {
     }
 
@@ -98,6 +105,7 @@ public class Search {
         this.squareMetersMin = squareMetersMin;
         this.squareMetersMax = squareMetersMax;
         this.agentId = agentId;
+        this.timestamp = LocalDateTime.now();
     }
 
     public User getUser() {
@@ -143,4 +151,6 @@ public class Search {
     public String getAgentId() {
         return agentId;
     }
+
+    public LocalDateTime getTimestamp() {return timestamp;}
 }
