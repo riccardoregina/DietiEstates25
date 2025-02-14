@@ -33,3 +33,130 @@ post:
         application/json:
           schema:
             $ref: '../../components/responses.yaml#/ErrorDetails'
+get:
+  tags:
+    - Get house Listings
+  operationId: get-house-listings
+  description: Returns a list of house listings based on specified filters
+  parameters:
+    - name: listingType
+      in: query
+      required: true
+      schema:
+        type: string
+        enum: ['BUY', 'RENT']
+      description: Type of listing
+    - name: region
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Region where the house is located
+    - name: city
+      in: query
+      required: false
+      schema:
+        type: string
+      description: City where the house is located
+    - name: centerLongitude
+      in: query
+      required: false
+      schema:
+        type: number
+        format: double
+      description: Longitude for location-based search
+    - name: centerLatitude
+      in: query
+      required: false
+      schema:
+        type: number
+        format: double
+      description: Latitude for location-based search
+    - name: radius
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: Search radius in kilometers from center point
+    - name: priceMin
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: Minimum price
+    - name: priceMax
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: Maximum price
+    - name: squareMetersMin
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: Minimum square meters
+    - name: squareMetersMax
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: Maximum square meters
+    - name: nRoomsMin
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: Minimum number of rooms
+    - name: nRoomsMax
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: Maximum number of rooms
+    - name: nBathroomsMin
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: Minimum number of bathrooms
+    - name: nBathroomsMax
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: Maximum number of bathrooms
+    - name: floorMin
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: Minimum floor level
+    - name: floorMax
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: Maximum floor level
+    - name: energyClassMin
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [ 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G' ]
+      description: Minimum energy class (Italian classification)
+    - name: agentId
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Filter listings by specific agent
+  responses:
+    '200':
+      description: Ok
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../components/schemas.yaml#/HouseListing'

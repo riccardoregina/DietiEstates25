@@ -27,6 +27,14 @@ paths:
     $ref: './paths/listings/lands.yaml'
   /api/listings/{listing-type}/{listing-id}:
     $ref: './paths/listings/listing-id.yaml'
+  /api/listings/houses/{listing-id}:
+    $ref: './paths/listings/house-listing-id.yaml'
+  /api/listings/garages/{listing-id}:
+    $ref: './paths/listings/garage-listing-id.yaml'
+  /api/listings/buildings/{listing-id}:
+    $ref: './paths/listings/building-listing-id.yaml'
+  /api/listings/lands/{listing-id}:
+    $ref: './paths/listings/land-listing-id.yaml'
 components:
   securitySchemes:
     BearerAuth:
