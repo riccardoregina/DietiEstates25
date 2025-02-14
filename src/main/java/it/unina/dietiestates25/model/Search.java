@@ -53,22 +53,22 @@ public class Search {
     @Column(
             name = "price_min"
     )
-    private Double priceMin;
+    private Integer priceMin;
 
     @Column(
             name = "price_max"
     )
-    private Double priceMax;
+    private Integer priceMax;
 
     @Column(
             name = "square_meters_min"
     )
-    private Double squareMetersMin;
+    private Integer squareMetersMin;
 
     @Column(
             name = "square_meters_max"
     )
-    private Double squareMetersMax;
+    private Integer squareMetersMax;
 
     @Transient
     private String agentId;
@@ -82,10 +82,10 @@ public class Search {
                   String city,
                   Point centerCoordinates,
                   Integer radius,
-                  Double priceMin,
-                  Double priceMax,
-                  Double squareMetersMin,
-                  Double squareMetersMax,
+                  Integer priceMin,
+                  Integer priceMax,
+                  Integer squareMetersMin,
+                  Integer squareMetersMax,
                   String agentId) {
         this.user = user;
         this.listingType = listingType;
@@ -124,19 +124,19 @@ public class Search {
         return radius;
     }
 
-    public Double getPriceMin() {
+    public Integer getPriceMin() {
         return priceMin;
     }
 
-    public Double getPriceMax() {
+    public Integer getPriceMax() {
         return priceMax;
     }
 
-    public Double getSquareMetersMin() {
+    public Integer getSquareMetersMin() {
         return squareMetersMin;
     }
 
-    public Double getSquareMetersMax() {
+    public Integer getSquareMetersMax() {
         return squareMetersMax;
     }
 
