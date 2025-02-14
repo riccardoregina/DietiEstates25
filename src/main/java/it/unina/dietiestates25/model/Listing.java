@@ -4,6 +4,7 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,6 +63,18 @@ public class Listing {
     )
     private Map<String, String> otherFeatures = new HashMap<>();
 
+    @Column(
+            name = "timestamp",
+            nullable = false
+    )
+    private LocalDateTime timestamp;
+
+    @Column(
+            name = "price_per_square_meter",
+            nullable = false
+    )
+    private Integer pricePerSquareMeter;
+
     public Listing() {}
 
     public Listing(Agent agent,
@@ -80,6 +93,8 @@ public class Listing {
         this.listingType = listingType;
         this.location = location;
         this.otherFeatures = (otherFeatures == null) ? new HashMap<>() : otherFeatures;
+        this.pricePerSquareMeter = price / squareMeters;
+        this.timestamp = LocalDateTime.now();
     }
 
     public String getId() {
@@ -150,6 +165,23 @@ public class Listing {
         this.otherFeatures = otherFeatures;
     }
 
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public Integer getPricePerSquareMeter() {
+        return pricePerSquareMeter;
+    }
+
+    @PreUpdate
+    private void updatePricePerMeter() {
+        if (squareMeters != 0) {
+            this.pricePerSquareMeter = (int) Math.round((double) price / squareMeters);
+        } else {
+            this.pricePerSquareMeter = 0;
+        }
+    }
+
     @Override
     public String toString() {
         return "Listing{" +
@@ -162,6 +194,8 @@ public class Listing {
                 ", listingType=" + listingType +
                 ", location=" + location +
                 ", otherFeatures=" + otherFeatures +
+                ", timestamp=" + timestamp +
+                ", pricePerSquareMeter=" + pricePerSquareMeter +
                 '}';
     }
 }
