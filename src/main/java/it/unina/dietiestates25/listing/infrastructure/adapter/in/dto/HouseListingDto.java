@@ -4,6 +4,7 @@ import it.unina.dietiestates25.model.EnergyClass;
 import it.unina.dietiestates25.model.ListingType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.util.Map;
 
@@ -14,11 +15,13 @@ public record HouseListingDto(
         String title,
 
         @NotNull
+        @Positive
         int price,
 
         String description,
 
         @NotNull
+        @Positive
         int squareMeters,
 
         @NotNull
@@ -28,9 +31,11 @@ public record HouseListingDto(
         LocationDto locationDto,
 
         @NotNull
+        @Positive
         int nRooms,
 
         @NotNull
+        @Positive
         int nBathrooms,
 
         @NotNull
