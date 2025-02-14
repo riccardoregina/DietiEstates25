@@ -181,4 +181,115 @@ public class RestListingController {
         List<HouseListing> listings = listingService.getHouseListings(houseSearch);
         return ResponseEntity.ok().body(listings);
     }
+
+    @GetMapping("/garages")
+    public ResponseEntity<List<GarageListing>> getGarageListings(
+            @RequestParam @NotNull ListingType listingType,
+            @RequestParam(required = false) String region,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) Double centerLongitude,
+            @RequestParam(required = false) Double centerLatitude,
+            @RequestParam(required = false) Integer radius,
+            @RequestParam(required = false) Integer priceMin,
+            @RequestParam(required = false) Integer priceMax,
+            @RequestParam(required = false) Integer squareMetersMin,
+            @RequestParam(required = false) Integer squareMetersMax,
+            @RequestParam(required = false) Integer floorMin,
+            @RequestParam(required = false) Integer floorMax,
+            @RequestParam(required = false) String agentId,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) throws EntityNotExistsException {
+        User user = (userDetails == null) ? null : userService.getUser(userDetails.getUsername());
+        GarageSearch garageSearch = new GarageSearch(
+                user,
+                listingType,
+                region,
+                city,
+                (centerLongitude != null && centerLatitude != null) ?
+                        Location.createPoint(centerLongitude, centerLatitude) : null,
+                radius,
+                priceMin,
+                priceMax,
+                squareMetersMin,
+                squareMetersMax,
+                agentId,
+                floorMin,
+                floorMax
+        );
+
+        List<GarageListing> listings = listingService.getGarageListings(garageSearch);
+        return ResponseEntity.ok().body(listings);
+    }
+
+    @GetMapping("/lands")
+    public ResponseEntity<List<LandListing>> getLandListings(
+            @RequestParam @NotNull ListingType listingType,
+            @RequestParam(required = false) String region,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) Double centerLongitude,
+            @RequestParam(required = false) Double centerLatitude,
+            @RequestParam(required = false) Integer radius,
+            @RequestParam(required = false) Integer priceMin,
+            @RequestParam(required = false) Integer priceMax,
+            @RequestParam(required = false) Integer squareMetersMin,
+            @RequestParam(required = false) Integer squareMetersMax,
+            @RequestParam(required = false) String agentId,
+            @RequestParam(required = false) Boolean building,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) throws EntityNotExistsException {
+        User user = (userDetails == null) ? null : userService.getUser(userDetails.getUsername());
+        LandSearch landSearch = new LandSearch(
+                user,
+                listingType,
+                region,
+                city,
+                (centerLongitude != null && centerLatitude != null) ?
+                        Location.createPoint(centerLongitude, centerLatitude) : null,
+                radius,
+                priceMin,
+                priceMax,
+                squareMetersMin,
+                squareMetersMax,
+                agentId,
+                building
+        );
+
+        List<LandListing> listings = listingService.getLandListings(landSearch);
+        return ResponseEntity.ok().body(listings);
+    }
+
+    @GetMapping("/buildings")
+    public ResponseEntity<List<BuildingListing>> getBuildingListings(
+            @RequestParam @NotNull ListingType listingType,
+            @RequestParam(required = false) String region,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) Double centerLongitude,
+            @RequestParam(required = false) Double centerLatitude,
+            @RequestParam(required = false) Integer radius,
+            @RequestParam(required = false) Integer priceMin,
+            @RequestParam(required = false) Integer priceMax,
+            @RequestParam(required = false) Integer squareMetersMin,
+            @RequestParam(required = false) Integer squareMetersMax,
+            @RequestParam(required = false) String agentId,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) throws EntityNotExistsException {
+        User user = (userDetails == null) ? null : userService.getUser(userDetails.getUsername());
+        BuildingSearch buildingSearch = new BuildingSearch(
+                user,
+                listingType,
+                region,
+                city,
+                (centerLongitude != null && centerLatitude != null) ?
+                        Location.createPoint(centerLongitude, centerLatitude) : null,
+                radius,
+                priceMin,
+                priceMax,
+                squareMetersMin,
+                squareMetersMax,
+                agentId
+        );
+
+        List<BuildingListing> listings = listingService.getBuildingListings(buildingSearch);
+        return ResponseEntity.ok().body(listings);
+    }
 }

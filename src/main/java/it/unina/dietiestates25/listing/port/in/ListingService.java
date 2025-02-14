@@ -28,7 +28,7 @@ public class ListingService {
     private final LandListingRepository landListingRepository;
     @Qualifier("buildingListingRepository")
     private final BuildingListingRepository buildingListingRepository;
-    private final SearchRepository searchRepository;
+    private final RecentSearchService recentSearchService;
 
     public ListingService(AgencyService agencyService,
                           ListingRepository<Listing> listingRepository,
@@ -36,14 +36,14 @@ public class ListingService {
                           @Qualifier("garageListingRepository") GarageListingRepository garageListingRepository,
                           @Qualifier("landListingRepository") LandListingRepository landListingRepository,
                           @Qualifier("buildingListingRepository") BuildingListingRepository buildingListingRepository,
-                          SearchRepository searchRepository) {
+                          RecentSearchService recentSearchService) {
         this.agencyService = agencyService;
         this.listingRepository = listingRepository;
         this.houseListingRepository = houseListingRepository;
         this.garageListingRepository = garageListingRepository;
         this.landListingRepository = landListingRepository;
         this.buildingListingRepository = buildingListingRepository;
-        this.searchRepository = searchRepository;
+        this.recentSearchService = recentSearchService;
     }
 
     public HouseListing createHouseListing(HouseListingDto houseListingDto,
@@ -287,7 +287,106 @@ public class ListingService {
         }
 
         if (houseSearch.getUser() != null) {
-            searchRepository.save(houseSearch);
+            recentSearchService.saveSearch(houseSearch);
+        }
+        return listings;
+    }
+
+    @Transactional
+    public List<GarageListing> getGarageListings(GarageSearch garageSearch) {
+        List<GarageListing> listings;
+        if (garageSearch.getCenterCoordinates() != null && garageSearch.getRadius() != null) {
+            listings = garageListingRepository
+                    .findAllByFiltersAndLocation(garageSearch.getListingType(),
+                            garageSearch.getPriceMin(),
+                            garageSearch.getPriceMax(),
+                            garageSearch.getSquareMetersMin(),
+                            garageSearch.getSquareMetersMax(),
+                            garageSearch.getFloorMin(),
+                            garageSearch.getFloorMax(),
+                            garageSearch.getAgentId(),
+                            garageSearch.getCenterCoordinates(),
+                            garageSearch.getRadius());
+        } else {
+            listings = garageListingRepository
+                    .findAllByFilters(garageSearch.getListingType(),
+                            garageSearch.getRegion(),
+                            garageSearch.getCity(),
+                            garageSearch.getPriceMin(),
+                            garageSearch.getPriceMax(),
+                            garageSearch.getSquareMetersMin(),
+                            garageSearch.getSquareMetersMax(),
+                            garageSearch.getFloorMin(),
+                            garageSearch.getFloorMax(),
+                            garageSearch.getAgentId());
+        }
+
+        if (garageSearch.getUser() != null) {
+            recentSearchService.saveSearch(garageSearch);
+        }
+        return listings;
+    }
+
+    @Transactional
+    public List<LandListing> getLandListings(LandSearch landSearch) {
+        List<LandListing> listings;
+        if (landSearch.getCenterCoordinates() != null && landSearch.getRadius() != null) {
+            listings = landListingRepository
+                    .findAllByFiltersAndLocation(landSearch.getListingType(),
+                            landSearch.getPriceMin(),
+                            landSearch.getPriceMax(),
+                            landSearch.getSquareMetersMin(),
+                            landSearch.getSquareMetersMax(),
+                            landSearch.getBuilding(),
+                            landSearch.getAgentId(),
+                            landSearch.getCenterCoordinates(),
+                            landSearch.getRadius());
+        } else {
+            listings = landListingRepository
+                    .findAllByFilters(landSearch.getListingType(),
+                            landSearch.getRegion(),
+                            landSearch.getCity(),
+                            landSearch.getPriceMin(),
+                            landSearch.getPriceMax(),
+                            landSearch.getSquareMetersMin(),
+                            landSearch.getSquareMetersMax(),
+                            landSearch.getBuilding(),
+                            landSearch.getAgentId());
+        }
+
+        if (landSearch.getUser() != null) {
+            recentSearchService.saveSearch(landSearch);
+        }
+        return listings;
+    }
+
+    @Transactional
+    public List<BuildingListing> getBuildingListings(BuildingSearch buildingSearch) {
+        List<BuildingListing> listings;
+        if (buildingSearch.getCenterCoordinates() != null && buildingSearch.getRadius() != null) {
+            listings = buildingListingRepository
+                    .findAllByFiltersAndLocation(buildingSearch.getListingType(),
+                            buildingSearch.getPriceMin(),
+                            buildingSearch.getPriceMax(),
+                            buildingSearch.getSquareMetersMin(),
+                            buildingSearch.getSquareMetersMax(),
+                            buildingSearch.getAgentId(),
+                            buildingSearch.getCenterCoordinates(),
+                            buildingSearch.getRadius());
+        } else {
+            listings = buildingListingRepository
+                    .findAllByFilters(buildingSearch.getListingType(),
+                            buildingSearch.getRegion(),
+                            buildingSearch.getCity(),
+                            buildingSearch.getPriceMin(),
+                            buildingSearch.getPriceMax(),
+                            buildingSearch.getSquareMetersMin(),
+                            buildingSearch.getSquareMetersMax(),
+                            buildingSearch.getAgentId());
+        }
+
+        if (buildingSearch.getUser() != null) {
+            recentSearchService.saveSearch(buildingSearch);
         }
         return listings;
     }
