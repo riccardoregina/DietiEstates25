@@ -1,12 +1,15 @@
 package it.unina.dietiestates25.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Entity
 @Table(name = "listing")
@@ -74,6 +77,22 @@ public class Listing {
             nullable = false
     )
     private Integer pricePerSquareMeter;
+
+    @JsonIgnore
+    private static final List<String> BASIC_SORTING_CRITERIA = List.of(
+            "timestamp",
+            "price",
+            "squareMeters",
+            "pricePerSquareMeter");
+
+    @JsonIgnore
+    private static final Map<Class<? extends Listing>, List<String>> SORTING_CRITERIA_MAP = Map.of(
+            HouseListing.class, Stream.concat(BASIC_SORTING_CRITERIA.stream(),
+                    Stream.of("nRooms", "nBathrooms", "floor", "energyClass")).toList(),
+            GarageListing.class, Stream.concat(BASIC_SORTING_CRITERIA.stream(), Stream.of("floor")).toList(),
+            LandListing.class, BASIC_SORTING_CRITERIA,
+            BuildingListing.class, BASIC_SORTING_CRITERIA
+    );
 
     public Listing() {}
 
@@ -180,6 +199,11 @@ public class Listing {
         } else {
             this.pricePerSquareMeter = 0;
         }
+    }
+
+    public static boolean isValidSortingCriteria(String sortBy, Class<? extends Listing> listingClass) {
+        List<String> criteria = SORTING_CRITERIA_MAP.get(listingClass);
+        return criteria != null && criteria.contains(sortBy);
     }
 
     @Override

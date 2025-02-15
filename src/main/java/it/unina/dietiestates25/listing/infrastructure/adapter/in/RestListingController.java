@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(path = "/api/listings")
@@ -30,18 +28,7 @@ public class RestListingController {
     private final ListingService listingService;
     private final UserService userService;
     private static final int PAGE_SIZE = 5;
-    private final List<String> basicSortingCriteria = List.of(
-            "timestamp",
-            "price",
-            "squareMeters",
-            "pricePerSquareMeter");
-    private final Map<String, List<String>> sortingCriteriaMap = Map.of(
-            "house", Stream.concat(basicSortingCriteria.stream(),
-                    Stream.of("nRooms", "nBathrooms", "floor", "energyClass")).toList(),
-            "garage", Stream.concat(basicSortingCriteria.stream(), Stream.of("floor")).toList(),
-            "land", basicSortingCriteria,
-            "building", basicSortingCriteria
-    );
+    private static final String DEFAULT_VALUE_OF_SORT_BY = "timestamp";
 
     public RestListingController(ListingService listingService,
                                  UserService userService) {
@@ -197,8 +184,8 @@ public class RestListingController {
                 energyClassMin,
                 agentId
         );
-        if (!isValidSortingCriteria(sortBy, "house")) {
-            sortBy = "timestamp";
+        if (!Listing.isValidSortingCriteria(sortBy, HouseListing.class)) {
+            sortBy = DEFAULT_VALUE_OF_SORT_BY;
         }
         Sort sort = ordering.equalsIgnoreCase("asc") ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
@@ -244,8 +231,8 @@ public class RestListingController {
                 floorMin,
                 floorMax
         );
-        if (!isValidSortingCriteria(sortBy, "garage")) {
-            sortBy = "timestamp";
+        if (!Listing.isValidSortingCriteria(sortBy, GarageListing.class)) {
+            sortBy = DEFAULT_VALUE_OF_SORT_BY;
         }
         Sort sort = ordering.equalsIgnoreCase("asc") ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
@@ -289,8 +276,8 @@ public class RestListingController {
                 agentId,
                 building
         );
-        if (!isValidSortingCriteria(sortBy, "land")) {
-            sortBy = "timestamp";
+        if (!Listing.isValidSortingCriteria(sortBy, LandListing.class)) {
+            sortBy = DEFAULT_VALUE_OF_SORT_BY;
         }
         Sort sort = ordering.equalsIgnoreCase("asc") ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
@@ -332,8 +319,8 @@ public class RestListingController {
                 squareMetersMax,
                 agentId
         );
-        if (!isValidSortingCriteria(sortBy, "building")) {
-            sortBy = "timestamp";
+        if (!Listing.isValidSortingCriteria(sortBy, BuildingListing.class)) {
+            sortBy = DEFAULT_VALUE_OF_SORT_BY;
         }
         Sort sort = ordering.equalsIgnoreCase("asc") ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
@@ -342,8 +329,4 @@ public class RestListingController {
         return ResponseEntity.ok().body(listings);
     }
 
-    boolean isValidSortingCriteria(String sortBy, String listingType) {
-        List<String> criteria = sortingCriteriaMap.get(listingType);
-        return criteria != null && criteria.contains(sortBy);
-    }
 }
