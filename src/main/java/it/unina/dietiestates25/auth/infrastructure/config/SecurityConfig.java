@@ -58,6 +58,12 @@ public class SecurityConfig {
                 .permitAll()
             .requestMatchers(HttpMethod.GET, LISTINGS_PATH)
                 .permitAll()
+////              Allow access to static resources
+//          .requestMatchers("/static/**")
+//                .permitAll()
+////              Allow both WebSocket and info endpoints
+//          .requestMatchers("/ws/**")
+//                .permitAll()
 //            our private endpoints
             .anyRequest().authenticated())
         .authenticationManager(authenticationManager)
@@ -66,11 +72,6 @@ public class SecurityConfig {
 //        Since we need every request to be authenticated before going through spring security filter.
 //        (UsernamePasswordAuthenticationFilter creates a UsernamePasswordAuthenticationToken from a username and password that are submitted in the HttpServletRequest.)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//        .formLogin(login ->
-//                login.failureHandler(new AuthenticationFailureHandlerImpl()))
-//        .exceptionHandling(exception ->
-//                exception.accessDeniedHandler(new AccessDeniedHandlerImpl())
-//        )
         .build();
   }
 
@@ -80,5 +81,18 @@ public class SecurityConfig {
     authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     return authenticationManagerBuilder.build();
   }
+
+//  @Bean
+//  public CorsConfigurationSource corsConfigurationSource() {
+//    CorsConfiguration configuration = new CorsConfiguration();
+//    configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
+//    configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+//    configuration.setAllowedHeaders(Arrays.asList("*"));
+//    configuration.setAllowCredentials(true);
+//
+//    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//    source.registerCorsConfiguration("/**", configuration);
+//    return source;
+//  }
 }
 

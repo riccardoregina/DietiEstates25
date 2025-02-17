@@ -9,6 +9,7 @@ import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.HouseListin
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.LandListingDto;
 import it.unina.dietiestates25.listing.port.out.*;
 import it.unina.dietiestates25.model.*;
+import it.unina.dietiestates25.notification.port.in.NotificationService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import java.util.List;
 public class ListingService {
     public static final String ENTITY_NOT_EXIST_LISTING_MSG = "Listing does not exist, id: %s";
     private final AgencyService agencyService;
+    private final NotificationService notificationService;
     private final ListingRepository<Listing> listingRepository;
     @Qualifier("houseListingRepository")
     private final HouseListingRepository houseListingRepository;
@@ -33,6 +35,7 @@ public class ListingService {
     private final RecentSearchService recentSearchService;
 
     public ListingService(AgencyService agencyService,
+                          NotificationService notificationService,
                           ListingRepository<Listing> listingRepository,
                           @Qualifier("houseListingRepository") HouseListingRepository houseListingRepository,
                           @Qualifier("garageListingRepository") GarageListingRepository garageListingRepository,
@@ -40,6 +43,7 @@ public class ListingService {
                           @Qualifier("buildingListingRepository") BuildingListingRepository buildingListingRepository,
                           RecentSearchService recentSearchService) {
         this.agencyService = agencyService;
+        this.notificationService = notificationService;
         this.listingRepository = listingRepository;
         this.houseListingRepository = houseListingRepository;
         this.garageListingRepository = garageListingRepository;
@@ -48,11 +52,12 @@ public class ListingService {
         this.recentSearchService = recentSearchService;
     }
 
+    @Transactional
     public HouseListing createHouseListing(HouseListingDto houseListingDto,
-                                 String agentEmail)
+                                           String agentEmail)
             throws EntityNotExistsException{
         Agent agent = agencyService.getAgentByEmail(agentEmail);
-        return listingRepository.save(new HouseListing(
+        HouseListing listing = listingRepository.save(new HouseListing(
                 agent,
                 houseListingDto.title(),
                 houseListingDto.price(),
@@ -70,10 +75,18 @@ public class ListingService {
                 houseListingDto.energyClass(),
                 houseListingDto.otherFeatures()
         ));
+
+        List<User> usersToNotify = recentSearchService.getSearchers(listing.getListingType(),
+                listing.getLocation().getCity(), HouseSearch.class);
+//        System.out.println("Listing type: " + listing.getListingType() +
+//                "\nCity: " + listing.getLocation().getCity()); // debug
+        notificationService.notifyUsers(usersToNotify, listing);
+
+        return listing;
     }
 
     public GarageListing createGarageListing(GarageListingDto garageListingDto,
-                                            String agentEmail)
+                                             String agentEmail)
             throws EntityNotExistsException {
         Agent agent = agencyService.getAgentByEmail(agentEmail);
         return listingRepository.save(new GarageListing(
@@ -115,7 +128,7 @@ public class ListingService {
     }
 
     public BuildingListing createBuildingListing(BuildingListingDto buildingListingDto,
-                                               String agentEmail)
+                                                 String agentEmail)
             throws EntityNotExistsException {
         Agent agent = agencyService.getAgentByEmail(agentEmail);
         return listingRepository.save(new BuildingListing(
@@ -162,8 +175,8 @@ public class ListingService {
 
     @Transactional
     public void updateGarageListing(String listingId,
-                                   GarageListingDto garageListingDto,
-                                   String agentEmail)
+                                    GarageListingDto garageListingDto,
+                                    String agentEmail)
             throws EntityNotExistsException, ForbiddenException {
         Agent agent = agencyService.getAgentByEmail(agentEmail);
         GarageListing garageListing = garageListingRepository.findById(listingId)
@@ -185,8 +198,8 @@ public class ListingService {
 
     @Transactional
     public void updateLandListing(String listingId,
-                                    LandListingDto landListingDto,
-                                    String agentEmail)
+                                  LandListingDto landListingDto,
+                                  String agentEmail)
             throws EntityNotExistsException, ForbiddenException {
         Agent agent = agencyService.getAgentByEmail(agentEmail);
         LandListing landListing = landListingRepository.findById(listingId)
@@ -208,8 +221,8 @@ public class ListingService {
 
     @Transactional
     public void updateBuildingListing(String listingId,
-                                    BuildingListingDto buildingListingDto,
-                                    String agentEmail)
+                                      BuildingListingDto buildingListingDto,
+                                      String agentEmail)
             throws EntityNotExistsException, ForbiddenException {
         Agent agent = agencyService.getAgentByEmail(agentEmail);
         BuildingListing buildingListing = buildingListingRepository.findById(listingId)
@@ -401,3 +414,4 @@ public class ListingService {
         return listings.getContent();
     }
 }
+
