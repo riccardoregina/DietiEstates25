@@ -19,7 +19,16 @@ public class Customer extends User {
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, String email, LocalDate dob, String passwordHash) {
-        super(firstName, lastName, email, dob, passwordHash);
+    public Customer(String firstName,
+                    String lastName,
+                    String email,
+                    LocalDate dob,
+                    String passwordHash) {
+        super(firstName,
+                lastName,
+                email,
+                dob,
+                passwordHash,
+                new NotificationSettings(true, true, true));
     }
 }

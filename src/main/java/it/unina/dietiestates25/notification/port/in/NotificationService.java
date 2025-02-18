@@ -27,19 +27,30 @@ public class NotificationService {
     }
 
     @Transactional
-    public void notifyUsers(List<User> users, Listing listing) {
-//        System.out.println("How many users: " + users.size()); // debug
+    public void notifyUsersOfNewListing(List<User> users, Listing listing) {
+        String message = "You could like this listing in " + listing.getLocation().getCity() + ": " +
+                listing.getTitle();
         users.forEach(user -> {
-//            System.out.println(listing); // debug
-            String message = "You could like this listing in " + listing.getLocation().getCity() + ": " +
-                    listing.getTitle();
             Notification notification = new Notification(user, message);
             messagingTemplate.convertAndSendToUser(user.getEmail(),
                     "/queue/notifications",
                     message);
-//            System.out.println("Notification sent to user: " + user.getEmail()); // debug
             notificationRepository.save(notification);
         });
+    }
+
+    @Transactional
+    public void notifyUsersOfListingUpdate(Listing listing) {
+        String message = "A listing you saved as a favorite has been updated: " +
+                listing.getTitle();
+        listing.getFollowingUsers()
+                .forEach(user -> {
+                    Notification notification = new Notification(user, message);
+                    messagingTemplate.convertAndSendToUser(user.getEmail(),
+                            "/queue/notifications",
+                            message);
+                    notificationRepository.save(notification);
+                });
     }
 
 }

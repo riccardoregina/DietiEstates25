@@ -76,11 +76,7 @@ public class ListingService {
                 houseListingDto.otherFeatures()
         ));
 
-        List<User> usersToNotify = recentSearchService.getSearchers(listing.getListingType(),
-                listing.getLocation().getCity(), HouseSearch.class);
-//        System.out.println("Listing type: " + listing.getListingType() +
-//                "\nCity: " + listing.getLocation().getCity()); // debug
-        notificationService.notifyUsers(usersToNotify, listing);
+        notifyUsers(listing, HouseSearch.class);
 
         return listing;
     }
@@ -89,7 +85,7 @@ public class ListingService {
                                              String agentEmail)
             throws EntityNotExistsException {
         Agent agent = agencyService.getAgentByEmail(agentEmail);
-        return listingRepository.save(new GarageListing(
+        GarageListing listing = listingRepository.save(new GarageListing(
                 agent,
                 garageListingDto.title(),
                 garageListingDto.price(),
@@ -104,13 +100,17 @@ public class ListingService {
                 garageListingDto.floor(),
                 garageListingDto.otherFeatures()
         ));
+
+        notifyUsers(listing, GarageSearch.class);
+
+        return listing;
     }
 
     public LandListing createLandListing(LandListingDto landListingDto,
                                          String agentEmail)
             throws EntityNotExistsException {
         Agent agent = agencyService.getAgentByEmail(agentEmail);
-        return listingRepository.save(new LandListing(
+        LandListing listing = listingRepository.save(new LandListing(
                 agent,
                 landListingDto.title(),
                 landListingDto.price(),
@@ -125,13 +125,17 @@ public class ListingService {
                 landListingDto.building(),
                 landListingDto.otherFeatures()
         ));
+
+        notifyUsers(listing, LandSearch.class);
+
+        return listing;
     }
 
     public BuildingListing createBuildingListing(BuildingListingDto buildingListingDto,
                                                  String agentEmail)
             throws EntityNotExistsException {
         Agent agent = agencyService.getAgentByEmail(agentEmail);
-        return listingRepository.save(new BuildingListing(
+        BuildingListing listing = listingRepository.save(new BuildingListing(
                 agent,
                 buildingListingDto.title(),
                 buildingListingDto.price(),
@@ -145,6 +149,16 @@ public class ListingService {
                                 buildingListingDto.locationDto().latitude())),
                 buildingListingDto.otherFeatures()
         ));
+
+        notifyUsers(listing, BuildingSearch.class);
+
+        return listing;
+    }
+
+    private void notifyUsers(Listing listing, Class<? extends Search> searchClass) {
+        List<User> usersToNotify = recentSearchService.getNotifiableSearchers(listing.getListingType(),
+                listing.getLocation().getCity(), searchClass);
+        notificationService.notifyUsersOfNewListing(usersToNotify, listing);
     }
 
     @Transactional
@@ -171,6 +185,8 @@ public class ListingService {
         houseListing.setFloor(houseListingDto.floor());
         houseListing.setEnergyClass(houseListingDto.energyClass());
         houseListing.setOtherFeatures(houseListingDto.otherFeatures());
+
+        notificationService.notifyUsersOfListingUpdate(houseListing);
     }
 
     @Transactional
@@ -194,6 +210,8 @@ public class ListingService {
                         garageListingDto.locationDto().latitude())));
         garageListing.setFloor(garageListingDto.floor());
         garageListing.setOtherFeatures(garageListingDto.otherFeatures());
+
+        notificationService.notifyUsersOfListingUpdate(garageListing);
     }
 
     @Transactional
@@ -217,6 +235,8 @@ public class ListingService {
                         landListingDto.locationDto().latitude())));
         landListing.setBuilding(landListingDto.building());
         landListing.setOtherFeatures(landListingDto.otherFeatures());
+
+        notificationService.notifyUsersOfListingUpdate(landListing);
     }
 
     @Transactional
@@ -239,10 +259,28 @@ public class ListingService {
                 Location.createPoint(buildingListingDto.locationDto().longitude(),
                         buildingListingDto.locationDto().latitude())));
         buildingListing.setOtherFeatures(buildingListingDto.otherFeatures());
+
+        notificationService.notifyUsersOfListingUpdate(buildingListing);
     }
 
     @Transactional
-    public void deleteListing(String listingId, String agentEmail)
+    public void deleteListingAsAdmin(String listingId, String adminEmail)
+            throws EntityNotExistsException, ForbiddenException {
+        Admin admin = agencyService.getAdminByEmail(adminEmail);
+        Listing listing = listingRepository.findById(listingId)
+                .orElseThrow(() -> new EntityNotExistsException(String.format(ENTITY_NOT_EXIST_LISTING_MSG, listingId)));
+        validateAdmin(admin, listing);
+        listingRepository.delete(listing);
+    }
+
+    private void validateAdmin(Admin admin, Listing listing) throws ForbiddenException {
+        if (!admin.getAgency().equals(listing.getAgent().getAgency())) {
+            throw new ForbiddenException("Admin can only modify their agency's listings");
+        }
+    }
+
+    @Transactional
+    public void deleteListingAsAgent(String listingId, String agentEmail)
             throws EntityNotExistsException, ForbiddenException {
         Agent agent = agencyService.getAgentByEmail(agentEmail);
         Listing listing = listingRepository.findById(listingId)

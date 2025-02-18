@@ -32,7 +32,12 @@ public class Manager extends User {
                    LocalDate dob,
                    String passwordHash,
                    Agency agency) {
-        super(firstName, lastName, email, dob, passwordHash);
+        super(firstName,
+                lastName,
+                email,
+                dob,
+                passwordHash,
+                new NotificationSettings(true, true, false));
         this.agency = agency;
     }
 

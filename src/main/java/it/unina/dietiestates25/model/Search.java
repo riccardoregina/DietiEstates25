@@ -1,5 +1,6 @@
 package it.unina.dietiestates25.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.locationtech.jts.geom.Point;
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ public class Search {
                     name = "search_user_fk"
             )
     )
+    @JsonIgnore
     private User user;
 
     @Column(

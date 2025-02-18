@@ -6,9 +6,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Entity
@@ -93,6 +91,10 @@ public class Listing {
             LandListing.class, BASIC_SORTING_CRITERIA,
             BuildingListing.class, BASIC_SORTING_CRITERIA
     );
+
+    @ManyToMany(mappedBy = "starredListings")
+    @JsonIgnore
+    private Set<User> followingUsers = new HashSet<>();
 
     public Listing() {}
 
@@ -190,6 +192,20 @@ public class Listing {
 
     public Integer getPricePerSquareMeter() {
         return pricePerSquareMeter;
+    }
+
+    public Set<User> getFollowingUsers() {
+        return followingUsers;
+    }
+
+    public void addFollowingUser(User user) {
+        followingUsers.add(user);
+        user.getStarredListings().add(this);
+    }
+
+    public void removeFollowingUser(User user) {
+        followingUsers.remove(user);
+        user.getStarredListings().remove(this);
     }
 
     @PreUpdate
