@@ -9,10 +9,15 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface SearchRepository extends JpaRepository<Search, String> {
-    @Query("SELECT s.user FROM Search s WHERE (TYPE(s) = :searchClass) AND" + /* (TYPE(s) = :searchClass) AND*/
+    @Query("SELECT s.user FROM Search s WHERE (TYPE(s) = :searchClass) AND " +
             "(s.listingType = :listingType) AND " +
-            "(s.city ILIKE :city)")
-    List<User> findUsersByListingTypeAndCityAndTypeSearch(ListingType listingType,
+            "(s.city ILIKE :city) AND " +
+            "(s.user.notificationSettings.recommendedListings = TRUE)")
+    List<User> findNotifiableUsersByListingTypeAndCityAndTypeSearch(ListingType listingType,
                                                           String city,
                                                           Class<? extends Search> searchClass);
+
+    @Query("SELECT s FROM Search s WHERE ((:searchClass = Search) OR (TYPE(s) = :searchClass)) AND " +
+            "(s.user = :user)")
+    List<Search> findAllByUserAndSearchType(User user, Class<? extends Search> searchClass);
 }

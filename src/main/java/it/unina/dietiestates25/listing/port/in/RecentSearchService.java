@@ -20,10 +20,13 @@ public class RecentSearchService {
         searchRepository.save(search);
     }
 
-    public List<User> getSearchers(ListingType listingType,
-                                   String city,
-                                   Class<? extends Search> searchClass) {
-        return searchRepository.findUsersByListingTypeAndCityAndTypeSearch(listingType, city, searchClass);
+    public List<User> getNotifiableSearchers(ListingType listingType,
+                                             String city,
+                                             Class<? extends Search> searchClass) {
+        return searchRepository.findNotifiableUsersByListingTypeAndCityAndTypeSearch(listingType, city, searchClass);
     }
 
+    public List<Search> getRecentSearches(User user, Class<? extends Search> searchClass) {
+        return searchRepository.findAllByUserAndSearchType(user, searchClass);
+    }
 }
