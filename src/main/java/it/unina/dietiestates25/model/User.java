@@ -61,8 +61,12 @@ public class User {
     @ManyToMany
     @JoinTable(
             name = "user_listing",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "listing_id")
+            joinColumns = @JoinColumn(
+                    name = "user_id",
+                    foreignKey = @ForeignKey(name = "userlisting_listing_fk")),
+            inverseJoinColumns = @JoinColumn(
+                    name = "listing_id",
+                    foreignKey = @ForeignKey(name = "userlisting_user"))
     )
     @JsonIgnore
     private Set<Listing> starredListings = new HashSet<>();
