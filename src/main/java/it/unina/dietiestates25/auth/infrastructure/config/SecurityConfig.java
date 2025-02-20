@@ -15,6 +15,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -43,37 +48,51 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
     return http
 //        CORS(Cross-origin resource sharing) is just to avoid if you run javascript across different domains
-        .cors(AbstractHttpConfigurer::disable)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 //        CSRF(Cross-Site Request Forgery)
-        .csrf(AbstractHttpConfigurer::disable)
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //        Set permissions on endpoints
-        .authorizeHttpRequests(auth -> auth
+            .authorizeHttpRequests(auth -> auth
 //            our public endpoints
-            .requestMatchers(HttpMethod.POST, LOGIN_PATH)
-                .permitAll()
-            .requestMatchers(HttpMethod.POST, CUSTOMERS_PATH)
-                .permitAll()
-            .requestMatchers(HttpMethod.POST, AGENCIES_PATH)
-                .permitAll()
-            .requestMatchers(HttpMethod.GET, LISTINGS_PATH)
-                .permitAll()
-////              Allow access to static resources
-//          .requestMatchers("/static/**")
-//                .permitAll()
-////              Allow both WebSocket and info endpoints
-//          .requestMatchers("/ws/**")
-//                .permitAll()
-//            our private endpoints
-            .anyRequest().authenticated())
-        .authenticationManager(authenticationManager)
+                    .requestMatchers(HttpMethod.POST, LOGIN_PATH)
+                    .permitAll()
+                    .requestMatchers(HttpMethod.POST, CUSTOMERS_PATH)
+                    .permitAll()
+                    .requestMatchers(HttpMethod.POST, AGENCIES_PATH)
+                    .permitAll()
+                    .requestMatchers(HttpMethod.GET, LISTINGS_PATH)
+                    .permitAll()
+//              Allow access to static resources
+                    .requestMatchers("/static/**")
+                    .permitAll()
+//              Allow both WebSocket and info endpoints
+                    .requestMatchers("/ws/**")
+                    .permitAll()
+                    // our private endpoints
+                    .anyRequest().authenticated())
+            .authenticationManager(authenticationManager)
 
 //        We need jwt filter before the UsernamePasswordAuthenticationFilter.
 //        Since we need every request to be authenticated before going through spring security filter.
 //        (UsernamePasswordAuthenticationFilter creates a UsernamePasswordAuthenticationToken from a username and password that are submitted in the HttpServletRequest.)
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-        .build();
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
   }
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(List.of("*"));
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+    configuration.setAllowCredentials(true);
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
+
 
   @Bean
   public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
@@ -82,17 +101,5 @@ public class SecurityConfig {
     return authenticationManagerBuilder.build();
   }
 
-//  @Bean
-//  public CorsConfigurationSource corsConfigurationSource() {
-//    CorsConfiguration configuration = new CorsConfiguration();
-//    configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
-//    configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
-//    configuration.setAllowedHeaders(Arrays.asList("*"));
-//    configuration.setAllowCredentials(true);
-//
-//    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//    source.registerCorsConfiguration("/**", configuration);
-//    return source;
-//  }
 }
 

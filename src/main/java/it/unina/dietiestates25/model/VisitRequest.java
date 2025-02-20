@@ -24,14 +24,14 @@ public class VisitRequest {
 
     @ManyToOne
     @JoinColumn(
-            name = "user_id",
+            name = "customer_id",
             nullable = false,
             referencedColumnName = "id",
             foreignKey = @ForeignKey(
-                    name = "visitrequest_user_fk"
+                    name = "visitrequest_customer_fk"
             )
     )
-    private User user;
+    private Customer customer;
 
     @ManyToOne
     @JoinColumn(
@@ -50,8 +50,8 @@ public class VisitRequest {
     )
     private LocalDateTime timestamp;
 
-    public VisitRequest(User user, Listing listing, List<TimeSlot> timeSlots) {
-        this.user = user;
+    public VisitRequest(Customer customer, Listing listing, List<TimeSlot> timeSlots) {
+        this.customer = customer;
         this.listing = listing;
         this.timeSlots = timeSlots;
         timestamp = LocalDateTime.now();
@@ -69,8 +69,8 @@ public class VisitRequest {
         return timeSlots;
     }
 
-    public User getUser() {
-        return user;
+    public Customer getCustomer() {
+        return customer;
     }
 
     public Listing getListing() {
