@@ -13,7 +13,7 @@ public class NotificationService {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final NotificationRepository notificationRepository;
-    public static final String DESTINATION_PATH = "/queue/notifications";
+    public static final String DESTINATION_PATH = "/topic/notifications/";
 
     public NotificationService(SimpMessagingTemplate messagingTemplate,
                                NotificationRepository notificationRepository) {

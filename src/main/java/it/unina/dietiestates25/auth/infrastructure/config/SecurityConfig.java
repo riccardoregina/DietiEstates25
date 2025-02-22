@@ -47,7 +47,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
     return http
-//        CORS(Cross-origin resource sharing) is just to avoid if you run javascript across different domains
+//        CORS(Cross-origin resource sharing)
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 //        CSRF(Cross-Site Request Forgery)
             .csrf(AbstractHttpConfigurer::disable)
@@ -63,10 +63,10 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, LISTINGS_PATH)
                     .permitAll()
-//              Allow access to static resources
-                    .requestMatchers("/static/**")
+//              (ONLY FOR TESTING'S SAKE) Allow access to static resources
+                    .requestMatchers("/*.html")
                     .permitAll()
-//              Allow both WebSocket and info endpoints
+//              Allow WebSocket endpoint (websocket security is handled in WebSocketConfig class)
                     .requestMatchers("/ws/**")
                     .permitAll()
                     // our private endpoints

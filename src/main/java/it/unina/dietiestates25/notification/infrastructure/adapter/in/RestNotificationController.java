@@ -27,8 +27,8 @@ public class RestNotificationController {
         this.userService = userService;
     }
 
-    @GetMapping("/{user_id}")
-    public List<Notification> getNotifications(@PathVariable("user_id") String userId,
+    @GetMapping("/{user-id}")
+    public List<Notification> getNotifications(@PathVariable("user-id") String userId,
                                                @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
         User user = userService.getUser(userDetails.getUsername());
