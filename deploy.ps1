@@ -4,6 +4,9 @@ $ErrorActionPreference = "Stop"
 Write-Host "Starting deployment process..." -ForegroundColor Green
 
 try {
+    # Step 0: Clear terminal
+    Clear-Host
+
     # Step 1: Bring down existing containers
     Write-Host "Stopping existing containers..." -ForegroundColor Yellow
     docker-compose down

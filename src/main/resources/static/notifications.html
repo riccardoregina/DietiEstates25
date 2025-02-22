@@ -1,0 +1,53 @@
+<!-- ONLY FOR TESTING'S SAKE -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<h2>Welcome to Chat</h2>
+
+<!-- Input for username -->
+<input type="text" id="usernameField" placeholder="Enter your username">
+<!-- Input for token -->
+<input type="text" id="tokenField" placeholder="Enter your JWT token">
+<!-- Connect button -->
+<button onclick="connect()">Connect</button>
+
+<div id="messages"></div>
+
+<script>
+    let stompClient = null;
+
+    function connect() {
+        // Retrieve the username from the text field
+        const username = document.getElementById('usernameField').value;
+        const token = document.getElementById('tokenField').value;
+
+        // Create a new SockJS connection
+        const socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect(
+            { "Authorization": "Bearer " + token },
+            function(frame) {
+                console.log("Connected: " + frame);
+                // Subscribe to the notifications topic
+                stompClient.subscribe("/user/" + username + "/topic/notifications/", function(message) {
+                    showMessage(message.body);
+                });
+            }
+        );
+    }
+
+    function showMessage(message) {
+        const messagesDiv = document.getElementById('messages');
+        const messageElement = document.createElement('p');
+        messageElement.textContent = message;
+        messagesDiv.appendChild(messageElement);
+    }
+</script>
+</body>
+</html>

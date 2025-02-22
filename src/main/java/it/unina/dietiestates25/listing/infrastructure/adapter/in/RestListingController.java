@@ -118,13 +118,19 @@ public class RestListingController {
             "/lands/{listing-id}",
             "/buildings/{listing-id}"
     })
-    @PreAuthorize("hasRole('AGENT')")
+    @PreAuthorize("hasAnyRole('AGENT', 'ADMIN')")
     public ResponseEntity<Void> deleteListing(@PathVariable("listing-id") String listingId,
                                               @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
-        listingService.deleteListing(listingId, userDetails.getUsername());
+
+        if (UserService.hasRole(userDetails, "ROLE_ADMIN")) {
+            listingService.deleteListingAsAdmin(listingId, userDetails.getUsername());
+        } else {
+            listingService.deleteListingAsAgent(listingId, userDetails.getUsername());
+        }
         return ResponseEntity.noContent().build();
     }
+
 
     @GetMapping({
             "/houses/{listing-id}",

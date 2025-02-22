@@ -4,6 +4,7 @@ import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.SignUpAgency
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UserDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.SignUpAgencyRequest;
 import it.unina.dietiestates25.agency.port.in.AgencyService;
+import it.unina.dietiestates25.auth.port.in.UserService;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
 import it.unina.dietiestates25.exception.EntityAlreadyExistsException;
@@ -168,14 +169,14 @@ public class RestAgencyController {
 
     private void validateUserAccess(String agencyId, String agentId, UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
-        if (hasRole(userDetails, "AGENT")) {
+        if (UserService.hasRole(userDetails, "ROLE_AGENT")) {
             Agency agency = agencyService.getAgencyByAgentEmail(userDetails.getUsername());
             validateAgency(agencyId, agency, FORBIDDEN_EXCEPTION_MSG_AGENCY);
             Agent agentModifier = agencyService.getAgentByEmail(userDetails.getUsername());
             if (!agentModifier.getId().equals(agentId)) {
                 throw new ForbiddenException(FORBIDDEN_EXCEPTION_MSG_AGENT);
             }
-        } else if (hasRole(userDetails, "ADMIN")) {
+        } else if (UserService.hasRole(userDetails, "ROLE_ADMIN")) {
             Agency agency = agencyService.getAgencyByManagerEmail(userDetails.getUsername());
             validateAgency(agencyId, agency, FORBIDDEN_EXCEPTION_MSG_AGENCY);
         } else {
@@ -187,10 +188,6 @@ public class RestAgencyController {
                 throw new ForbiddenException(FORBIDDEN_EXCEPTION_MSG_MANAGER);
             }
         }
-    }
-
-    private boolean hasRole(UserDetails userDetails, String role) {
-        return userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals(role));
     }
 
     @GetMapping("/{agency-id}/agents")

@@ -52,6 +52,12 @@ public class AgencyService {
         return adminRepository.save(admin);
     }
 
+    public Admin getAdminByEmail(String email)
+            throws EntityNotExistsException {
+        return adminRepository.findAdminByEmail(email).orElseThrow(() ->
+                new EntityNotExistsException(String.format("Admin does not exist, email: %s", email)));
+    }
+
     public Admin getAdmin(Agency agency) {
         return adminRepository.findByAgency(agency);
     }

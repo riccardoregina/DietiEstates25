@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(
@@ -52,14 +54,36 @@ public class User {
     @JsonIgnore
     private String passwordHash;
 
+    @Embedded
+    @JsonIgnore
+    private NotificationSettings notificationSettings;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_listing",
+            joinColumns = @JoinColumn(
+                    name = "user_id",
+                    foreignKey = @ForeignKey(name = "userlisting_listing_fk")),
+            inverseJoinColumns = @JoinColumn(
+                    name = "listing_id",
+                    foreignKey = @ForeignKey(name = "userlisting_user"))
+    )
+    @JsonIgnore
+    private Set<Listing> starredListings = new HashSet<>();
+
     public User() {}
 
-    public User(String firstName, String lastName, String email, LocalDate dob, String passwordHash) {
+    public User(String firstName,
+                String lastName,
+                String email,
+                LocalDate dob,
+                String passwordHash, NotificationSettings notificationSettings) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.dob = dob;
         this.passwordHash = passwordHash;
+        this.notificationSettings = notificationSettings;
     }
 
     public String getId() {
@@ -108,6 +132,24 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public NotificationSettings getNotificationSettings() {
+        return notificationSettings;
+    }
+
+    public Set<Listing> getStarredListings() {
+        return starredListings;
+    }
+
+    public void addStarredListing(Listing listing) {
+        starredListings.add(listing);
+        listing.getFollowingUsers().add(this);
+    }
+
+    public void removeStarredListing(Listing listing) {
+        starredListings.remove(listing);
+        listing.getFollowingUsers().remove(this);
     }
 
     @Override

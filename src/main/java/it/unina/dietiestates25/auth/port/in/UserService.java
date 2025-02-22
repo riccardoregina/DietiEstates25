@@ -2,9 +2,9 @@ package it.unina.dietiestates25.auth.port.in;
 
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import it.unina.dietiestates25.auth.port.out.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -33,8 +33,13 @@ public class UserService implements UserDetailsService {
         .build();
   }
 
-  public User getUser(String email) throws EntityNotExistsException {
-    return repository.findUserByEmail(email)
-            .orElseThrow(() -> new EntityNotExistsException(String.format("User does not exist, email: %s", email)));
-  }
+    public User getUser(String email) throws EntityNotExistsException {
+        return repository.findUserByEmail(email)
+                .orElseThrow(() -> new EntityNotExistsException(String.format("User does not exist, email: %s", email)));
+    }
+
+    public static boolean hasRole(UserDetails userDetails, String role) {
+        return userDetails.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals(role));
+    }
 }

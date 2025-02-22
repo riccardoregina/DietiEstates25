@@ -2,6 +2,7 @@ package it.unina.dietiestates25.customer.port.in;
 
 import it.unina.dietiestates25.customer.port.out.CustomerRepository;
 import it.unina.dietiestates25.exception.EntityAlreadyExistsException;
+import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.model.Customer;
 import it.unina.dietiestates25.model.User;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,11 @@ public class CustomerService {
             throw new EntityAlreadyExistsException(String.format("User with the email address '%s' already exists", email));
         }
         return repository.save(customer);
+    }
+
+    public Customer getCustomer(String email) throws EntityNotExistsException {
+        return repository
+                .findByEmail(email).orElseThrow(() ->
+                        new EntityNotExistsException(String.format("Customer with email '%s' not found", email)));
     }
 }

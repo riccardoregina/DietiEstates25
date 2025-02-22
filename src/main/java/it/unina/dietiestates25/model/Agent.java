@@ -45,7 +45,12 @@ public class Agent extends User {
                  String passwordHash,
                  Agency agency,
                  Manager manager) {
-        super(firstName, lastName, email, dob, passwordHash);
+        super(firstName,
+                lastName,
+                email,
+                dob,
+                passwordHash,
+                new NotificationSettings(true, true, false));
         this.agency = agency;
         this.manager = manager;
     }
