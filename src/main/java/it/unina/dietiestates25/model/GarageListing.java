@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -24,7 +25,8 @@ public class GarageListing extends Listing {
                          ListingType listingType,
                          Location location,
                          int floor,
-                         Map<String, String> otherFeatures) {
+                         Map<String, String> otherFeatures,
+                         List<String> photos) {
         super(agent,
                 title,
                 price,
@@ -32,7 +34,8 @@ public class GarageListing extends Listing {
                 squareMeters,
                 listingType,
                 location,
-                otherFeatures);
+                otherFeatures,
+                photos);
         this.floor = floor;
     }
 

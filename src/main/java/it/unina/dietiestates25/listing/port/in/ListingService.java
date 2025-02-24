@@ -73,7 +73,8 @@ public class ListingService {
                 houseListingDto.nBathrooms(),
                 houseListingDto.floor(),
                 houseListingDto.energyClass(),
-                houseListingDto.otherFeatures()
+                houseListingDto.otherFeatures(),
+                houseListingDto.photos()
         ));
 
         notifyUsers(listing, HouseSearch.class);
@@ -98,7 +99,8 @@ public class ListingService {
                         Location.createPoint(garageListingDto.locationDto().longitude(),
                                 garageListingDto.locationDto().latitude())),
                 garageListingDto.floor(),
-                garageListingDto.otherFeatures()
+                garageListingDto.otherFeatures(),
+                garageListingDto.photos()
         ));
 
         notifyUsers(listing, GarageSearch.class);
@@ -123,7 +125,8 @@ public class ListingService {
                         Location.createPoint(landListingDto.locationDto().longitude(),
                                 landListingDto.locationDto().latitude())),
                 landListingDto.building(),
-                landListingDto.otherFeatures()
+                landListingDto.otherFeatures(),
+                landListingDto.photos()
         ));
 
         notifyUsers(listing, LandSearch.class);
@@ -147,7 +150,8 @@ public class ListingService {
                         buildingListingDto.locationDto().address(),
                         Location.createPoint(buildingListingDto.locationDto().longitude(),
                                 buildingListingDto.locationDto().latitude())),
-                buildingListingDto.otherFeatures()
+                buildingListingDto.otherFeatures(),
+                buildingListingDto.photos()
         ));
 
         notifyUsers(listing, BuildingSearch.class);
@@ -185,6 +189,7 @@ public class ListingService {
         houseListing.setFloor(houseListingDto.floor());
         houseListing.setEnergyClass(houseListingDto.energyClass());
         houseListing.setOtherFeatures(houseListingDto.otherFeatures());
+        houseListing.setPhotos(houseListingDto.photos());
 
         notificationService.notifyUsersOfListingUpdate(houseListing);
     }
@@ -210,6 +215,7 @@ public class ListingService {
                         garageListingDto.locationDto().latitude())));
         garageListing.setFloor(garageListingDto.floor());
         garageListing.setOtherFeatures(garageListingDto.otherFeatures());
+        garageListing.setPhotos(garageListingDto.photos());
 
         notificationService.notifyUsersOfListingUpdate(garageListing);
     }
@@ -235,6 +241,7 @@ public class ListingService {
                         landListingDto.locationDto().latitude())));
         landListing.setBuilding(landListingDto.building());
         landListing.setOtherFeatures(landListingDto.otherFeatures());
+        landListing.setPhotos(landListingDto.photos());
 
         notificationService.notifyUsersOfListingUpdate(landListing);
     }
@@ -259,6 +266,7 @@ public class ListingService {
                 Location.createPoint(buildingListingDto.locationDto().longitude(),
                         buildingListingDto.locationDto().latitude())));
         buildingListing.setOtherFeatures(buildingListingDto.otherFeatures());
+        buildingListing.setPhotos(buildingListingDto.photos());
 
         notificationService.notifyUsersOfListingUpdate(buildingListing);
     }

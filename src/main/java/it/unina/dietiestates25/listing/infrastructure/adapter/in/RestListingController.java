@@ -131,7 +131,6 @@ public class RestListingController {
         return ResponseEntity.noContent().build();
     }
 
-
     @GetMapping({
             "/houses/{listing-id}",
             "/garages/{listing-id}",

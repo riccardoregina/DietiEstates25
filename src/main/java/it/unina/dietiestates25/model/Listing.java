@@ -75,6 +75,12 @@ public class Listing {
             nullable = false
     )
     private Integer pricePerSquareMeter;
+    @Type(JsonType.class)
+    @Column(
+            name = "photos",
+            columnDefinition = "jsonb"
+    )
+    private List<String> photos = new LinkedList<>();
 
     @JsonIgnore
     private static final List<String> BASIC_SORTING_CRITERIA = List.of(
@@ -105,7 +111,8 @@ public class Listing {
                    int squareMeters,
                    ListingType listingType,
                    Location location,
-                   Map<String, String> otherFeatures) {
+                   Map<String, String> otherFeatures,
+                   List<String> photos) {
         this.agent = agent;
         this.title = title;
         this.price = price;
@@ -116,6 +123,7 @@ public class Listing {
         this.otherFeatures = (otherFeatures == null) ? new HashMap<>() : otherFeatures;
         this.pricePerSquareMeter = price / squareMeters;
         this.timestamp = LocalDateTime.now();
+        this.photos = photos;
     }
 
     public String getId() {
@@ -215,6 +223,14 @@ public class Listing {
         } else {
             this.pricePerSquareMeter = 0;
         }
+    }
+
+    public void setPhotos(List<String> photos) {
+        this.photos = photos;
+    }
+
+    public List<String> getPhotos() {
+        return this.photos;
     }
 
     public static boolean isValidSortingCriteria(String sortBy, Class<? extends Listing> listingClass) {

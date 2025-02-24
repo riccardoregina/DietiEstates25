@@ -3,6 +3,7 @@ package it.unina.dietiestates25.model;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -18,7 +19,8 @@ public class BuildingListing extends Listing {
                            int squareMeters,
                            ListingType listingType,
                            Location location,
-                           Map<String, String> otherFeatures) {
+                           Map<String, String> otherFeatures,
+                           List<String> photos) {
         super(agent,
                 title,
                 price,
@@ -26,6 +28,7 @@ public class BuildingListing extends Listing {
                 squareMeters,
                 listingType,
                 location,
-                otherFeatures);
+                otherFeatures,
+                photos);
     }
 }
