@@ -51,7 +51,8 @@ public class RestAgencyController {
                 new Agency(
                         requestDto.ragioneSociale(),
                         requestDto.partitaIva()
-                )
+                ),
+                requestDto.profilePicUrl()
         ));
         return ResponseEntity.created(URI.create(PATH_AGENCIES +
                 admin.getAgency().getId() + "/managers/" + admin.getId()))
@@ -72,7 +73,8 @@ public class RestAgencyController {
                 userDto.email(),
                 userDto.dob(),
                 passwordEncoder.encode(userDto.password()),
-                agency
+                agency,
+                userDto.profilePicUrl()
         ));
         return ResponseEntity.created(URI.create(PATH_AGENCIES +
                 agency.getId() + "/managers/" + createdManager.getId())).body(createdManager);
@@ -149,7 +151,8 @@ public class RestAgencyController {
                 userDto.dob(),
                 passwordEncoder.encode(userDto.password()),
                 agency,
-                manager
+                manager,
+                userDto.profilePicUrl()
         ));
         return ResponseEntity.created(URI.create(PATH_AGENCIES +
                 agency.getId() + "/agents/" + createdAgent.getId())).body(createdAgent);

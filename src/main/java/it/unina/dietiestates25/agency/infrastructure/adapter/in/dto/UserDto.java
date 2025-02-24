@@ -21,6 +21,7 @@ public record UserDto(
         LocalDate dob,
         @NotNull
         @NotBlank
-        String password
+        String password,
+        String profilePicUrl
 ) {
 }

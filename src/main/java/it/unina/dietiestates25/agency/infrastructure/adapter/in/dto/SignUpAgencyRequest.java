@@ -22,6 +22,7 @@ public record SignUpAgencyRequest(
         @NotNull
         @NotBlank
         String tempPassword,
+        String profilePicUrl,
         @NotNull
         @NotBlank
         String ragioneSociale,

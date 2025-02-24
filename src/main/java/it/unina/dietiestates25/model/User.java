@@ -53,6 +53,11 @@ public class User {
     )
     @JsonIgnore
     private String passwordHash;
+    @Column(
+            name = "profile_pic_url",
+            columnDefinition = "TEXT"
+    )
+    private String profilePicUrl;
 
     @Embedded
     @JsonIgnore
@@ -77,13 +82,16 @@ public class User {
                 String lastName,
                 String email,
                 LocalDate dob,
-                String passwordHash, NotificationSettings notificationSettings) {
+                String passwordHash,
+                NotificationSettings notificationSettings,
+                String profilePicUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.dob = dob;
         this.passwordHash = passwordHash;
         this.notificationSettings = notificationSettings;
+        this.profilePicUrl = profilePicUrl;
     }
 
     public String getId() {
@@ -132,6 +140,14 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public String getProfilePicUrl() {
+        return profilePicUrl;
+    }
+
+    public void setProfilePicUrl(String profilePicUrl) {
+        this.profilePicUrl = profilePicUrl;
     }
 
     public NotificationSettings getNotificationSettings() {

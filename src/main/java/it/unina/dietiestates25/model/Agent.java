@@ -44,13 +44,15 @@ public class Agent extends User {
                  LocalDate dob,
                  String passwordHash,
                  Agency agency,
-                 Manager manager) {
+                 Manager manager,
+                 String profilePicUrl) {
         super(firstName,
                 lastName,
                 email,
                 dob,
                 passwordHash,
-                new NotificationSettings(true, true, false));
+                new NotificationSettings(true, true, false),
+                profilePicUrl);
         this.agency = agency;
         this.manager = manager;
     }

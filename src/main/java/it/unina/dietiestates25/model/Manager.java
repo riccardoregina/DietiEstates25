@@ -31,13 +31,15 @@ public class Manager extends User {
                    String email,
                    LocalDate dob,
                    String passwordHash,
-                   Agency agency) {
+                   Agency agency,
+                   String profilePicUrl) {
         super(firstName,
                 lastName,
                 email,
                 dob,
                 passwordHash,
-                new NotificationSettings(true, true, false));
+                new NotificationSettings(true, true, false),
+                profilePicUrl);
         this.agency = agency;
     }
 

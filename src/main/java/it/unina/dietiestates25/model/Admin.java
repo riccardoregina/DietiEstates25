@@ -24,7 +24,8 @@ public class Admin extends Manager {
                  String email,
                  LocalDate dob,
                  String passwordHash,
-                 Agency agency) {
-        super(firstName, lastName, email, dob, passwordHash, agency);
+                 Agency agency,
+                 String profilePicUrl) {
+        super(firstName, lastName, email, dob, passwordHash, agency, profilePicUrl);
     }
 }

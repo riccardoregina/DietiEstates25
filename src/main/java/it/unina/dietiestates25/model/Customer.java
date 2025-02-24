@@ -23,12 +23,14 @@ public class Customer extends User {
                     String lastName,
                     String email,
                     LocalDate dob,
-                    String passwordHash) {
+                    String passwordHash,
+                    String profilePicUrl) {
         super(firstName,
                 lastName,
                 email,
                 dob,
                 passwordHash,
-                new NotificationSettings(true, true, true));
+                new NotificationSettings(true, true, true),
+                profilePicUrl);
     }
 }
