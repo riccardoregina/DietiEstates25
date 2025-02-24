@@ -8,10 +8,7 @@ import it.unina.dietiestates25.model.User;
 import it.unina.dietiestates25.notification.port.in.NotificationService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,8 +24,8 @@ public class RestNotificationController {
         this.userService = userService;
     }
 
-    @GetMapping("/{user-id}")
-    public List<Notification> getNotifications(@PathVariable("user-id") String userId,
+    @GetMapping
+    public List<Notification> getNotifications(@RequestParam String userId,
                                                @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
         User user = userService.getUser(userDetails.getUsername());
