@@ -30,7 +30,7 @@ public class NotificationService {
         String message = "You could like this listing in " + listing.getLocation().getCity() + ": " +
                 listing.getTitle();
         users.forEach(user -> {
-            Notification notification = new Notification(user, message);
+            Notification notification = new ListingNotification(user, message, listing);
             messagingTemplate.convertAndSendToUser(user.getEmail(),
                     DESTINATION_PATH,
                     notification);
@@ -40,11 +40,11 @@ public class NotificationService {
 
     @Transactional
     public void notifyUsersOfListingUpdate(Listing listing) {
-        String message = "A listing you saved as a favorite has been updated: " +
+        String message = "One of your favorite listings has been updated: " +
                 listing.getTitle();
         listing.getFollowingUsers()
                 .forEach(user -> {
-                    Notification notification = new Notification(user, message);
+                    Notification notification = new ListingNotification(user, message, listing);
                     messagingTemplate.convertAndSendToUser(user.getEmail(),
                             DESTINATION_PATH,
                             notification);
@@ -54,9 +54,9 @@ public class NotificationService {
 
     @Transactional
     public void notifyAgentOfVisitRequest(Agent agent, VisitRequest visitRequest) {
-        String message = "A new visit request has been received for the " +
+        String message = "A new visit request has been received for " +
                 visitRequest.getListing().getTitle();
-        Notification notification = new Notification(agent, message);
+        Notification notification = new VisitRequestNotification(agent, message, visitRequest);
         messagingTemplate.convertAndSendToUser(agent.getEmail(),
                 DESTINATION_PATH,
                 notification);
@@ -64,9 +64,18 @@ public class NotificationService {
     }
 
     @Transactional
-    public void notifyCustomerOfVisitResponse(Customer customer, String listingTitle, boolean requestAccepted) {
-        String message = "Your visit request to the " + listingTitle + " has been "
-                + ((requestAccepted) ? "accepted" : "declined");
+    public void notifyCustomerOfVisitAccepted(Customer customer, Visit visit) {
+        String message = "Your visit request for " + visit.getListing().getTitle() + " has been accepted";
+        Notification notification = new VisitResponseNotification(customer, message, visit);
+        messagingTemplate.convertAndSendToUser(customer.getEmail(),
+                DESTINATION_PATH,
+                notification);
+        notificationRepository.save(notification);
+    }
+
+    @Transactional
+    public void notifyCustomerOfVisitRejected(Customer customer, String listingTitle, String agentMsg) {
+        String message = "Your visit request for " + listingTitle + " has been rejected: " + agentMsg;
         Notification notification = new Notification(customer, message);
         messagingTemplate.convertAndSendToUser(customer.getEmail(),
                 DESTINATION_PATH,

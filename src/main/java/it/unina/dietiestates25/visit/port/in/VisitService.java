@@ -65,13 +65,12 @@ public class VisitService {
         Visit visit = new Visit(visitRequest.getCustomer(), visitRequest.getListing(), dateTime);
         visitRepository.save(visit);
         visitRequestRepository.delete(visitRequest);
-        notificationService.notifyCustomerOfVisitResponse(visitRequest.getCustomer(),
-                visitRequest.getListing().getTitle(),
-                true);
+        notificationService.notifyCustomerOfVisitAccepted(visitRequest.getCustomer(), visit);
         return visit;
     }
 
     public void rejectVisitRequest(String visitRequestId,
+                                   String agentMsg,
                                    UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
         Agent agent = agencyService.getAgentByEmail(userDetails.getUsername());
@@ -81,9 +80,9 @@ public class VisitService {
             throw new ForbiddenException("Agent can reject only visit requests on their listings");
         }
         visitRequestRepository.delete(visitRequest);
-        notificationService.notifyCustomerOfVisitResponse(visitRequest.getCustomer(),
+        notificationService.notifyCustomerOfVisitRejected(visitRequest.getCustomer(),
                 visitRequest.getListing().getTitle(),
-                false);
+                agentMsg);
     }
 
     public List<Visit> getVisits(String agentId, int year, int month, UserDetails userDetails)

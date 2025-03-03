@@ -7,6 +7,7 @@ import it.unina.dietiestates25.model.VisitRequest;
 import it.unina.dietiestates25.visit.infrastructure.adapter.in.dto.VisitRequestDto;
 import it.unina.dietiestates25.visit.port.in.VisitService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,9 +52,10 @@ public class RestVisitRequestController {
     @PreAuthorize("hasRole('AGENT')")
     public ResponseEntity<Void> rejectVisitRequest(
             @PathVariable("visit-request-id") String visitRequestId,
+            @NotBlank @RequestBody String agentMsg,
             @AuthenticationPrincipal UserDetails userDetails)
             throws ForbiddenException, EntityNotExistsException {
-        visitService.rejectVisitRequest(visitRequestId, userDetails);
+        visitService.rejectVisitRequest(visitRequestId, agentMsg, userDetails);
         return ResponseEntity.ok().build();
     }
 }
