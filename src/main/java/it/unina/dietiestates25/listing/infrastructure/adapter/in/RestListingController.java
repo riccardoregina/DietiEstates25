@@ -27,7 +27,7 @@ import java.util.List;
 public class RestListingController {
     private final ListingService listingService;
     private final UserService userService;
-    private static final int PAGE_SIZE = 5;
+    private static final int PAGE_SIZE = 10;
     private static final String DEFAULT_VALUE_OF_SORT_BY = "timestamp";
 
     public RestListingController(ListingService listingService,

@@ -8,10 +8,7 @@ import it.unina.dietiestates25.auth.port.in.UserService;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
 import it.unina.dietiestates25.exception.EntityAlreadyExistsException;
-import it.unina.dietiestates25.model.Admin;
-import it.unina.dietiestates25.model.Agency;
-import it.unina.dietiestates25.model.Agent;
-import it.unina.dietiestates25.model.Manager;
+import it.unina.dietiestates25.model.*;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,10 +29,14 @@ public class RestAgencyController {
     public static final String FORBIDDEN_EXCEPTION_MSG_MANAGER = "Manager can only modify his agents";
     public static final String PATH_AGENCIES = "/api/agencies/";
     private final AgencyService agencyService;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    public RestAgencyController(AgencyService agencyService, PasswordEncoder passwordEncoder) {
+    public RestAgencyController(AgencyService agencyService,
+                                UserService userService,
+                                PasswordEncoder passwordEncoder) {
         this.agencyService = agencyService;
+        this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -57,6 +58,22 @@ public class RestAgencyController {
         return ResponseEntity.created(URI.create(PATH_AGENCIES +
                 admin.getAgency().getId() + "/managers/" + admin.getId()))
                 .body(new SignUpAgencyResponse(admin, admin.getAgency()));
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'AGENT')")
+    public ResponseEntity<Agency> getAgency(@RequestParam String userId,
+                                            @AuthenticationPrincipal UserDetails userDetails)
+            throws EntityNotExistsException, ForbiddenException {
+        User user = userService.getUser(userDetails.getUsername());
+        if (!user.getId().equals(userId)) {
+            throw new ForbiddenException("User can only access his agency");
+        }
+        Agency agency = (UserService.hasRole(userDetails, "ROLE_AGENT")) ?
+                agencyService.getAgencyByAgentEmail(userDetails.getUsername()) :
+                agencyService.getAgencyByManagerEmail(userDetails.getUsername());
+
+        return ResponseEntity.ok(agency);
     }
 
     @PostMapping("/{agency-id}/managers")
