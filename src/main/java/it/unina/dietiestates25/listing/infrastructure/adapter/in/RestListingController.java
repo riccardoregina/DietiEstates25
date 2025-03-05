@@ -162,6 +162,7 @@ public class RestListingController {
             @RequestParam(required = false) Integer floorMax,
             @RequestParam(required = false) EnergyClass energyClassMin,
             @RequestParam(required = false) String agentId,
+            @RequestParam(required = false) Boolean elevator,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "timestamp") String sortBy,
             @RequestParam(required = false, defaultValue = "desc") String ordering,
@@ -187,7 +188,8 @@ public class RestListingController {
                 floorMin,
                 floorMax,
                 energyClassMin,
-                agentId
+                agentId,
+                elevator
         );
         if (!Listing.isValidSortingCriteria(sortBy, HouseListing.class)) {
             sortBy = DEFAULT_VALUE_OF_SORT_BY;
@@ -304,6 +306,7 @@ public class RestListingController {
             @RequestParam(required = false) Integer squareMetersMin,
             @RequestParam(required = false) Integer squareMetersMax,
             @RequestParam(required = false) String agentId,
+            @RequestParam(required = false) Boolean elevator,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "timestamp") String sortBy,
             @RequestParam(required = false, defaultValue = "desc") String ordering,
@@ -322,7 +325,8 @@ public class RestListingController {
                 priceMax,
                 squareMetersMin,
                 squareMetersMax,
-                agentId
+                agentId,
+                elevator
         );
         if (!Listing.isValidSortingCriteria(sortBy, BuildingListing.class)) {
             sortBy = DEFAULT_VALUE_OF_SORT_BY;

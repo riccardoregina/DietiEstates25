@@ -74,7 +74,8 @@ public class ListingService {
                 houseListingDto.floor(),
                 houseListingDto.energyClass(),
                 houseListingDto.otherFeatures(),
-                houseListingDto.photos()
+                houseListingDto.photos(),
+                houseListingDto.elevator()
         ));
 
         notifyUsers(listing, HouseSearch.class);
@@ -151,7 +152,8 @@ public class ListingService {
                         Location.createPoint(buildingListingDto.locationDto().longitude(),
                                 buildingListingDto.locationDto().latitude())),
                 buildingListingDto.otherFeatures(),
-                buildingListingDto.photos()
+                buildingListingDto.photos(),
+                buildingListingDto.elevator()
         ));
 
         notifyUsers(listing, BuildingSearch.class);

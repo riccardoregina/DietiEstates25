@@ -1,5 +1,6 @@
 package it.unina.dietiestates25.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -9,6 +10,11 @@ import java.util.Map;
 @Entity
 @DiscriminatorValue("BUILDING")
 public class BuildingListing extends Listing {
+    @Column(
+            name = "elevator"
+    )
+    private boolean elevator;
+
     public BuildingListing() {
     }
 
@@ -20,7 +26,8 @@ public class BuildingListing extends Listing {
                            ListingType listingType,
                            Location location,
                            Map<String, String> otherFeatures,
-                           List<String> photos) {
+                           List<String> photos,
+                           boolean elevator) {
         super(agent,
                 title,
                 price,
@@ -30,5 +37,10 @@ public class BuildingListing extends Listing {
                 location,
                 otherFeatures,
                 photos);
+        this.elevator = elevator;
+    }
+
+    public boolean getElevator() {
+        return elevator;
     }
 }

@@ -27,6 +27,11 @@ public class HouseListing extends Listing {
     )
     private EnergyClass energyClass;
 
+    @Column(
+            name = "elevator"
+    )
+    private boolean elevator;
+
     public HouseListing() {}
 
     public HouseListing(Agent agent,
@@ -41,7 +46,8 @@ public class HouseListing extends Listing {
                         int floor,
                         EnergyClass energyClass,
                         Map<String, String> otherFeatures,
-                        List<String> photos) {
+                        List<String> photos,
+                        boolean elevator) {
         super(agent,
                 title,
                 price,
@@ -55,6 +61,7 @@ public class HouseListing extends Listing {
         this.nBathrooms = nBathrooms;
         this.floor = floor;
         this.energyClass = energyClass;
+        this.elevator = elevator;
     }
 
     public int getnRooms() {
@@ -87,5 +94,13 @@ public class HouseListing extends Listing {
 
     public void setEnergyClass(EnergyClass energyClass) {
         this.energyClass = energyClass;
+    }
+
+    public boolean getElevator() {
+        return elevator;
+    }
+
+    public void setElevator(boolean elevator) {
+        this.elevator = elevator;
     }
 }

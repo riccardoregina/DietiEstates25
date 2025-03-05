@@ -15,13 +15,13 @@ public record GarageListingDto(
 
         @NotNull
         @Positive
-        int price,
+        Integer price,
 
         String description,
 
         @NotNull
         @Positive
-        int squareMeters,
+        Integer squareMeters,
 
         @NotNull
         ListingType listingType,
@@ -30,7 +30,7 @@ public record GarageListingDto(
         LocationDto locationDto,
 
         @NotNull
-        int floor,
+        Integer floor,
 
         Map<String, String> otherFeatures,
 

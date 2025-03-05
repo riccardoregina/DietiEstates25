@@ -17,13 +17,13 @@ public record HouseListingDto(
 
         @NotNull
         @Positive
-        int price,
+        Integer price,
 
         String description,
 
         @NotNull
         @Positive
-        int squareMeters,
+        Integer squareMeters,
 
         @NotNull
         ListingType listingType,
@@ -33,14 +33,17 @@ public record HouseListingDto(
 
         @NotNull
         @Positive
-        int nRooms,
+        Integer nRooms,
 
         @NotNull
         @Positive
-        int nBathrooms,
+        Integer nBathrooms,
 
         @NotNull
-        int floor,
+        Integer floor,
+
+        @NotNull
+        Boolean elevator,
 
         @NotNull
         EnergyClass energyClass,

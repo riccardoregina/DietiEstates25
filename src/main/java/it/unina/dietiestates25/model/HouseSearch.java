@@ -41,6 +41,11 @@ public class HouseSearch extends Search {
     )
     private EnergyClass energyClassMin;
 
+    @Column(
+            name = "elevator"
+    )
+    private Boolean elevator;
+
     public HouseSearch() {
     }
 
@@ -61,7 +66,8 @@ public class HouseSearch extends Search {
                        Integer floorMin,
                        Integer floorMax,
                        EnergyClass energyClassMin,
-                       String agentId) {
+                       String agentId,
+                       Boolean elevator) {
         super(user,
                 listingType,
                 region,
@@ -80,6 +86,7 @@ public class HouseSearch extends Search {
         this.floorMin = floorMin;
         this.floorMax = floorMax;
         this.energyClassMin = energyClassMin;
+        this.elevator = elevator;
     }
 
     public Integer getnRoomsMin() {
@@ -108,5 +115,9 @@ public class HouseSearch extends Search {
 
     public EnergyClass getEnergyClassMin() {
         return energyClassMin;
+    }
+
+    public Boolean hasElevator() {
+        return elevator;
     }
 }

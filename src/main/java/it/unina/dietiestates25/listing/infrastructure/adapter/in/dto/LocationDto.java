@@ -17,9 +17,9 @@ public record LocationDto(
         String address,
 
         @NotNull
-        double longitude,
+        Double longitude,
 
         @NotNull
-        double latitude
+        Double latitude
 ) {
 }

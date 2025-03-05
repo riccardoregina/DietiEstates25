@@ -15,13 +15,13 @@ public record LandListingDto(
 
         @NotNull
         @Positive
-        int price,
+        Integer price,
 
         String description,
 
         @NotNull
         @Positive
-        int squareMeters,
+        Integer squareMeters,
 
         @NotNull
         ListingType listingType,
@@ -30,7 +30,7 @@ public record LandListingDto(
         LocationDto locationDto,
 
         @NotNull
-        boolean building,
+        Boolean building,
 
         Map<String, String> otherFeatures,
 

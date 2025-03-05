@@ -15,13 +15,16 @@ public record BuildingListingDto(
 
         @NotNull
         @Positive
-        int price,
+        Integer price,
 
         String description,
 
         @NotNull
         @Positive
-        int squareMeters,
+        Integer squareMeters,
+
+        @NotNull
+        Boolean elevator,
 
         @NotNull
         ListingType listingType,
