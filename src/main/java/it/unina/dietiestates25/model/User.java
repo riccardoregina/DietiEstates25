@@ -76,6 +76,11 @@ public class User {
     @JsonIgnore
     private Set<Listing> starredListings = new HashSet<>();
 
+    @PreRemove
+    private void emptyStarredListings() {
+        starredListings.forEach(listing -> listing.getFollowingUsers().remove(this));
+    }
+
     public User() {}
 
     public User(String firstName,

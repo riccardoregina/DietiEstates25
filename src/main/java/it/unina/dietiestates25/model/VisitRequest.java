@@ -2,6 +2,8 @@ package it.unina.dietiestates25.model;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
@@ -31,6 +33,7 @@ public class VisitRequest {
                     name = "visitrequest_customer_fk"
             )
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
 
     @ManyToOne
@@ -42,6 +45,7 @@ public class VisitRequest {
                     name = "visitrequest_listing_fk"
             )
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Listing listing;
 
     @Column(

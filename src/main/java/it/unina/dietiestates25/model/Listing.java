@@ -3,6 +3,8 @@ package it.unina.dietiestates25.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
@@ -26,7 +28,9 @@ public class Listing {
                     name = "listing_agent_fk"
             )
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Agent agent;
+
     @Column(
             name = "title",
             nullable = false,
@@ -101,6 +105,11 @@ public class Listing {
     @ManyToMany(mappedBy = "starredListings")
     @JsonIgnore
     private Set<User> followingUsers = new HashSet<>();
+
+    @PreRemove
+    private void emptyFollowingUsers() {
+        followingUsers.forEach(user -> user.getStarredListings().remove(this));
+    }
 
     public Listing() {}
 

@@ -1,6 +1,8 @@
 package it.unina.dietiestates25.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +20,9 @@ public class AgentReview {
                     name = "agentreview_customer_fk"
             )
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
+
     @ManyToOne
     @JoinColumn(
             name = "agent_id",
@@ -28,6 +32,8 @@ public class AgentReview {
                     name = "agentreview_agent_fk"
             )
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
+
     private Agent agent;
     @Column(
             name = "value",

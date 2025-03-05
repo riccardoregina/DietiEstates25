@@ -2,6 +2,8 @@ package it.unina.dietiestates25.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.locationtech.jts.geom.Point;
 import java.time.LocalDateTime;
 
@@ -23,6 +25,7 @@ public class Search {
                     name = "search_user_fk"
             )
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
 

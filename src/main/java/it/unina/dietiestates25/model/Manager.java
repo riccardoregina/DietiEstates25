@@ -2,6 +2,8 @@ package it.unina.dietiestates25.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
@@ -23,6 +25,7 @@ public class Manager extends User {
                     name = "manager_agency_fk"
             )
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Agency agency;
     public Manager() {}

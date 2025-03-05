@@ -1,6 +1,8 @@
 package it.unina.dietiestates25.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
@@ -22,6 +24,7 @@ public class Agent extends User {
                     name = "agent_agency_fk"
             )
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Agency agency;
 
     @ManyToOne

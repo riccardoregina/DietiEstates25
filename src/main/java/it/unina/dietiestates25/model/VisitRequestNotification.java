@@ -1,6 +1,8 @@
 package it.unina.dietiestates25.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @DiscriminatorValue("VISIT_REQUEST")
@@ -8,12 +10,12 @@ public class VisitRequestNotification extends Notification {
     @OneToOne
     @JoinColumn(
             name = "visitrequest_id",
-            nullable = false,
             referencedColumnName = "id",
             foreignKey = @ForeignKey(
                     name = "notification_visitrequest_fk"
             )
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private VisitRequest visitRequest;
 
     public VisitRequestNotification() {}
