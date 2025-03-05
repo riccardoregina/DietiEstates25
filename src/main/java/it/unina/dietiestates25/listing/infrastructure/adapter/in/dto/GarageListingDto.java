@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.util.List;
-import java.util.Map;
 
 public record GarageListingDto(
         @NotNull
@@ -32,7 +31,7 @@ public record GarageListingDto(
         @NotNull
         Integer floor,
 
-        Map<String, String> otherFeatures,
+        List<String> otherFeatures,
 
         List<String> photos
 ) {

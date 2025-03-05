@@ -5,7 +5,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @DiscriminatorValue("BUILDING")
@@ -25,7 +24,7 @@ public class BuildingListing extends Listing {
                            int squareMeters,
                            ListingType listingType,
                            Location location,
-                           Map<String, String> otherFeatures,
+                           List<String> otherFeatures,
                            List<String> photos,
                            boolean elevator) {
         super(agent,

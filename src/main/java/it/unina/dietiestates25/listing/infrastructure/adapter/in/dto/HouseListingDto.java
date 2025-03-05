@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.util.List;
-import java.util.Map;
 
 public record HouseListingDto(
 
@@ -48,7 +47,7 @@ public record HouseListingDto(
         @NotNull
         EnergyClass energyClass,
 
-        Map<String, String> otherFeatures,
+        List<String> otherFeatures,
 
         List<String> photos
 ) {

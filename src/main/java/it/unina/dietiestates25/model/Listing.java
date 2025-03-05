@@ -62,7 +62,7 @@ public class Listing {
             name = "other_features",
             columnDefinition = "jsonb"
     )
-    private Map<String, String> otherFeatures = new HashMap<>();
+    private List<String> otherFeatures = new LinkedList<>();
 
     @Column(
             name = "timestamp",
@@ -111,7 +111,7 @@ public class Listing {
                    int squareMeters,
                    ListingType listingType,
                    Location location,
-                   Map<String, String> otherFeatures,
+                   List<String> otherFeatures,
                    List<String> photos) {
         this.agent = agent;
         this.title = title;
@@ -120,7 +120,7 @@ public class Listing {
         this.squareMeters = squareMeters;
         this.listingType = listingType;
         this.location = location;
-        this.otherFeatures = (otherFeatures == null) ? new HashMap<>() : otherFeatures;
+        this.otherFeatures = (otherFeatures == null) ? new LinkedList<>() : otherFeatures;
         this.pricePerSquareMeter = price / squareMeters;
         this.timestamp = LocalDateTime.now();
         this.photos = photos;
@@ -186,11 +186,11 @@ public class Listing {
         this.location = location;
     }
 
-    public Map<String, String> getOtherFeatures() {
+    public List<String> getOtherFeatures() {
         return otherFeatures;
     }
 
-    public void setOtherFeatures(Map<String, String> otherFeatures) {
+    public void setOtherFeatures(List<String> otherFeatures) {
         this.otherFeatures = otherFeatures;
     }
 
