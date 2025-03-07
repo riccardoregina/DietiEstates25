@@ -9,12 +9,19 @@ import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "search_type", discriminatorType = DiscriminatorType.STRING)
 public class Search {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private String id;
+
+    @Column(
+            name = "search_type",
+            insertable = false,
+            updatable = false)
+    private String searchType;
 
     @ManyToOne
     @JoinColumn(
@@ -158,4 +165,12 @@ public class Search {
     }
 
     public LocalDateTime getTimestamp() {return timestamp;}
+
+    public String getId() {
+        return id;
+    }
+
+    public String getSearchType() {
+        return searchType;
+    }
 }
