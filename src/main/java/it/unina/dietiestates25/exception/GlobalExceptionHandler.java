@@ -3,6 +3,7 @@ package it.unina.dietiestates25.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -53,6 +54,18 @@ public class GlobalExceptionHandler {
                 .body(new ErrorDetails(
                         HttpStatus.UNAUTHORIZED.value(),
                         HttpStatus.UNAUTHORIZED.name(),
+                        e.getMessage(),
+                        request.getDescription(false)));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorDetails> handleValidationExceptions(MethodArgumentNotValidException e,
+                                                                   WebRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorDetails(
+                        HttpStatus.BAD_REQUEST.value(),
+                        HttpStatus.BAD_REQUEST.name(),
                         e.getMessage(),
                         request.getDescription(false)));
     }
