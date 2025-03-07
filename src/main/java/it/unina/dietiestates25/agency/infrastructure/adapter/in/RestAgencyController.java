@@ -1,5 +1,6 @@
 package it.unina.dietiestates25.agency.infrastructure.adapter.in;
 
+import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.AgentDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.SignUpAgencyResponse;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UserDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.SignUpAgencyRequest;
@@ -25,7 +26,7 @@ import java.util.List;
 public class RestAgencyController {
 
     public static final String FORBIDDEN_EXCEPTION_MSG_AGENCY = "User's agency does not match with provided one";
-    public static final String FORBIDDEN_EXCEPTION_MSG_AGENT = "Agent can only modify himself";
+    public static final String FORBIDDEN_EXCEPTION_MSG_AGENT = "Agent can only modify itself";
     public static final String FORBIDDEN_EXCEPTION_MSG_MANAGER = "Manager can only modify his agents";
     public static final String PATH_AGENCIES = "/api/agencies/";
     private final AgencyService agencyService;
@@ -154,7 +155,7 @@ public class RestAgencyController {
 
     @PostMapping("/{agency-id}/agents")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    public ResponseEntity<Agent> createAgent(@Valid @RequestBody UserDto userDto,
+    public ResponseEntity<Agent> createAgent(@Valid @RequestBody AgentDto agentDto,
                                              @PathVariable("agency-id") String agencyId,
                                              @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException, EntityAlreadyExistsException {
@@ -162,28 +163,28 @@ public class RestAgencyController {
         validateAgency(agencyId, agency, FORBIDDEN_EXCEPTION_MSG_AGENCY);
         Manager manager = agencyService.getManagerByEmail(userDetails.getUsername());
         Agent createdAgent = agencyService.createAgent(new Agent(
-                userDto.firstName(),
-                userDto.lastName(),
-                userDto.email(),
-                userDto.dob(),
-                passwordEncoder.encode(userDto.password()),
+                agentDto.firstName(),
+                agentDto.lastName(),
+                agentDto.email(),
+                agentDto.dob(),
+                passwordEncoder.encode(agentDto.password()),
                 agency,
                 manager,
-                userDto.profilePicUrl()
-        ));
+                agentDto.profilePicUrl(),
+                agentDto.bio()));
         return ResponseEntity.created(URI.create(PATH_AGENCIES +
                 agency.getId() + "/agents/" + createdAgent.getId())).body(createdAgent);
     }
 
     @PutMapping("/{agency-id}/agents/{agent-id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'AGENT')")
-    public ResponseEntity<Void> updateAgent(@Valid @RequestBody UserDto userDto,
+    public ResponseEntity<Void> updateAgent(@Valid @RequestBody AgentDto agentDto,
                                             @PathVariable("agency-id") String agencyId,
                                             @PathVariable("agent-id") String agentId,
                                             @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
         validateUserAccess(agencyId, agentId, userDetails);
-        agencyService.updateAgent(userDto, agentId);
+        agencyService.updateAgent(agentDto, agentId);
         return ResponseEntity.noContent().build();
     }
 

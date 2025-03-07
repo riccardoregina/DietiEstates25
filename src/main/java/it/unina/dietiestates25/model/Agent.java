@@ -15,6 +15,12 @@ import java.time.LocalDate;
         )
 )
 public class Agent extends User {
+    @Column(
+            name = "bio",
+            columnDefinition = "TEXT"
+    )
+    private String bio;
+
     @ManyToOne
     @JoinColumn(
             name = "agency_id",
@@ -48,7 +54,8 @@ public class Agent extends User {
                  String passwordHash,
                  Agency agency,
                  Manager manager,
-                 String profilePicUrl) {
+                 String profilePicUrl,
+                 String bio) {
         super(firstName,
                 lastName,
                 email,
@@ -58,6 +65,7 @@ public class Agent extends User {
                 profilePicUrl);
         this.agency = agency;
         this.manager = manager;
+        this.bio = bio;
     }
 
     public Agency getAgency() {
@@ -70,5 +78,13 @@ public class Agent extends User {
 
     public void setManager(Manager manager) {
         this.manager = manager;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }

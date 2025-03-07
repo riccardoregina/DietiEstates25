@@ -1,5 +1,6 @@
 package it.unina.dietiestates25.agency.port.in;
 
+import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.AgentDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UserDto;
 import it.unina.dietiestates25.agency.port.out.AdminRepository;
 import it.unina.dietiestates25.agency.port.out.AgencyRepository;
@@ -13,6 +14,7 @@ import it.unina.dietiestates25.model.Agent;
 import it.unina.dietiestates25.model.Manager;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,15 +28,18 @@ public class AgencyService {
     @Qualifier("agentRepository")
     private final AgentRepository agentRepository;
     private final AgencyRepository agencyRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public AgencyService(@Qualifier("managerRepository") ManagerRepository managerRepository,
                          @Qualifier("adminRepository") AdminRepository adminRepository,
                          @Qualifier("agentRepository") AgentRepository agentRepository,
-                         AgencyRepository agencyRepository) {
+                         AgencyRepository agencyRepository,
+                         PasswordEncoder passwordEncoder) {
         this.managerRepository = managerRepository;
         this.adminRepository = adminRepository;
         this.agentRepository = agentRepository;
         this.agencyRepository = agencyRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -58,10 +63,6 @@ public class AgencyService {
                 new EntityNotExistsException(String.format("Admin does not exist, email: %s", email)));
     }
 
-    public Admin getAdmin(Agency agency) {
-        return adminRepository.findByAgency(agency);
-    }
-
     public Manager createManager(Manager manager)
             throws EntityAlreadyExistsException {
         if (managerRepository.existsByEmail(manager.getEmail())) {
@@ -79,7 +80,8 @@ public class AgencyService {
         existingManager.setFirstName(userDto.firstName());
         existingManager.setLastName(userDto.lastName());
         existingManager.setDob(userDto.dob());
-        existingManager.setPasswordHash(userDto.password());
+        existingManager.setPasswordHash(passwordEncoder.encode(userDto.password()));
+        if (userDto.profilePicUrl() != null) existingManager.setProfilePicUrl(userDto.profilePicUrl());
     }
 
     public List<Manager> getManagers(String agencyId, String adminEmail) {
@@ -122,15 +124,17 @@ public class AgencyService {
     }
 
     @Transactional
-    public void updateAgent(UserDto userDto, String id)
+    public void updateAgent(AgentDto agentDto, String id)
             throws EntityNotExistsException {
         Agent existingAgent = agentRepository.findById(id).orElseThrow(() ->
-                new EntityNotExistsException(String.format("Agent does not exist, email: %s", userDto.email())));
-        existingAgent.setEmail(userDto.email());
-        existingAgent.setFirstName(userDto.firstName());
-        existingAgent.setLastName(userDto.lastName());
-        existingAgent.setDob(userDto.dob());
-        existingAgent.setPasswordHash(userDto.password());
+                new EntityNotExistsException(String.format("Agent does not exist, email: %s", agentDto.email())));
+        existingAgent.setEmail(agentDto.email());
+        existingAgent.setFirstName(agentDto.firstName());
+        existingAgent.setLastName(agentDto.lastName());
+        existingAgent.setDob(agentDto.dob());
+        existingAgent.setPasswordHash(passwordEncoder.encode(agentDto.password()));
+        if (agentDto.profilePicUrl() != null) existingAgent.setProfilePicUrl(agentDto.profilePicUrl());
+        if (agentDto.bio() != null) existingAgent.setBio(agentDto.bio());
     }
 
     public List<Agent> getAgents(Agency agency) {
