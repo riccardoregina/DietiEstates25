@@ -33,7 +33,11 @@ public class RestAuthController {
                 requestDto.email(), requestDto.password()));
         User user = userService.getUser(requestDto.email());
         String token = JwtUtil.generateToken(user.getEmail());
-        return ResponseEntity.ok(new LogInResponse(user.getEmail(), token, user.getId()));
+        return ResponseEntity.ok(
+                new LogInResponse(
+                        user.getEmail(),
+                        token,
+                        user.getId(),
+                        user.getClass().getSimpleName().toUpperCase()));
     }
-
 }
