@@ -1,7 +1,7 @@
 package it.unina.dietiestates25.listing.port.out;
 
-import it.unina.dietiestates25.model.BuildingListing;
-import it.unina.dietiestates25.model.ListingType;
+import it.unina.dietiestates25.listing.model.listing.BuildingListing;
+import it.unina.dietiestates25.listing.model.ListingType;
 import org.locationtech.jts.geom.Point;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

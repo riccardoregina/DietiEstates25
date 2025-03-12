@@ -1,14 +1,18 @@
 package it.unina.dietiestates25.listing.port.in;
 
+import it.unina.dietiestates25.agency.model.Admin;
+import it.unina.dietiestates25.agency.model.Agent;
 import it.unina.dietiestates25.agency.port.in.AgencyService;
+import it.unina.dietiestates25.auth.model.User;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.BuildingListingDto;
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.GarageListingDto;
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.HouseListingDto;
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.LandListingDto;
+import it.unina.dietiestates25.listing.model.listing.*;
+import it.unina.dietiestates25.listing.model.search.*;
 import it.unina.dietiestates25.listing.port.out.*;
-import it.unina.dietiestates25.model.*;
 import it.unina.dietiestates25.notification.port.in.NotificationService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -5,7 +5,7 @@ import it.unina.dietiestates25.auth.infrastructure.adapter.in.dto.LogInResponse;
 import it.unina.dietiestates25.auth.infrastructure.util.JwtUtil;
 import it.unina.dietiestates25.auth.port.in.UserService;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
-import it.unina.dietiestates25.model.User;
+import it.unina.dietiestates25.auth.model.User;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

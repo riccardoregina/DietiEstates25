@@ -1,6 +1,6 @@
 package it.unina.dietiestates25.auth.port.out;
 
-import it.unina.dietiestates25.model.User;
+import it.unina.dietiestates25.auth.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

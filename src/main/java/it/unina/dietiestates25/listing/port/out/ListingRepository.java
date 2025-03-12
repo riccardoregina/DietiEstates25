@@ -1,6 +1,6 @@
 package it.unina.dietiestates25.listing.port.out;
 
-import it.unina.dietiestates25.model.Listing;
+import it.unina.dietiestates25.listing.model.listing.Listing;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

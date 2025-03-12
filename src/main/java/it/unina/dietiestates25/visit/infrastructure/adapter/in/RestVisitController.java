@@ -2,7 +2,7 @@ package it.unina.dietiestates25.visit.infrastructure.adapter.in;
 
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
-import it.unina.dietiestates25.model.Visit;
+import it.unina.dietiestates25.visit.model.Visit;
 import it.unina.dietiestates25.visit.port.in.VisitService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

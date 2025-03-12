@@ -1,6 +1,6 @@
 package it.unina.dietiestates25.visit.infrastructure.adapter.in.dto;
 
-import it.unina.dietiestates25.model.TimeSlot;
+import it.unina.dietiestates25.visit.model.TimeSlot;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

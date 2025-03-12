@@ -3,7 +3,7 @@ package it.unina.dietiestates25.agentreview.infrastructure.adapter.in;
 import it.unina.dietiestates25.agentreview.infrastructure.adapter.in.dto.AgentReviewDto;
 import it.unina.dietiestates25.agentreview.port.in.AgentReviewService;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
-import it.unina.dietiestates25.model.AgentReview;
+import it.unina.dietiestates25.agentreview.model.AgentReview;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

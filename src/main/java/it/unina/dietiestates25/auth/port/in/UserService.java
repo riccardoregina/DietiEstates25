@@ -1,7 +1,7 @@
 package it.unina.dietiestates25.auth.port.in;
 
 import it.unina.dietiestates25.exception.EntityNotExistsException;
-import it.unina.dietiestates25.model.User;
+import it.unina.dietiestates25.auth.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import it.unina.dietiestates25.auth.port.out.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;

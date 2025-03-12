@@ -1,7 +1,16 @@
 package it.unina.dietiestates25.notification.port.in;
 
-import it.unina.dietiestates25.model.*;
+import it.unina.dietiestates25.agency.model.Agent;
+import it.unina.dietiestates25.auth.model.User;
+import it.unina.dietiestates25.customer.model.Customer;
+import it.unina.dietiestates25.listing.model.listing.Listing;
+import it.unina.dietiestates25.notification.model.ListingNotification;
+import it.unina.dietiestates25.notification.model.Notification;
+import it.unina.dietiestates25.notification.model.VisitRequestNotification;
+import it.unina.dietiestates25.notification.model.VisitResponseNotification;
 import it.unina.dietiestates25.notification.port.out.NotificationRepository;
+import it.unina.dietiestates25.visit.model.Visit;
+import it.unina.dietiestates25.visit.model.VisitRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;

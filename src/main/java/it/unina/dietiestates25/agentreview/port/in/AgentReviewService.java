@@ -5,9 +5,9 @@ import it.unina.dietiestates25.agentreview.infrastructure.adapter.in.dto.AgentRe
 import it.unina.dietiestates25.agentreview.port.out.AgentReviewRepository;
 import it.unina.dietiestates25.customer.port.in.CustomerService;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
-import it.unina.dietiestates25.model.Agent;
-import it.unina.dietiestates25.model.AgentReview;
-import it.unina.dietiestates25.model.Customer;
+import it.unina.dietiestates25.agency.model.Agent;
+import it.unina.dietiestates25.agentreview.model.AgentReview;
+import it.unina.dietiestates25.customer.model.Customer;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 

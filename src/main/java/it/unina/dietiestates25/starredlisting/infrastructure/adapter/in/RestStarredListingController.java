@@ -2,7 +2,7 @@ package it.unina.dietiestates25.starredlisting.infrastructure.adapter.in;
 
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
-import it.unina.dietiestates25.model.Listing;
+import it.unina.dietiestates25.listing.model.listing.Listing;
 import it.unina.dietiestates25.starredlisting.port.in.StarredListingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

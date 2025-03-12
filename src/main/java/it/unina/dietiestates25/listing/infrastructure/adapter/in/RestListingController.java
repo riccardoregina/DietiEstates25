@@ -1,5 +1,6 @@
 package it.unina.dietiestates25.listing.infrastructure.adapter.in;
 
+import it.unina.dietiestates25.auth.model.User;
 import it.unina.dietiestates25.auth.port.in.UserService;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
@@ -7,8 +8,14 @@ import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.BuildingLis
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.GarageListingDto;
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.HouseListingDto;
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.LandListingDto;
+import it.unina.dietiestates25.listing.model.EnergyClass;
+import it.unina.dietiestates25.listing.model.ListingType;
+import it.unina.dietiestates25.listing.model.listing.*;
+import it.unina.dietiestates25.listing.model.search.BuildingSearch;
+import it.unina.dietiestates25.listing.model.search.GarageSearch;
+import it.unina.dietiestates25.listing.model.search.HouseSearch;
+import it.unina.dietiestates25.listing.model.search.LandSearch;
 import it.unina.dietiestates25.listing.port.in.ListingService;
-import it.unina.dietiestates25.model.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.PageRequest;
@@ -39,7 +46,7 @@ public class RestListingController {
     @PostMapping("/houses")
     @PreAuthorize("hasRole('AGENT')")
     public ResponseEntity<HouseListing> createHouseListing(@Valid @RequestBody HouseListingDto houseListingDto,
-                                                 @AuthenticationPrincipal UserDetails userDetails)
+                                                           @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException {
         HouseListing houseListing = listingService.createHouseListing(houseListingDto, userDetails.getUsername());
         return ResponseEntity.created(URI.create("/api/listings/houses" + houseListing.getId())).body(houseListing);
@@ -48,7 +55,7 @@ public class RestListingController {
     @PostMapping("/garages")
     @PreAuthorize("hasRole('AGENT')")
     public ResponseEntity<GarageListing> createGarageListing(@Valid @RequestBody GarageListingDto garageListingDto,
-                                                                     @AuthenticationPrincipal UserDetails userDetails)
+                                                             @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException {
         GarageListing garageListing = listingService.createGarageListing(garageListingDto, userDetails.getUsername());
         return ResponseEntity.created(URI.create("/api/listings/garages" + garageListing.getId())).body(garageListing);
@@ -66,7 +73,7 @@ public class RestListingController {
     @PostMapping("/buildings")
     @PreAuthorize("hasRole('AGENT')")
     public ResponseEntity<BuildingListing> createBuildingListing(@Valid @RequestBody BuildingListingDto buildingListingDto,
-                                                               @AuthenticationPrincipal UserDetails userDetails)
+                                                                 @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException {
         BuildingListing buildingListing = listingService.createBuildingListing(buildingListingDto, userDetails.getUsername());
         return ResponseEntity.created(URI.create("/api/listings/buildings" + buildingListing.getId())).body(buildingListing);

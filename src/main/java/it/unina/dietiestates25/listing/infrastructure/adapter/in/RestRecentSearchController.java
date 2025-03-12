@@ -1,10 +1,11 @@
 package it.unina.dietiestates25.listing.infrastructure.adapter.in;
 
+import it.unina.dietiestates25.auth.model.User;
 import it.unina.dietiestates25.auth.port.in.UserService;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
+import it.unina.dietiestates25.listing.model.search.*;
 import it.unina.dietiestates25.listing.port.in.RecentSearchService;
-import it.unina.dietiestates25.model.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;

@@ -1,8 +1,8 @@
 package it.unina.dietiestates25.listing.port.out;
 
-import it.unina.dietiestates25.model.ListingType;
-import it.unina.dietiestates25.model.Search;
-import it.unina.dietiestates25.model.User;
+import it.unina.dietiestates25.listing.model.ListingType;
+import it.unina.dietiestates25.listing.model.search.Search;
+import it.unina.dietiestates25.auth.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

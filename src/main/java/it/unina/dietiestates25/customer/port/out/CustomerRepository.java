@@ -1,7 +1,7 @@
 package it.unina.dietiestates25.customer.port.out;
 
 import it.unina.dietiestates25.auth.port.out.UserRepository;
-import it.unina.dietiestates25.model.Customer;
+import it.unina.dietiestates25.customer.model.Customer;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

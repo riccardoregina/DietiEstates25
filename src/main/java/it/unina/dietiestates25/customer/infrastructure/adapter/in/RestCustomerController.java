@@ -5,7 +5,7 @@ import it.unina.dietiestates25.customer.port.in.CustomerService;
 import it.unina.dietiestates25.exception.EntityAlreadyExistsException;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
-import it.unina.dietiestates25.model.Customer;
+import it.unina.dietiestates25.customer.model.Customer;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

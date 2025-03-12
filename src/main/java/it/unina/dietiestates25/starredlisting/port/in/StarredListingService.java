@@ -4,8 +4,8 @@ import it.unina.dietiestates25.auth.port.in.UserService;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
 import it.unina.dietiestates25.listing.port.in.ListingService;
-import it.unina.dietiestates25.model.Listing;
-import it.unina.dietiestates25.model.User;
+import it.unina.dietiestates25.listing.model.listing.Listing;
+import it.unina.dietiestates25.auth.model.User;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

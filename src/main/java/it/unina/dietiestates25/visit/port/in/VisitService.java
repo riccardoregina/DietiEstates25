@@ -1,13 +1,17 @@
 package it.unina.dietiestates25.visit.port.in;
 
+import it.unina.dietiestates25.agency.model.Agent;
 import it.unina.dietiestates25.agency.port.in.AgencyService;
+import it.unina.dietiestates25.customer.model.Customer;
 import it.unina.dietiestates25.customer.port.in.CustomerService;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
+import it.unina.dietiestates25.listing.model.listing.Listing;
 import it.unina.dietiestates25.listing.port.in.ListingService;
-import it.unina.dietiestates25.model.*;
 import it.unina.dietiestates25.notification.port.in.NotificationService;
 import it.unina.dietiestates25.visit.infrastructure.adapter.in.dto.VisitRequestDto;
+import it.unina.dietiestates25.visit.model.Visit;
+import it.unina.dietiestates25.visit.model.VisitRequest;
 import it.unina.dietiestates25.visit.port.out.VisitRepository;
 import it.unina.dietiestates25.visit.port.out.VisitRequestRepository;
 import jakarta.validation.Valid;

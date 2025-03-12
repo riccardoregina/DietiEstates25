@@ -1,7 +1,7 @@
 package it.unina.dietiestates25.agency.port.out;
 
-import it.unina.dietiestates25.model.Admin;
-import it.unina.dietiestates25.model.Agency;
+import it.unina.dietiestates25.agency.model.Admin;
+import it.unina.dietiestates25.agency.model.Agency;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
