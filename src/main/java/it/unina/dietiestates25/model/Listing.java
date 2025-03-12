@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 @Entity
 @Table(name = "listing")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "category", discriminatorType = DiscriminatorType.STRING)
 public class Listing {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -30,6 +31,12 @@ public class Listing {
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Agent agent;
+
+    @Column(
+            name = "category",
+            insertable = false,
+            updatable = false)
+    private String category;
 
     @Column(
             name = "title",
@@ -242,26 +249,15 @@ public class Listing {
         return this.photos;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
     public static boolean isValidSortingCriteria(String sortBy, Class<? extends Listing> listingClass) {
         List<String> criteria = SORTING_CRITERIA_MAP.get(listingClass);
         return criteria != null && criteria.contains(sortBy);
     }
 
-    @Override
-    public String toString() {
-        return "Listing{" +
-                "id='" + id + '\'' +
-                ", agent=" + agent +
-                ", title='" + title + '\'' +
-                ", price=" + price +
-                ", description='" + description + '\'' +
-                ", squareMeters=" + squareMeters +
-                ", listingType=" + listingType +
-                ", location=" + location +
-                ", otherFeatures=" + otherFeatures +
-                ", timestamp=" + timestamp +
-                ", pricePerSquareMeter=" + pricePerSquareMeter +
-                '}';
-    }
+
 }
 
