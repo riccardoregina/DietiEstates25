@@ -12,7 +12,6 @@ public class ListingNotification extends Notification {
     @ManyToOne
     @JoinColumn(
             name = "listing_id",
-            nullable = false,
             referencedColumnName = "id",
             foreignKey = @ForeignKey(
                     name = "notification_listing_fk"
