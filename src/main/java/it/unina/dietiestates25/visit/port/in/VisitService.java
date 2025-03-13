@@ -89,12 +89,12 @@ public class VisitService {
                 agentMsg);
     }
 
-    public List<Visit> getVisits(String agentId, int year, int month, UserDetails userDetails)
+    public List<Visit> getVisits(String agentId, LocalDateTime start, LocalDateTime end, UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
         Agent agent = agencyService.getAgentByEmail(userDetails.getUsername());
         if (!agent.getId().equals(agentId)) {
             throw new ForbiddenException("Agent can only access his own visits");
         }
-        return visitRepository.findAllByAgentIdAndMonth(agentId, year, month);
+        return visitRepository.findAllBetweenStartAndEndByAgentId(agentId, start, end);
     }
 }
