@@ -1,14 +1,26 @@
-User:
+EnergyClass:
+  type: string
+  enum: [ 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G' ]
+
+Admin:
   type: object
   properties:
     firstName:
       type: string
     lastName:
       type: string
-    dob:
-      type: string
     email:
       type: string
+    dob:
+      type: string
+      format: date
+    passwordHash:
+      type: string
+    agency:
+      $ref: '#/Agency'
+    profilePicUrl:
+      type: string
+
 Agency:
   type: object
   properties:
@@ -18,6 +30,7 @@ Agency:
       type: string
     partitaIva:
       type: string
+
 Agent:
   type: object
   properties:
@@ -25,82 +38,132 @@ Agent:
       type: string
     lastName:
       type: string
+    email:
+      type: string
     dob:
+      type: string
+      format: date
+    passwordHash:
+      type: string
+    agency:
+      $ref: '#/Agency'
+    manager:
+      $ref: '#/Manager'
+    profilePicUrl:
+      type: string
+    bio:
+      type: string
+
+Manager:
+  type: object
+  properties:
+    firstName:
+      type: string
+    lastName:
       type: string
     email:
       type: string
+    dob:
+      type: string
+      format: date
+    passwordHash:
+      type: string
     agency:
-      $ref: './schemas.yaml#/Agency'
-    manager:
-      $ref: './schemas.yaml#/User'
-GarageListing:
+      $ref: '#/Agency'
+    profilePicUrl:
+      type: string
+
+AgentReview:
   type: object
   properties:
     id:
       type: string
-    title:
-      type: string
-    price:
+    customer:
+      $ref: '#/Customer'
+    agent:
+      $ref: '#/Agent'
+    value:
       type: integer
-    description:
+      minimum: 1
+      maximum: 5
+    comment:
       type: string
-    squareMeters:
-      type: integer
-    listingType:
+    timestamp:
       type: string
-      enum: [ 'BUY', 'RENT' ]
-    locationDto:
-      $ref: './dtos.yaml#/LocationDto'
-    floor:
-      type: integer
-    otherFeatures:
+      format: date-time
+
+User:
+  type: object
+  properties:
+    id:
+      type: string
+    firstName:
+      type: string
+    lastName:
+      type: string
+    email:
+      type: string
+    dob:
+      type: string
+      format: date
+    passwordHash:
+      type: string
+    profilePicUrl:
+      type: string
+    notificationSettings:
+      $ref: '#/NotificationSettings'
+    starredListings:
+      type: array
+      items:
+        $ref: '#/Listing'
+
+Customer:
+  type: object
+  properties:
+    firstName:
+      type: string
+    lastName:
+      type: string
+    email:
+      type: string
+    dob:
+      type: string
+      format: date
+    passwordHash:
+      type: string
+    profilePicUrl:
+      type: string
+    notificationSettings:
       type: object
-      example: {
-        "garden": true,
-        "furnished": true
-      }
+      properties:
+        emailNotifications:
+          type: boolean
+        smsNotifications:
+          type: boolean
+        pushNotifications:
+          type: boolean
+  
 BuildingListing:
   type: object
+  allOf:
+    - $ref: '#/Listing'
   properties:
-    id:
-      type: string
-    title:
-      type: string
-    price:
+    elevator:
+      type: boolean
+
+GarageListing:
+  type: object
+  allOf:
+    - $ref: '#/Listing'
+  properties:
+    floor:
       type: integer
-    description:
-      type: string
-    squareMeters:
-      type: integer
-    listingType:
-      type: string
-      enum: [ 'BUY', 'RENT' ]
-    locationDto:
-      $ref: './dtos.yaml#/LocationDto'
-    otherFeatures:
-      type: object
-      example: {
-        "garden": true,
-        "furnished": true
-      }
+
 HouseListing:
   type: object
+  allOf:
+    - $ref: '#/Listing'
   properties:
-    id:
-      type: string
-    title:
-      type: string
-    price:
-      type: integer
-    description:
-      type: string
-    squareMeters:
-      type: integer
-    listingType:
-      type: string
-      enum: [ 'BUY', 'RENT' ]
-    locationDto:
-      $ref: './dtos.yaml#/LocationDto'
     nRooms:
       type: integer
     nBathrooms:
@@ -109,16 +172,27 @@ HouseListing:
       type: integer
     energyClass:
       type: string
-      enum: [ 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G' ]
-    otherFeatures:
-      type: object
-      example: {
-        "garden": true,
-        "furnished": true
-      }
+    elevator:
+      type: boolean
+
 LandListing:
   type: object
+  allOf:
+    - $ref: '#/Listing'
   properties:
+    building:
+      type: boolean
+
+Listing:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    agent:
+      $ref: '#/Agent'
+    category:
+      type: string
     title:
       type: string
     price:
@@ -129,14 +203,324 @@ LandListing:
       type: integer
     listingType:
       type: string
-      enum: [ 'BUY', 'RENT' ]
-    locationDto:
-      $ref: './dtos.yaml#/LocationDto'
+    location:
+      $ref: '#/Location'
+    otherFeatures:
+      type: array
+      items:
+        type: string
+    timestamp:
+      type: string
+      format: date-time
+    pricePerSquareMeter:
+      type: integer
+    photos:
+      type: array
+      items:
+        type: string
+
+Location:
+  type: object
+  properties:
+    region:
+      type: string
+    city:
+      type: string
+    address:
+      type: string
+    coordinates:
+      type: object
+      properties:
+        longitude:
+          type: number
+          format: double
+        latitude:
+          type: number
+          format: double
+
+ListingType:
+  type: string
+  enum:
+    - SALE
+    - RENT
+
+BuildingSearch:
+  type: object
+  properties:
+    id:
+      type: string
+    searchType:
+      type: string
+    userId:
+      type: string
+    listingType:
+      type: string
+      enum: [ BUY, RENT ]
+    region:
+      type: string
+    city:
+      type: string
+    centerCoordinates:
+      type: string
+    radius:
+      type: integer
+    priceMin:
+      type: integer
+    priceMax:
+      type: integer
+    squareMetersMin:
+      type: integer
+    squareMetersMax:
+      type: integer
+    agentId:
+      type: string
+    timestamp:
+      type: string
+      format: date-time
+    elevator:
+      type: boolean
+
+GarageSearch:
+  type: object
+  properties:
+    id:
+      type: string
+    searchType:
+      type: string
+    userId:
+      type: string
+    listingType:
+      type: string
+      enum: [ BUY, RENT ]
+    region:
+      type: string
+    city:
+      type: string
+    centerCoordinates:
+      type: string
+    radius:
+      type: integer
+    priceMin:
+      type: integer
+    priceMax:
+      type: integer
+    squareMetersMin:
+      type: integer
+    squareMetersMax:
+      type: integer
+    agentId:
+      type: string
+    timestamp:
+      type: string
+      format: date-time
+    floorMin:
+      type: integer
+    floorMax:
+      type: integer
+
+HouseSearch:
+  type: object
+  properties:
+    id:
+      type: string
+    searchType:
+      type: string
+    userId:
+      type: string
+    listingType:
+      type: string
+      enum: [ BUY, RENT ]
+    region:
+      type: string
+    city:
+      type: string
+    centerCoordinates:
+      type: string
+    radius:
+      type: integer
+    priceMin:
+      type: integer
+    priceMax:
+      type: integer
+    squareMetersMin:
+      type: integer
+    squareMetersMax:
+      type: integer
+    agentId:
+      type: string
+    timestamp:
+      type: string
+      format: date-time
+    nRoomsMin:
+      type: integer
+    nRoomsMax:
+      type: integer
+    nBathroomsMin:
+      type: integer
+    nBathroomsMax:
+      type: integer
+    floorMin:
+      type: integer
+    floorMax:
+      type: integer
+    energyClassMin:
+      type: string
+      enum: [G, F, E, D, C, B, A1, A2, A3, A4]
+    elevator:
+      type: boolean
+
+LandSearch:
+  type: object
+  properties:
+    id:
+      type: string
+    searchType:
+      type: string
+    userId:
+      type: string
+    listingType:
+      type: string
+      enum: [ BUY, RENT ]
+    region:
+      type: string
+    city:
+      type: string
+    centerCoordinates:
+      type: string
+    radius:
+      type: integer
+    priceMin:
+      type: integer
+    priceMax:
+      type: integer
+    squareMetersMin:
+      type: integer
+    squareMetersMax:
+      type: integer
+    agentId:
+      type: string
+    timestamp:
+      type: string
+      format: date-time
     building:
       type: boolean
-    otherFeatures:
-      type: object
-      example: {
-        "garden": true,
-        "furnished": true
-      }
+
+Search:
+  type: object
+  properties:
+    id:
+      type: string
+    searchType:
+      type: string
+    userId:
+      type: string
+    listingType:
+      type: string
+      enum: [BUY, RENT]
+    region:
+      type: string
+    city:
+      type: string
+    centerCoordinates:
+      type: string
+    radius:
+      type: integer
+    priceMin:
+      type: integer
+    priceMax:
+      type: integer
+    squareMetersMin:
+      type: integer
+    squareMetersMax:
+      type: integer
+    agentId:
+      type: string
+    timestamp:
+      type: string
+      format: date-time
+
+ListingNotification:
+  type: object
+  properties:
+    listingId:
+      type: string
+
+Notification:
+  type: object
+  properties:
+    id:
+      type: string
+    userId:
+      type: string
+    timestamp:
+      type: string
+      format: date-time
+    message:
+      type: string
+    read:
+      type: boolean
+
+NotificationSettings:
+  type: object
+  properties:
+    starredListings:
+      type: boolean
+    visit:
+      type: boolean
+    recommendedListings:
+      type: boolean
+
+VisitRequestNotification:
+  type: object
+  properties:
+    visitRequestId:
+      type: string
+
+VisitResponseNotification:
+  type: object
+  properties:
+    visitId:
+      type: string
+
+TimeSlot:
+  type: object
+  properties:
+    day:
+      type: string
+      format: date
+    start:
+      type: string
+      format: time
+    end:
+      type: string
+      format: time
+
+Visit:
+  type: object
+  properties:
+    id:
+      type: string
+    customerId:
+      type: string
+    listingId:
+      type: string
+    dateTime:
+      type: string
+      format: date-time
+
+VisitRequest:
+  type: object
+  properties:
+    id:
+      type: string
+    timeSlots:
+      type: array
+      items:
+        $ref: '#/TimeSlot'
+    customerId:
+      type: string
+    listingId:
+      type: string
+    timestamp:
+      type: string
+      format: date-time

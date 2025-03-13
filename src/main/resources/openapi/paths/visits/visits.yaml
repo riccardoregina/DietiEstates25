@@ -1,0 +1,66 @@
+get:
+  summary: Get agent visits in a date range
+  description: Retrieves visits for a specific agent within a specified date range. Only users with the AGENT role can access this endpoint.
+  operationId: getVisits
+  security:
+    - bearerAuth: []
+  tags:
+    - Visit
+  parameters:
+    - name: agentId
+      in: query
+      description: ID of the agent whose visits to retrieve
+      required: true
+      schema:
+        type: string
+    - name: start
+      in: query
+      description: Start date and time for the visit range (ISO 8601 format)
+      required: true
+      schema:
+        type: string
+        format: date-time
+        example: "2025-03-13T08:00:00Z"
+    - name: end
+      in: query
+      description: End date and time for the visit range (ISO 8601 format)
+      required: true
+      schema:
+        type: string
+        format: date-time
+        example: "2025-03-13T18:00:00Z"
+  responses:
+    200:
+      description: List of visits retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../components/schemas.yaml#/Visit'
+    400:
+      description: Invalid input parameters
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    401:
+      description: Unauthorized - User is not authenticated
+    403:
+      description: Forbidden - User does not have the AGENT role or is attempting to access another agent's visits
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    404:
+      description: Agent not found
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    500:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'

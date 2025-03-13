@@ -1,0 +1,56 @@
+post:
+  summary: Accept a visit request
+  description: Accepts a visit request and schedules it for a specific date and time. Only users with the AGENT role can accept requests.
+  operationId: acceptVisitRequest
+  security:
+    - bearerAuth: []
+  tags:
+    - Visit request
+  parameters:
+    - name: visit-request-id
+      in: path
+      description: ID of the visit request to accept
+      required: true
+      schema:
+        type: string
+    - name: dateTime
+      in: query
+      description: Date and time when the visit will take place (ISO 8601 format)
+      required: true
+      schema:
+        type: string
+        format: date-time
+        example: "2025-03-20T14:30:00Z"
+  responses:
+    200:
+      description: Visit request accepted successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas.yaml#/Visit'
+    400:
+      description: Invalid input parameters
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    401:
+      description: Unauthorized - User is not authenticated
+    403:
+      description: Forbidden - User does not have the AGENT role or is not the assigned agent for this request
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    404:
+      description: Visit request not found
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    500:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'

@@ -1,0 +1,44 @@
+get:
+  summary: Get user notifications
+  description: Retrieves notifications for a specific user. Users can only access their own notifications.
+  operationId: getNotifications
+  security:
+    - bearerAuth: []
+  tags:
+    - Notifications
+  parameters:
+    - name: userId
+      in: query
+      description: ID of the user whose notifications to retrieve
+      required: true
+      schema:
+        type: string
+  responses:
+    200:
+      description: List of notifications retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas.yaml#/Notification'
+    401:
+      description: Unauthorized - User is not authenticated
+    403:
+      description: Forbidden - User attempting to access another user's notifications
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    404:
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    500:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'

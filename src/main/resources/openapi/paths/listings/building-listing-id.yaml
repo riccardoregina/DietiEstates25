@@ -1,6 +1,6 @@
 put:
   tags:
-    - Update building listing
+    - Building
   operationId: update-building-listing
   security:
     - BearerAuth: []
@@ -24,22 +24,22 @@ put:
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '403':
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '404':
       description: Not found
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '500':
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'

@@ -1,6 +1,6 @@
 get:
   tags:
-    - Get manager
+    - Manager
   description: Only admins can make this request
   operationId: get-manager
   security:
@@ -28,28 +28,28 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '403':
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '404':
       description: Not found
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '500':
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
 put:
   tags:
-    - Update manager
+    - Manager
   operationId: update-manager
   description: Only the admin and the manager himself can make this request
   security:
@@ -79,28 +79,28 @@ put:
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '403':
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '404':
       description: Not found
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '500':
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
 delete:
   tags:
-    - Delete manager
+    - Manager
   operationId: delete-manager
   description: Only admins can make this request
   security:
@@ -124,22 +124,22 @@ delete:
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '403':
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '404':
       description: Not found
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '500':
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'

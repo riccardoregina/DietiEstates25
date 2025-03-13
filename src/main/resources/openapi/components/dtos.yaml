@@ -1,10 +1,35 @@
-LogInRequest:
+AgentDto:
   type: object
   properties:
+    firstName:
+      type: string
+      nullable: false
+    lastName:
+      type: string
+      nullable: false
     email:
       type: string
+      nullable: false
+    dob:
+      type: string
+      format: date
+      nullable: false
     password:
       type: string
+      nullable: false
+    profilePicUrl:
+      type: string
+      nullable: true
+    bio:
+      type: string
+      nullable: true
+  required:
+    - firstName
+    - lastName
+    - email
+    - dob
+    - password
+
 SignUpAgencyRequest:
   type: object
   properties:
@@ -12,16 +37,26 @@ SignUpAgencyRequest:
       type: string
     lastName:
       type: string
-    dob:
-      type: string
     email:
       type: string
+    dob:
+      type: string
+      format: date
     tempPassword:
       type: string
     ragioneSociale:
       type: string
     partitaIva:
       type: string
+
+SignUpAgencyResponse:
+  type: object
+  properties:
+    admin:
+      $ref: "schemas.yaml#/Admin"
+    agency:
+      $ref: "schemas.yaml#/Agency"
+
 UserDto:
   type: object
   properties:
@@ -29,126 +64,48 @@ UserDto:
       type: string
     lastName:
       type: string
+    email:
+      type: string
     dob:
       type: string
+      format: date
+    password:
+      type: string
+    profilePicUrl:
+      type: string
+
+AgentReviewDto:
+  type: object
+  properties:
+    agentId:
+      type: string
+    value:
+      type: integer
+      minimum: 1
+      maximum: 5
+    comment:
+      type: string
+
+LogInRequest:
+  type: object
+  properties:
     email:
       type: string
     password:
       type: string
-HouseListingDto:
+
+LogInResponse:
   type: object
   properties:
-    title:
+    email:
       type: string
-    price:
-      type: integer
-    description:
+    token:
       type: string
-    squareMeters:
-      type: integer
-    listingType:
+    id:
       type: string
-      enum: ['BUY', 'RENT']
-    locationDto:
-      $ref: '#/LocationDto'
-    nRooms:
-      type: integer
-    nBathrooms:
-      type: integer
-    floor:
-      type: integer
-    energyClass:
+    role:
       type: string
-      enum: [ 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G' ]
-    otherFeatures:
-      type: object
-      example: {
-        "garden": true,
-        "furnished": true
-      }
-BuildingListingDto:
-  type: object
-  properties:
-    title:
-      type: string
-    price:
-      type: integer
-    description:
-      type: string
-    squareMeters:
-      type: integer
-    listingType:
-      type: string
-      enum: [ 'BUY', 'RENT' ]
-    locationDto:
-      $ref: '#/LocationDto'
-    otherFeatures:
-      type: object
-      example: {
-        "garden": true,
-        "furnished": true
-      }
-LandListingDto:
-  type: object
-  properties:
-    title:
-      type: string
-    price:
-      type: integer
-    description:
-      type: string
-    squareMeters:
-      type: integer
-    listingType:
-      type: string
-      enum: [ 'BUY', 'RENT' ]
-    locationDto:
-      $ref: '#/LocationDto'
-    building:
-      type: boolean
-    otherFeatures:
-      type: object
-      example: {
-        "garden": true,
-        "furnished": true
-      }
-GarageListingDto:
-  type: object
-  properties:
-    title:
-      type: string
-    price:
-      type: integer
-    description:
-      type: string
-    squareMeters:
-      type: integer
-    listingType:
-      type: string
-      enum: [ 'BUY', 'RENT' ]
-    locationDto:
-      $ref: '#/LocationDto'
-    floor:
-      type: integer
-    otherFeatures:
-      type: object
-      example: {
-        "garden": true,
-        "furnished": true
-      }
-LocationDto:
-  type: object
-  properties:
-    region:
-      type: string
-    city:
-      type: string
-    address:
-      type: string
-    longitude:
-      type: number
-    latitude:
-      type: number
+
 HouseSearchDto:
   type: object
   properties:
@@ -190,3 +147,168 @@ HouseSearchDto:
       enum: [ 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G' ]
     agentId:
       type: string
+
+BuildingListingDto:
+  type: object
+  properties:
+    title:
+      type: string
+    price:
+      type: integer
+      minimum: 1
+    description:
+      type: string
+    squareMeters:
+      type: integer
+      minimum: 1
+    elevator:
+      type: boolean
+    listingType:
+      type: string
+      enum: [ 'BUY', 'RENT' ]
+    locationDto:
+      $ref: '#/LocationDto'
+    otherFeatures:
+      type: array
+      items:
+        type: string
+    photos:
+      type: array
+      items:
+        type: string
+
+GarageListingDto:
+  type: object
+  properties:
+    title:
+      type: string
+    price:
+      type: integer
+      minimum: 1
+    description:
+      type: string
+    squareMeters:
+      type: integer
+      minimum: 1
+    listingType:
+      type: string
+      enum: [ 'BUY', 'RENT' ]
+    locationDto:
+      $ref: '#/LocationDto'
+    floor:
+      type: integer
+    otherFeatures:
+      type: array
+      items:
+        type: string
+    photos:
+      type: array
+      items:
+        type: string
+
+HouseListingDto:
+  type: object
+  properties:
+    title:
+      type: string
+    price:
+      type: integer
+      minimum: 1
+    description:
+      type: string
+    squareMeters:
+      type: integer
+      minimum: 1
+    listingType:
+      type: string
+      enum: [ 'BUY', 'RENT' ]
+    locationDto:
+      $ref: '#/LocationDto'
+    nRooms:
+      type: integer
+      minimum: 1
+    nBathrooms:
+      type: integer
+      minimum: 1
+    floor:
+      type: integer
+    elevator:
+      type: boolean
+    energyClass:
+      $ref: "schemas.yaml#/EnergyClass"
+    otherFeatures:
+      type: array
+      items:
+        type: string
+    photos:
+      type: array
+      items:
+        type: string
+
+LandListingDto:
+  type: object
+  properties:
+    title:
+      type: string
+    price:
+      type: integer
+      minimum: 1
+    description:
+      type: string
+    squareMeters:
+      type: integer
+      minimum: 1
+    listingType:
+      type: string
+      enum: [ 'BUY', 'RENT' ]
+    locationDto:
+      $ref: '#/LocationDto'
+    building:
+      type: boolean
+    otherFeatures:
+      type: array
+      items:
+        type: string
+    photos:
+      type: array
+      items:
+        type: string
+
+LocationDto:
+  type: object
+  properties:
+    region:
+      type: string
+    city:
+      type: string
+    address:
+      type: string
+    longitude:
+      type: number
+    latitude:
+      type: number
+
+ErrorDetails:
+  type: object
+  properties:
+    timestamp:
+      type: string
+    status:
+      type: integer
+    error:
+      type: string
+    message:
+      type: string
+    path:
+      type: string
+
+VisitRequestDto:
+  type: object
+  properties:
+    listingId:
+      type: string
+      nullable: false
+    timeSlots:
+      type: array
+      items:
+        $ref: '../components/schemas.yaml#/TimeSlot'

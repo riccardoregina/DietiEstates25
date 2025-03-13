@@ -1,6 +1,6 @@
 post:
   tags:
-    - Customer sign-up
+    - Customer
   operationId: customer-signup
   requestBody:
     content:
@@ -20,10 +20,10 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../components/responses.yaml#/ErrorDetails'
+            $ref: '../components/dtos.yaml#/ErrorDetails'
     '500':
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '../components/responses.yaml#/ErrorDetails'
+            $ref: '../components/dtos.yaml#/ErrorDetails'

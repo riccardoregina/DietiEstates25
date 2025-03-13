@@ -35,13 +35,29 @@ paths:
     $ref: './paths/listings/building-listing-id.yaml'
   /api/listings/lands/{listing-id}:
     $ref: './paths/listings/land-listing-id.yaml'
+  /api/recent-searches/{user-id}:
+    $ref: './paths/recent-searches.yaml'
+  /api/agent-review:
+    $ref: './paths/agent-review.yaml'
+  /api/agent-review/{agent-id}:
+    $ref: './paths/agent-review-agent-id.yaml'
+  /api/notifications:
+    $ref: './paths/notifications.yaml'
+  /api/starred-listings:
+    $ref: './paths/starred-listings.yaml'
+  /api/visits:
+    $ref: './paths/visits/visits.yaml'
+  /api/visit-requests:
+    $ref: './paths/visits/visit-requests.yaml'
+  /api/visit-requests/{visit-request-id}/accept:
+    $ref: './paths/visits/visit-requests-id-accept.yaml'
+  /api/visit-requests/{visit-request-id}/reject:
+    $ref: './paths/visits/visit-requests-id-reject.yaml'
+
+
 components:
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-  schemas:
-    $ref: './components/schemas.yaml'
-  responses:
-    $ref: './components/responses.yaml'

@@ -1,6 +1,6 @@
 post:
   tags:
-    - Log-in
+    - Login
   operationId: login
   requestBody:
     content:
@@ -14,16 +14,16 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../components/responses.yaml#/LoginResponse'
+            $ref: '../components/dtos.yaml#/LogInResponse'
     '401':
       description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: '../components/responses.yaml#/ErrorDetails'
+            $ref: '../components/dtos.yaml#/ErrorDetails'
     '500':
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '../components/responses.yaml#/ErrorDetails'
+            $ref: '../components/dtos.yaml#/ErrorDetails'

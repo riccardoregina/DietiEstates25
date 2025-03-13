@@ -1,9 +1,10 @@
 put:
   tags:
-    - Update house listing
-  operationId: update-house-listing
+    - House
+  summary: Update a house listing
+  operationId: updateHouseListing
   security:
-    - BearerAuth: []
+    - bearerAuth: []
   parameters:
     - name: listing-id
       in: path
@@ -11,11 +12,11 @@ put:
       schema:
         type: string
   requestBody:
+    required: true
     content:
       application/json:
         schema:
           $ref: '../../components/dtos.yaml#/HouseListingDto'
-    required: true
   responses:
     '204':
       description: Ok
@@ -24,22 +25,22 @@ put:
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '403':
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '404':
       description: Not found
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '500':
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
