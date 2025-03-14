@@ -450,6 +450,9 @@ Notification:
   properties:
     id:
       type: string
+    type:
+      type: string
+      enum: [LISTING, VISIT_REQUEST, VISIT_RESPONSE]
     userId:
       type: string
     timestamp:

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "notification_type", discriminatorType = DiscriminatorType.STRING)
 public class Notification {
 
     @Id
@@ -27,6 +28,12 @@ public class Notification {
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
+    @Column(
+            name = "notification_type",
+            insertable = false,
+            updatable = false)
+    private String type;
 
     @Column(
             name = "timestamp",
@@ -71,5 +78,9 @@ public class Notification {
 
     public boolean isRead() {
         return read;
+    }
+
+    public String getType() {
+        return type;
     }
 }
