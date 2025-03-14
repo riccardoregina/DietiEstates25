@@ -308,7 +308,7 @@ VisitRequestDto:
     listingId:
       type: string
       nullable: false
-    timeSlots:
+    availabilities:
       type: array
       items:
-        $ref: '../components/schemas.yaml#/TimeSlot'
+        $ref: '../components/schemas.yaml#/Availability'

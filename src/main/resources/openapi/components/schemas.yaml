@@ -486,17 +486,19 @@ VisitResponseNotification:
       type: string
 
 TimeSlot:
+  type: string
+  enum: ["08-10", "10-12", "12-14", "14-16", "16-18", "18-20"]
+
+Availability:
   type: object
   properties:
     day:
       type: string
       format: date
-    start:
-      type: string
-      format: time
-    end:
-      type: string
-      format: time
+    timeSlots:
+      type: array
+      items:
+        $ref: '#/TimeSlot'
 
 Visit:
   type: object
@@ -516,10 +518,10 @@ VisitRequest:
   properties:
     id:
       type: string
-    timeSlots:
+    availabilities:
       type: array
       items:
-        $ref: '#/TimeSlot'
+        $ref: '#/Availability'
     customerId:
       type: string
     listingId:

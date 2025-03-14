@@ -14,7 +14,6 @@ import it.unina.dietiestates25.visit.model.Visit;
 import it.unina.dietiestates25.visit.model.VisitRequest;
 import it.unina.dietiestates25.visit.port.out.VisitRepository;
 import it.unina.dietiestates25.visit.port.out.VisitRequestRepository;
-import jakarta.validation.Valid;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -45,13 +44,13 @@ public class VisitService {
     }
 
 
-    public VisitRequest createVisitRequest(@Valid VisitRequestDto visitRequestDto,
+    public VisitRequest createVisitRequest(VisitRequestDto visitRequestDto,
                                            UserDetails userDetails)
             throws EntityNotExistsException {
         Customer customer = customerService.getCustomer(userDetails.getUsername());
         Listing listing = listingService.getListing(visitRequestDto.listingId());
         VisitRequest visitRequest = visitRequestRepository
-                .save(new VisitRequest(customer, listing, visitRequestDto.timeSlots()));
+                .save(new VisitRequest(customer, listing, visitRequestDto.availabilities()));
         notificationService.notifyAgentOfVisitRequest(listing.getAgent(), visitRequest);
         return visitRequest;
     }

@@ -1,6 +1,6 @@
 package it.unina.dietiestates25.visit.infrastructure.adapter.in.dto;
 
-import it.unina.dietiestates25.visit.model.TimeSlot;
+import it.unina.dietiestates25.visit.model.Availability;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,6 +11,6 @@ public record VisitRequestDto(
         @NotBlank
         String listingId,
 
-        List<TimeSlot> timeSlots
+        List<Availability> availabilities
 ) {
 }
