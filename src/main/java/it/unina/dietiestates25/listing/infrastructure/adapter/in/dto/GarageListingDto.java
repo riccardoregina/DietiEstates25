@@ -31,8 +31,6 @@ public record GarageListingDto(
         @NotNull
         Integer floor,
 
-        List<String> otherFeatures,
-
-        List<String> photos
+        List<String> otherFeatures
 ) {
 }

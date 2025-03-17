@@ -24,7 +24,7 @@ import java.util.List;
 
 @Service
 public class ListingService {
-    public static final String ENTITY_NOT_EXIST_LISTING_MSG = "Listing does not exist, id: %s";
+    private static final String ENTITY_NOT_EXIST_LISTING_MSG = "Listing does not exist, id: %s";
     private final AgencyService agencyService;
     private final NotificationService notificationService;
     private final ListingRepository<Listing> listingRepository;
@@ -78,7 +78,6 @@ public class ListingService {
                 houseListingDto.floor(),
                 houseListingDto.energyClass(),
                 houseListingDto.otherFeatures(),
-                houseListingDto.photos(),
                 houseListingDto.elevator()
         ));
 
@@ -104,8 +103,7 @@ public class ListingService {
                         Location.createPoint(garageListingDto.locationDto().longitude(),
                                 garageListingDto.locationDto().latitude())),
                 garageListingDto.floor(),
-                garageListingDto.otherFeatures(),
-                garageListingDto.photos()
+                garageListingDto.otherFeatures()
         ));
 
         notifyUsers(listing, GarageSearch.class);
@@ -130,8 +128,7 @@ public class ListingService {
                         Location.createPoint(landListingDto.locationDto().longitude(),
                                 landListingDto.locationDto().latitude())),
                 landListingDto.building(),
-                landListingDto.otherFeatures(),
-                landListingDto.photos()
+                landListingDto.otherFeatures()
         ));
 
         notifyUsers(listing, LandSearch.class);
@@ -156,7 +153,6 @@ public class ListingService {
                         Location.createPoint(buildingListingDto.locationDto().longitude(),
                                 buildingListingDto.locationDto().latitude())),
                 buildingListingDto.otherFeatures(),
-                buildingListingDto.photos(),
                 buildingListingDto.elevator()
         ));
 
@@ -195,7 +191,6 @@ public class ListingService {
         houseListing.setFloor(houseListingDto.floor());
         houseListing.setEnergyClass(houseListingDto.energyClass());
         houseListing.setOtherFeatures(houseListingDto.otherFeatures());
-        houseListing.setPhotos(houseListingDto.photos());
 
         notificationService.notifyUsersOfListingUpdate(houseListing);
     }
@@ -221,7 +216,6 @@ public class ListingService {
                         garageListingDto.locationDto().latitude())));
         garageListing.setFloor(garageListingDto.floor());
         garageListing.setOtherFeatures(garageListingDto.otherFeatures());
-        garageListing.setPhotos(garageListingDto.photos());
 
         notificationService.notifyUsersOfListingUpdate(garageListing);
     }
@@ -247,7 +241,6 @@ public class ListingService {
                         landListingDto.locationDto().latitude())));
         landListing.setBuilding(landListingDto.building());
         landListing.setOtherFeatures(landListingDto.otherFeatures());
-        landListing.setPhotos(landListingDto.photos());
 
         notificationService.notifyUsersOfListingUpdate(landListing);
     }
@@ -272,7 +265,6 @@ public class ListingService {
                 Location.createPoint(buildingListingDto.locationDto().longitude(),
                         buildingListingDto.locationDto().latitude())));
         buildingListing.setOtherFeatures(buildingListingDto.otherFeatures());
-        buildingListing.setPhotos(buildingListingDto.photos());
 
         notificationService.notifyUsersOfListingUpdate(buildingListing);
     }

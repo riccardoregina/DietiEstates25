@@ -27,7 +27,6 @@ public class BuildingListing extends Listing {
                            ListingType listingType,
                            Location location,
                            List<String> otherFeatures,
-                           List<String> photos,
                            boolean elevator) {
         super(agent,
                 title,
@@ -36,8 +35,7 @@ public class BuildingListing extends Listing {
                 squareMeters,
                 listingType,
                 location,
-                otherFeatures,
-                photos);
+                otherFeatures);
         this.elevator = elevator;
     }
 
