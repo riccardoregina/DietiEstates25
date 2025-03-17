@@ -6,6 +6,7 @@ import it.unina.dietiestates25.agency.port.in.AgencyService;
 import it.unina.dietiestates25.auth.model.User;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
+import it.unina.dietiestates25.image.port.out.ImageRepository;
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.BuildingListingDto;
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.GarageListingDto;
 import it.unina.dietiestates25.listing.infrastructure.adapter.in.dto.HouseListingDto;
@@ -19,12 +20,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Service
 public class ListingService {
     private static final String ENTITY_NOT_EXIST_LISTING_MSG = "Listing does not exist, id: %s";
+    private static final String FORBIDDEN_MSG = "Agents can only modify their listings";
     private final AgencyService agencyService;
     private final NotificationService notificationService;
     private final ListingRepository<Listing> listingRepository;
@@ -37,6 +40,7 @@ public class ListingService {
     @Qualifier("buildingListingRepository")
     private final BuildingListingRepository buildingListingRepository;
     private final RecentSearchService recentSearchService;
+    private final ImageRepository imageRepository;
 
     public ListingService(AgencyService agencyService,
                           NotificationService notificationService,
@@ -45,7 +49,8 @@ public class ListingService {
                           @Qualifier("garageListingRepository") GarageListingRepository garageListingRepository,
                           @Qualifier("landListingRepository") LandListingRepository landListingRepository,
                           @Qualifier("buildingListingRepository") BuildingListingRepository buildingListingRepository,
-                          RecentSearchService recentSearchService) {
+                          RecentSearchService recentSearchService,
+                          ImageRepository imageRepository) {
         this.agencyService = agencyService;
         this.notificationService = notificationService;
         this.listingRepository = listingRepository;
@@ -54,6 +59,7 @@ public class ListingService {
         this.landListingRepository = landListingRepository;
         this.buildingListingRepository = buildingListingRepository;
         this.recentSearchService = recentSearchService;
+        this.imageRepository = imageRepository;
     }
 
     @Transactional
@@ -276,6 +282,7 @@ public class ListingService {
         Listing listing = listingRepository.findById(listingId)
                 .orElseThrow(() -> new EntityNotExistsException(String.format(ENTITY_NOT_EXIST_LISTING_MSG, listingId)));
         validateAdmin(admin, listing);
+        imageRepository.deleteAll(listing.getPhotos().stream().map(this::getRelativePath).toList());
         listingRepository.delete(listing);
     }
 
@@ -292,12 +299,13 @@ public class ListingService {
         Listing listing = listingRepository.findById(listingId)
                 .orElseThrow(() -> new EntityNotExistsException(String.format(ENTITY_NOT_EXIST_LISTING_MSG, listingId)));
         validateAgent(agent, listing);
+        imageRepository.deleteAll(listing.getPhotos().stream().map(this::getRelativePath).toList());
         listingRepository.delete(listing);
     }
 
     private void validateAgent(Agent agent, Listing listing) throws ForbiddenException {
         if (!agent.equals(listing.getAgent())) {
-            throw new ForbiddenException("Agents can only modify their listings");
+            throw new ForbiddenException(FORBIDDEN_MSG);
         }
     }
 
@@ -456,6 +464,39 @@ public class ListingService {
             recentSearchService.saveSearch(buildingSearch);
         }
         return listings.getContent();
+    }
+
+    @Transactional
+    public List<String> addListingImages(List<MultipartFile> images, String listingId, String agentEmail)
+            throws EntityNotExistsException, ForbiddenException {
+        Agent agent = agencyService.getAgentByEmail(agentEmail);
+        Listing listing = getListing(listingId);
+        if (!listing.getAgent().equals(agent)) {
+            throw new ForbiddenException(FORBIDDEN_MSG);
+        }
+
+        String path = "listings/" + listingId + "/";
+        List<String> imagesUrls = imageRepository.saveAll(images, path);
+        listing.getPhotos().addAll(imagesUrls);
+        return imagesUrls;
+    }
+
+    @Transactional
+    public void removeListingImages(List<String> paths, String listingId, String agentEmail)
+            throws EntityNotExistsException, ForbiddenException {
+        Agent agent = agencyService.getAgentByEmail(agentEmail);
+        Listing listing = getListing(listingId);
+        if (!listing.getAgent().equals(agent)) {
+            throw new ForbiddenException(FORBIDDEN_MSG);
+        }
+
+        paths = paths.stream().map(this::getRelativePath).toList();
+        imageRepository.deleteAll(paths);
+        listing.getPhotos().removeAll(paths);
+    }
+
+    private String getRelativePath(String url) {
+        return url.replaceFirst("^.*?dietiestates25/", "");
     }
 }
 

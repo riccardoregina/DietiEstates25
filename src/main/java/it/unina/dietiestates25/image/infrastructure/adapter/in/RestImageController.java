@@ -1,8 +1,9 @@
 package it.unina.dietiestates25.image.infrastructure.adapter.in;
 
+import it.unina.dietiestates25.auth.port.in.UserService;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
-import it.unina.dietiestates25.image.port.in.ImageService;
+import it.unina.dietiestates25.listing.port.in.ListingService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,10 +17,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/images")
 public class RestImageController {
-    private final ImageService imageService;
+    private final ListingService listingService;
+    private final UserService userService;
 
-    public RestImageController(ImageService imageService) {
-        this.imageService = imageService;
+    public RestImageController(ListingService listingService,
+                               UserService userService) {
+        this.listingService = listingService;
+        this.userService = userService;
     }
 
     @PostMapping(value = "/listings/{listing-id}",
@@ -30,7 +34,7 @@ public class RestImageController {
                                              @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
 
-        List<String> imagesUrls = imageService.addListingImages(images, listingId, userDetails.getUsername());
+        List<String> imagesUrls = listingService.addListingImages(images, listingId, userDetails.getUsername());
         return ResponseEntity.ok(imagesUrls);
     }
 
@@ -41,7 +45,7 @@ public class RestImageController {
                                                          @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
 
-        imageService.removeListingImages(paths, listingId, userDetails.getUsername());
+        listingService.removeListingImages(paths, listingId, userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
 
@@ -51,7 +55,7 @@ public class RestImageController {
                                                 @PathVariable("user-id") String userId,
                                                 @AuthenticationPrincipal UserDetails userDetails)
             throws ForbiddenException, EntityNotExistsException {
-        String imageUrl = imageService.setProfilePic(file, userId, userDetails.getUsername());
+        String imageUrl = userService.setProfilePic(file, userId, userDetails.getUsername());
         return ResponseEntity.ok(imageUrl);
     }
 
@@ -59,7 +63,7 @@ public class RestImageController {
     public ResponseEntity<String> removeProfilePic(@PathVariable("user-id") String userId,
                                                 @AuthenticationPrincipal UserDetails userDetails)
             throws ForbiddenException, EntityNotExistsException {
-        imageService.removeProfilePic(userId, userDetails.getUsername());
+        userService.removeProfilePic(userId, userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
 }
