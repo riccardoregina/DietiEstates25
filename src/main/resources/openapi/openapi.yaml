@@ -53,7 +53,10 @@ paths:
     $ref: './paths/visits/visit-requests-id-accept.yaml'
   /api/visit-requests/{visit-request-id}/reject:
     $ref: './paths/visits/visit-requests-id-reject.yaml'
-
+  /api/images/listings/{listing-id}:
+    $ref: './paths/images-listings.yaml'
+  /api/images/users/{user-id}:
+    $ref: './paths/images-users.yaml'
 
 components:
   securitySchemes:
