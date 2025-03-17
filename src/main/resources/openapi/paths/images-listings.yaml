@@ -1,0 +1,79 @@
+post:
+  summary: Add images to a listing
+  description: Upload one or more images to associate with a specific listing. Only accessible to users with AGENT role.
+  operationId: addListingImages
+  tags:
+    - Listing Images
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: listing-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier of the listing
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            images:
+              type: array
+              items:
+                type: string
+                format: binary
+              description: List of image files to upload
+          required:
+            - images
+  responses:
+    '200':
+      description: Successfully uploaded images
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+              format: uri
+              example: "https://example.com/images/listings/abc123/image1.jpg"
+            description: List of URLs for the uploaded images
+    '403':
+      $ref: '../components/dtos.yaml#/ErrorDetails'
+    '404':
+      $ref: '../components/dtos.yaml#/ErrorDetails'
+
+delete:
+  summary: Remove images from a listing
+  description: Delete one or more images associated with a specific listing. Only accessible to users with AGENT role.
+  operationId: removeListingImages
+  tags:
+    - Listing Images
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: listing-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier of the listing
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: string
+            example: "images/listings/abc123/image1.jpg"
+          description: List of image paths to delete
+  responses:
+    '204':
+      description: Images successfully deleted (no content)
+    '403':
+      $ref: '../components/dtos.yaml#/ErrorDetails'
+    '404':
+      $ref: '../components/dtos.yaml#/ErrorDetails'

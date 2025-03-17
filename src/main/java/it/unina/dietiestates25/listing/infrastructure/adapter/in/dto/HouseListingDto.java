@@ -47,8 +47,6 @@ public record HouseListingDto(
         @NotNull
         EnergyClass energyClass,
 
-        List<String> otherFeatures,
-
-        List<String> photos
+        List<String> otherFeatures
 ) {
 }

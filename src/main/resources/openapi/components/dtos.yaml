@@ -172,10 +172,6 @@ BuildingListingDto:
       type: array
       items:
         type: string
-    photos:
-      type: array
-      items:
-        type: string
 
 GarageListingDto:
   type: object
@@ -198,10 +194,6 @@ GarageListingDto:
     floor:
       type: integer
     otherFeatures:
-      type: array
-      items:
-        type: string
-    photos:
       type: array
       items:
         type: string
@@ -240,10 +232,6 @@ HouseListingDto:
       type: array
       items:
         type: string
-    photos:
-      type: array
-      items:
-        type: string
 
 LandListingDto:
   type: object
@@ -266,10 +254,6 @@ LandListingDto:
     building:
       type: boolean
     otherFeatures:
-      type: array
-      items:
-        type: string
-    photos:
       type: array
       items:
         type: string

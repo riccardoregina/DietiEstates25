@@ -31,8 +31,6 @@ public record LandListingDto(
         @NotNull
         Boolean building,
 
-        List<String> otherFeatures,
-
-        List<String> photos
+        List<String> otherFeatures
 ) {
 }

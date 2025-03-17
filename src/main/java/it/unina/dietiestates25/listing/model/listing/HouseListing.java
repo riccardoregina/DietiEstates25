@@ -48,7 +48,6 @@ public class HouseListing extends Listing {
                         int floor,
                         EnergyClass energyClass,
                         List<String> otherFeatures,
-                        List<String> photos,
                         boolean elevator) {
         super(agent,
                 title,
@@ -57,8 +56,7 @@ public class HouseListing extends Listing {
                 squareMeters,
                 listingType,
                 location,
-                otherFeatures,
-                photos);
+                otherFeatures);
         this.nRooms = nRooms;
         this.nBathrooms = nBathrooms;
         this.floor = floor;
