@@ -1,6 +1,6 @@
 post:
   tags:
-    - Create agent
+    - Agent
   operationId: create-agent
   security:
     - BearerAuth: [ ]
@@ -28,28 +28,28 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '403':
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '409':
       description: Conflict
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '500':
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
 get:
   tags:
-    - Get agents
+    - Agent
   description: Only admins and managers can make this request
   operationId: get-agents
   security:
@@ -74,16 +74,16 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '403':
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '500':
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'

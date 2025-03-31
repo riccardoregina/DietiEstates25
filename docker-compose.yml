@@ -18,11 +18,12 @@ services:
     depends_on:
       - postgis
     environment:
-      SPRING_DATASOURCE_URL: ${DB_URL}
-      SPRING_DATASOURCE_USERNAME: "postgres"
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      DB_URL: ${DB_URL}
+      DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRING_TIME_IN_MINUTES: 60
+      GC_PROJECT_ID: ${GC_PROJECT_ID}
+      GC_BUCKET_NAME: ${GC_BUCKET_NAME}
     ports:
       - "8080:8080"
     networks:

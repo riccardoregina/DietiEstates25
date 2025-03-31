@@ -1,0 +1,47 @@
+post:
+  summary: Create a new visit request
+  description: Creates a new request for a property visit. Only users with the CUSTOMER role can create visit requests.
+  operationId: createVisitRequest
+  security:
+    - bearerAuth: []
+  tags:
+    - Visit request
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/dtos.yaml#/VisitRequestDto'
+  responses:
+    201:
+      description: Visit request created successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas.yaml#/VisitRequest'
+    400:
+      description: Invalid input parameters
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    401:
+      description: Unauthorized - User is not authenticated
+    403:
+      description: Forbidden - User does not have the CUSTOMER role
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    404:
+      description: Referenced entity not found
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    500:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'

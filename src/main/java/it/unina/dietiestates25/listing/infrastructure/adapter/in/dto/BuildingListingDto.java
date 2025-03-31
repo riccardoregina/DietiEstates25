@@ -31,8 +31,6 @@ public record BuildingListingDto(
         @NotNull
         LocationDto locationDto,
 
-        List<String> otherFeatures,
-
-        List<String> photos
+        List<String> otherFeatures
 ) {
 }

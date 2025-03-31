@@ -26,8 +26,7 @@ public class GarageListing extends Listing {
                          ListingType listingType,
                          Location location,
                          int floor,
-                         List<String> otherFeatures,
-                         List<String> photos) {
+                         List<String> otherFeatures) {
         super(agent,
                 title,
                 price,
@@ -35,8 +34,7 @@ public class GarageListing extends Listing {
                 squareMeters,
                 listingType,
                 location,
-                otherFeatures,
-                photos);
+                otherFeatures);
         this.floor = floor;
     }
 

@@ -21,10 +21,10 @@ public class VisitRequest {
 
     @Type(JsonType.class)
     @Column(
-            name = "time_slots",
+            name = "availabilities",
             columnDefinition = "jsonb"
     )
-    List<TimeSlot> timeSlots = new LinkedList<>();
+    List<Availability> availabilities = new LinkedList<>();
 
     @ManyToOne
     @JoinColumn(
@@ -56,10 +56,10 @@ public class VisitRequest {
     )
     private LocalDateTime timestamp;
 
-    public VisitRequest(Customer customer, Listing listing, List<TimeSlot> timeSlots) {
+    public VisitRequest(Customer customer, Listing listing, List<Availability> availabilities) {
         this.customer = customer;
         this.listing = listing;
-        this.timeSlots = timeSlots;
+        this.availabilities = availabilities;
         timestamp = LocalDateTime.now();
     }
 
@@ -71,8 +71,8 @@ public class VisitRequest {
         return id;
     }
 
-    public List<TimeSlot> getTimeSlots() {
-        return timeSlots;
+    public List<Availability> getAvailabilities() {
+        return availabilities;
     }
 
     public Customer getCustomer() {

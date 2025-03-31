@@ -1,0 +1,44 @@
+post:
+  summary: Create a new agent review
+  description: Creates a new review for an agent. Only users with the CUSTOMER role can create reviews.
+  operationId: createAgentReview
+  security:
+    - bearerAuth: []
+  tags:
+    - Agent review
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/dtos.yaml#/AgentReviewDto'
+  responses:
+    201:
+      description: Agent review created successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/AgentReview'
+    400:
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    401:
+      description: Unauthorized
+    403:
+      description: Forbidden - User does not have the CUSTOMER role
+    404:
+      description: Agent or referenced entity not found
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    500:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+get:

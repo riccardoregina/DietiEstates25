@@ -2,21 +2,28 @@ package it.unina.dietiestates25.auth.port.in;
 
 import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.auth.model.User;
+import it.unina.dietiestates25.exception.ForbiddenException;
+import it.unina.dietiestates25.image.port.out.ImageRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
 import it.unina.dietiestates25.auth.port.out.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserService implements UserDetailsService {
 
   @Qualifier("userRepository")
   private final UserRepository<User> repository;
+  private final ImageRepository imageRepository;
 
-  public UserService(UserRepository<User> repository) {
+  public UserService(UserRepository<User> repository,
+                     ImageRepository imageRepository) {
     this.repository = repository;
+      this.imageRepository = imageRepository;
   }
 
   @Override
@@ -33,13 +40,42 @@ public class UserService implements UserDetailsService {
         .build();
   }
 
-    public User getUser(String email) throws EntityNotExistsException {
-        return repository.findUserByEmail(email)
-                .orElseThrow(() -> new EntityNotExistsException(String.format("User does not exist, email: %s", email)));
+  public User getUser(String email) throws EntityNotExistsException {
+      return repository.findUserByEmail(email)
+              .orElseThrow(() -> new EntityNotExistsException(String.format("User does not exist, email: %s", email)));
+  }
+
+  public static boolean hasRole(UserDetails userDetails, String role) {
+      return userDetails.getAuthorities().stream()
+              .anyMatch(auth -> auth.getAuthority().equals(role));
+  }
+
+  @Transactional
+  public String setProfilePic(MultipartFile file, String userId, String userEmail)
+          throws ForbiddenException, EntityNotExistsException {
+    User user = getUser(userEmail);
+    if (!user.getId().equals(userId)) {
+      throw new ForbiddenException("Users can only modify their own file picture");
     }
 
-    public static boolean hasRole(UserDetails userDetails, String role) {
-        return userDetails.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals(role));
+    if (user.getProfilePicUrl() != null) {
+      imageRepository.delete(user.getProfilePicUrl().replaceFirst("^.*?dietiestates25/", ""));
     }
+    String path = "users/" + user.getId() + "/";
+    String imageUrl = imageRepository.save(file, path);
+    user.setProfilePicUrl(imageUrl);
+    return imageUrl;
+  }
+
+  @Transactional
+  public void removeProfilePic(String userId, String userEmail)
+          throws EntityNotExistsException, ForbiddenException {
+    User user = getUser(userEmail);
+    if (!user.getId().equals(userId)) {
+      throw new ForbiddenException("Users can only modify their own file picture");
+    }
+
+    imageRepository.delete(user.getProfilePicUrl().replaceFirst("^.*?dietiestates25/", ""));
+    user.setProfilePicUrl(null);
+  }
 }

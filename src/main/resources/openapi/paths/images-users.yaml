@@ -1,0 +1,65 @@
+post:
+  summary: Set user profile picture
+  description: Upload an image to be used as a user's profile picture
+  operationId: setProfilePic
+  tags:
+    - User Profile
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: user-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier of the user
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            file:
+              type: string
+              format: binary
+              description: Image file to use as profile picture
+          required:
+            - file
+  responses:
+    '200':
+      description: Profile picture successfully set
+      content:
+        application/json:
+          schema:
+            type: string
+            format: uri
+            example: "https://example.com/images/users/user123/profile.jpg"
+            description: URL of the uploaded profile picture
+    '403':
+      $ref: '../components/dtos.yaml#/ErrorDetails'
+    '404':
+      $ref: '../components/dtos.yaml#/ErrorDetails'
+
+delete:
+  summary: Remove user profile picture
+  description: Delete a user's profile picture
+  operationId: removeProfilePic
+  tags:
+    - User Profile
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: user-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier of the user
+  responses:
+    '204':
+      description: Profile picture successfully deleted (no content)
+    '403':
+      $ref: '../components/dtos.yaml#/ErrorDetails'
+    '404':
+      $ref: '../components/dtos.yaml#/ErrorDetails'

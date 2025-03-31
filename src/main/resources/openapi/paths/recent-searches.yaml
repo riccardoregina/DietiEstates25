@@ -1,0 +1,46 @@
+get:
+  tags:
+    - Recent Searches
+  summary: Get user's recent searches
+  description: Retrieves the recent searches for a specific user. Users can only access their own searches.
+  operationId: getRecentSearches
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: ID of the user whose searches to retrieve
+      schema:
+        type: string
+    - name: searchType
+      in: query
+      required: false
+      description: Filter searches by property type (house, garage, land, building)
+      schema:
+        type: string
+        enum: [house, garage, land, building]
+        default: ""
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas.yaml#/Search'
+    '401':
+      description: Unauthorized - Authentication required
+    '403':
+      description: Forbidden - Users can only access their own searches
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    '404':
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'

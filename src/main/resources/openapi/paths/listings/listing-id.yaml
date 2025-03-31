@@ -1,6 +1,8 @@
 delete:
-  summary: Delete a listing
-  description: Deletes a listing
+  summary: Listing
+  description: Deletes a listing. Only agents and admins can delete a listing.
+  security:
+    - BearerAuth: [ ]
   parameters:
     - name: listing-type
       in: path
@@ -21,22 +23,58 @@ delete:
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '403':
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '404':
       description: Not found
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
     '500':
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '../../components/responses.yaml#/ErrorDetails'
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+get:
+  tags:
+    - Listing
+  description: Get a specific listing. The returned listing's type will match with the specified type.
+  operationId: get-listing
+  parameters:
+    - name: listing-type
+      in: path
+      required: true
+      schema:
+        type: string
+        enum: [ houses, buildings, garages, lands ]
+    - name: listing-id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas.yaml#/HouseListing'
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'

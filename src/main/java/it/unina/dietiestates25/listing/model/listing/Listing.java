@@ -130,8 +130,7 @@ public class Listing {
                    int squareMeters,
                    ListingType listingType,
                    Location location,
-                   List<String> otherFeatures,
-                   List<String> photos) {
+                   List<String> otherFeatures) {
         this.agent = agent;
         this.title = title;
         this.price = price;
@@ -142,7 +141,6 @@ public class Listing {
         this.otherFeatures = (otherFeatures == null) ? new LinkedList<>() : otherFeatures;
         this.pricePerSquareMeter = price / squareMeters;
         this.timestamp = LocalDateTime.now();
-        this.photos = photos;
     }
 
     public String getId() {

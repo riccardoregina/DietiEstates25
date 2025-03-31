@@ -1,0 +1,122 @@
+post:
+  summary: Add a listing to user's starred listings
+  description: Adds a listing to the authenticated user's starred listings collection
+  operationId: addStarredListing
+  security:
+    - bearerAuth: []
+  tags:
+    - Starred Listings
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: string
+          description: ID of the listing to star
+  responses:
+    200:
+      description: Listing successfully added to starred listings
+    401:
+      description: Unauthorized - User is not authenticated
+    404:
+      description: Listing or user not found
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    500:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+
+delete:
+  summary: Remove a listing from user's starred listings
+  description: Removes a listing from a user's starred listings collection. Authentication required.
+  operationId: removeStarredListing
+  security:
+    - bearerAuth: []
+  tags:
+    - Starred Listings
+  parameters:
+    - name: userId
+      in: query
+      description: ID of the user whose starred listing to remove
+      required: true
+      schema:
+        type: string
+    - name: listingId
+      in: query
+      description: ID of the listing to remove from starred listings
+      required: true
+      schema:
+        type: string
+  responses:
+    204:
+      description: Listing successfully removed from starred listings
+    401:
+      description: Unauthorized - User is not authenticated
+    403:
+      description: Forbidden - User attempting to modify another user's starred listings
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    404:
+      description: Listing, starred listing, or user not found
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    500:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+
+get:
+  summary: Get user's starred listings
+  description: Retrieves all starred listings for a specified user. Authentication required.
+  operationId: getStarredListings
+  security:
+    - bearerAuth: []
+  tags:
+    - Starred Listings
+  parameters:
+    - name: userId
+      in: query
+      description: ID of the user whose starred listings to retrieve
+      required: true
+      schema:
+        type: string
+  responses:
+    200:
+      description: List of starred listings retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas.yaml#/Listing'
+    401:
+      description: Unauthorized - User is not authenticated
+    403:
+      description: Forbidden - User attempting to access another user's starred listings
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    404:
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    500:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'

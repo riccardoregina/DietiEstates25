@@ -29,10 +29,10 @@ import java.util.List;
 @RequestMapping(path = "/api/agencies")
 public class RestAgencyController {
 
-    public static final String FORBIDDEN_EXCEPTION_MSG_AGENCY = "User's agency does not match with provided one";
-    public static final String FORBIDDEN_EXCEPTION_MSG_AGENT = "Agent can only modify itself";
-    public static final String FORBIDDEN_EXCEPTION_MSG_MANAGER = "Manager can only modify his agents";
-    public static final String PATH_AGENCIES = "/api/agencies/";
+    private static final String FORBIDDEN_EXCEPTION_MSG_AGENCY = "User's agency does not match with provided one";
+    private static final String FORBIDDEN_EXCEPTION_MSG_AGENT = "Agent can only modify itself";
+    private static final String FORBIDDEN_EXCEPTION_MSG_MANAGER = "Manager can only modify his agents";
+    private static final String PATH_AGENCIES = "/api/agencies/";
     private final AgencyService agencyService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
