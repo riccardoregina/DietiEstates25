@@ -151,7 +151,7 @@ public class RestListingController {
 
     @GetMapping("/houses")
     public ResponseEntity<List<HouseListing>> getHouseListings(
-            @RequestParam @NotNull ListingType listingType,
+            @RequestParam(required = false) ListingType listingType,
             @RequestParam(required = false) String region,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) Double centerLongitude,
@@ -210,7 +210,7 @@ public class RestListingController {
 
     @GetMapping("/garages")
     public ResponseEntity<List<GarageListing>> getGarageListings(
-            @RequestParam @NotNull ListingType listingType,
+            @RequestParam(required = false) ListingType listingType,
             @RequestParam(required = false) String region,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) Double centerLongitude,
@@ -257,7 +257,7 @@ public class RestListingController {
 
     @GetMapping("/lands")
     public ResponseEntity<List<LandListing>> getLandListings(
-            @RequestParam @NotNull ListingType listingType,
+            @RequestParam(required = false) ListingType listingType,
             @RequestParam(required = false) String region,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) Double centerLongitude,
@@ -302,7 +302,7 @@ public class RestListingController {
 
     @GetMapping("/buildings")
     public ResponseEntity<List<BuildingListing>> getBuildingListings(
-            @RequestParam @NotNull ListingType listingType,
+            @RequestParam(required = false) ListingType listingType,
             @RequestParam(required = false) String region,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) Double centerLongitude,

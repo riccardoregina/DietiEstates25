@@ -241,7 +241,7 @@ Location:
 ListingType:
   type: string
   enum:
-    - SALE
+    - BUY
     - RENT
 
 BuildingSearch:

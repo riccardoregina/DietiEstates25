@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BuildingListingRepository extends ListingRepository<BuildingListing> {
     @Query("SELECT l FROM BuildingListing l WHERE " +
-            "(l.listingType = :listingType) " +
+            "(:listingType IS NULL OR l.listingType = :listingType) " +
             "AND (:region IS NULL OR l.location.region ILIKE :region) " +
             "AND (:city IS NULL OR l.location.city ILIKE :city) " +
             "AND (:priceMin IS NULL OR l.price >= :priceMin) " +
@@ -34,7 +34,7 @@ public interface BuildingListingRepository extends ListingRepository<BuildingLis
     );
 
     @Query("SELECT l FROM BuildingListing l WHERE " +
-            "(l.listingType = :listingType) " +
+            "(:listingType IS NULL OR l.listingType = :listingType) " +
             "AND (ST_Distance(l.location.coordinates, :center) < :radius)" +
             "AND (:priceMin IS NULL OR l.price >= :priceMin) " +
             "AND (:priceMax IS NULL OR l.price <= :priceMax) " +

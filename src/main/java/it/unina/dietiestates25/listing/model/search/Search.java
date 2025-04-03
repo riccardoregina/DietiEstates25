@@ -39,8 +39,7 @@ public class Search {
     private User user;
 
     @Column(
-            name = "listing_type",
-            nullable = false
+            name = "listing_type"
     )
     private ListingType listingType;
 
