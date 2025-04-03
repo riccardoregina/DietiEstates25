@@ -46,6 +46,15 @@ public class Agent extends User {
     )
     private Manager manager;
 
+	@Column(
+            name = "average_review"
+    )
+    private Float averageReview = 0f;
+	@Column(
+            name = "num_of_reviews"
+    )
+    private Integer numOfReviews = 0;
+
     public Agent() {
     }
 
@@ -89,4 +98,35 @@ public class Agent extends User {
     public void setBio(String bio) {
         this.bio = bio;
     }
+
+    public Float getAverageReview() {
+        return averageReview;
+    }
+
+	public Integer getNumOfReviews() {
+		return numOfReviews;
+	}
+
+    public void addReview(Integer review) {
+        if (numOfReviews == 0) {
+            averageReview = Float.valueOf(review);
+        } else {
+            averageReview = (averageReview*numOfReviews + review)/(numOfReviews+1);
+        }
+        numOfReviews++;
+    }
+
+//    Not used currently
+    public void removeReview(Float review) {
+        if (numOfReviews == 0) {
+			return;
+        }
+		if (numOfReviews == 1) {
+			averageReview = 0f;
+        } else {
+			averageReview = (averageReview*numOfReviews - review)/(numOfReviews-1);
+		}
+		numOfReviews--;
+    }
+
 }

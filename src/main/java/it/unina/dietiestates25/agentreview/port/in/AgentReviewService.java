@@ -5,6 +5,7 @@ import it.unina.dietiestates25.agentreview.infrastructure.adapter.in.dto.AgentRe
 import it.unina.dietiestates25.agentreview.port.out.AgentReviewRepository;
 import it.unina.dietiestates25.customer.port.in.CustomerService;
 import it.unina.dietiestates25.exception.EntityNotExistsException;
+import jakarta.transaction.Transactional;
 import it.unina.dietiestates25.agency.model.Agent;
 import it.unina.dietiestates25.agentreview.model.AgentReview;
 import it.unina.dietiestates25.customer.model.Customer;
@@ -25,10 +26,12 @@ public class AgentReviewService {
         this.customerService = customerService;
     }
 
+    @Transactional
     public AgentReview createAgentReview(AgentReviewDto agentReviewDto, UserDetails userDetails)
             throws EntityNotExistsException {
         Customer customer = customerService.getCustomer(userDetails.getUsername());
         Agent agent = agencyService.getAgentById(agentReviewDto.agentId());
+        agent.addReview(agentReviewDto.value());
         return agentReviewRepository.save(new AgentReview(
                 customer,
                 agent,
