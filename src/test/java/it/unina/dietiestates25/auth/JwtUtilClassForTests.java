@@ -1,4 +1,4 @@
-package it.unina.dietiestates25.auth.infrastructure.util;
+package it.unina.dietiestates25.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -11,10 +11,10 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-public class JwtUtil {
-  private static final String SECRET = System.getenv("JWT_SECRET");
-  private static final int MINUTES = Integer.parseInt(System.getenv("JWT_EXPIRING_TIME_IN_MINUTES"));
-  private JwtUtil() {}
+public class JwtUtilClassForTests {
+  private static final String SECRET = "MOCK_SECRET_SHALALALALALALALALALALALALALALALA";
+  private static final int MINUTES = 60;
+  private JwtUtilClassForTests() {}
 
   public static String generateToken(String email) {
     var now = Instant.now();
@@ -23,6 +23,17 @@ public class JwtUtil {
         .subject(email)
         .issuedAt(Date.from(now))
         .expiration(Date.from(now.plus(MINUTES, ChronoUnit.MINUTES)))
+        .signWith(secretKey)
+        .compact();
+  }
+
+  public static String generateExpiredToken(String email) {
+    var instantInThePast = Instant.now().minus(60, ChronoUnit.MINUTES);
+    var secretKey = Keys.hmacShaKeyFor(SECRET.getBytes());
+    return Jwts.builder()
+        .subject(email)
+        .issuedAt(Date.from(instantInThePast))
+        .expiration(Date.from(instantInThePast.plus(MINUTES, ChronoUnit.MINUTES)))
         .signWith(secretKey)
         .compact();
   }
@@ -49,9 +60,9 @@ public class JwtUtil {
           .parseSignedClaims(token)
           .getPayload();
     } catch (JwtException e) { // Invalid signature or expired token
-      throw new InvalidTokenException("Access denied: " + e.getMessage());
+        throw new InvalidTokenException("Access denied: " + e.getMessage());
     } catch (Exception e) {
-      throw new InvalidTokenException("Probably malformed token: " + e.getMessage());
+        throw new InvalidTokenException("Probably malformed token: " + e.getMessage());
     }
   }
 
