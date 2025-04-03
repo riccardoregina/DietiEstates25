@@ -53,6 +53,10 @@ Agent:
       type: string
     bio:
       type: string
+    averageReview:
+      type: number
+    numOfReviews:
+      type: integer
 
 Manager:
   type: object
