@@ -87,17 +87,51 @@ UserDto:
   properties:
     firstName:
       type: string
+      nullable: false
     lastName:
       type: string
+      nullable: false
     email:
       type: string
+      nullable: false
     dob:
       type: string
       format: date
+      nullable: false
     password:
       type: string
+      nullable: false
     profilePicUrl:
       type: string
+      nullable: true
+  required:
+    - firstName
+    - lastName
+    - email
+    - dob
+    - password
+UpdateUserDto:
+  type: object
+  properties:
+    firstName:
+      type: string
+      nullable: true
+    lastName:
+      type: string
+      nullable: true
+    email:
+      type: string
+      nullable: true
+    dob:
+      type: string
+      format: date
+      nullable: true
+    password:
+      type: string
+      nullable: true
+    profilePicUrl:
+      type: string
+      nullable: true
 
 AgentReviewDto:
   type: object

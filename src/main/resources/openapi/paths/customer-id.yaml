@@ -42,3 +42,49 @@ get:
         application/json:
           schema:
             $ref: '../components/dtos.yaml#/ErrorDetails'
+put:
+  tags:
+    - Customer
+  operationId: update-customer
+  description: Only the customer itself can make this request
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: customer-id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../components/dtos.yaml#/UpdateUserDto'
+    required: true
+  responses:
+    '204':
+      description: Ok
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'

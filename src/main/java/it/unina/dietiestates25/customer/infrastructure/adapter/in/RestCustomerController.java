@@ -1,5 +1,6 @@
 package it.unina.dietiestates25.customer.infrastructure.adapter.in;
 
+import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UpdateUserDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UserDto;
 import it.unina.dietiestates25.customer.port.in.CustomerService;
 import it.unina.dietiestates25.exception.EntityAlreadyExistsException;
@@ -45,12 +46,12 @@ public class RestCustomerController {
     @PutMapping("/{customer-id}")
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<Void> updateCustomer(@PathVariable("customer-id") String customerId,
-                                              @Valid @RequestBody UserDto userDto,
+                                              @Valid @RequestBody UpdateUserDto updateUserDto,
                                               @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
         Customer customer = customerService.getCustomer(userDetails.getUsername());
         validateCustomer(customerId, customer, FORBIDDEN_EXCEPTION_MSG_CUSTOMER);
-        customerService.updateCustomer(userDto, customer);
+        customerService.updateCustomer(updateUserDto, customer);
         return ResponseEntity.noContent().build();
     }
 

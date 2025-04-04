@@ -2,6 +2,7 @@ package it.unina.dietiestates25.agency.port.in;
 
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.AgentDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UpdateAgentDto;
+import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UpdateUserDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UserDto;
 import it.unina.dietiestates25.agency.port.out.AdminRepository;
 import it.unina.dietiestates25.agency.port.out.AgencyRepository;
@@ -73,16 +74,16 @@ public class AgencyService {
     }
 
     @Transactional
-    public void updateManager(UserDto userDto, String id)
+    public void updateManager(UpdateUserDto updateUserDto, String id)
             throws EntityNotExistsException {
         Manager existingManager = managerRepository.findById(id).orElseThrow(() ->
-                new EntityNotExistsException(String.format("Manager does not exist, email: %s", userDto.email())));
-        existingManager.setEmail(userDto.email());
-        existingManager.setFirstName(userDto.firstName());
-        existingManager.setLastName(userDto.lastName());
-        existingManager.setDob(userDto.dob());
-        existingManager.setPasswordHash(passwordEncoder.encode(userDto.password()));
-        if (userDto.profilePicUrl() != null) existingManager.setProfilePicUrl(userDto.profilePicUrl());
+                new EntityNotExistsException(String.format("Manager does not exist, id: %s", id)));
+        if (updateUserDto.firstName() != null) {existingManager.setFirstName(updateUserDto.firstName());}
+        if (updateUserDto.lastName() != null) {existingManager.setLastName(updateUserDto.lastName());}
+        if (updateUserDto.email() != null) {existingManager.setEmail(updateUserDto.email());}
+        if (updateUserDto.dob() != null) {existingManager.setDob(updateUserDto.dob());}
+        if (updateUserDto.password() != null) {existingManager.setPasswordHash(passwordEncoder.encode(updateUserDto.password()));}
+        if (updateUserDto.profilePicUrl() != null) existingManager.setProfilePicUrl(updateUserDto.profilePicUrl());
     }
 
     public List<Manager> getManagers(String agencyId, String adminEmail) {

@@ -1,5 +1,6 @@
 package it.unina.dietiestates25.customer.port.in;
 
+import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UpdateUserDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UserDto;
 import it.unina.dietiestates25.customer.port.out.CustomerRepository;
 import it.unina.dietiestates25.exception.EntityAlreadyExistsException;
@@ -39,12 +40,12 @@ public class CustomerService {
     }
 
     @Transactional
-    public void updateCustomer(UserDto userDto, Customer customer) {
-        customer.setEmail(userDto.email());
-        customer.setFirstName(userDto.firstName());
-        customer.setLastName(userDto.lastName());
-        customer.setDob(userDto.dob());
-        customer.setPasswordHash(passwordEncoder.encode(userDto.password()));
-        if (userDto.profilePicUrl() != null) customer.setProfilePicUrl(userDto.profilePicUrl());
+    public void updateCustomer(UpdateUserDto updateUserDto, Customer customer) {
+        if (updateUserDto.firstName() != null) {customer.setFirstName(updateUserDto.firstName());}
+        if (updateUserDto.lastName() != null) {customer.setLastName(updateUserDto.lastName());}
+        if (updateUserDto.email() != null) {customer.setEmail(updateUserDto.email());}
+        if (updateUserDto.dob() != null) {customer.setDob(updateUserDto.dob());}
+        if (updateUserDto.password() != null) {customer.setPasswordHash(passwordEncoder.encode(updateUserDto.password()));}
+        if (updateUserDto.profilePicUrl() != null) customer.setProfilePicUrl(updateUserDto.profilePicUrl());
     }
 }

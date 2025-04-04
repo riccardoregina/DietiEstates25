@@ -69,7 +69,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: '../../components/dtos.yaml#/UserDto'
+          $ref: '../../components/dtos.yaml#/UpdateUserDto'
     required: true
   responses:
     '204':

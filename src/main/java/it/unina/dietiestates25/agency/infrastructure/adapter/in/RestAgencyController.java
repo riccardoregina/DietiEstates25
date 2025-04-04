@@ -3,6 +3,7 @@ package it.unina.dietiestates25.agency.infrastructure.adapter.in;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.AgentDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.SignUpAgencyResponse;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UpdateAgentDto;
+import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UpdateUserDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UserDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.SignUpAgencyRequest;
 import it.unina.dietiestates25.agency.model.Admin;
@@ -113,13 +114,13 @@ public class RestAgencyController {
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<Void> updateManager(@PathVariable("agency-id") String agencyId,
                                               @PathVariable("manager-id") String managerId,
-                                              @Valid @RequestBody UserDto userDto,
+                                              @Valid @RequestBody UpdateUserDto updateUserDto,
                                               @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
         Agency agency = agencyService.getAgencyByManagerEmail(userDetails.getUsername());
         validateAgency(agencyId, agency, FORBIDDEN_EXCEPTION_MSG_AGENCY);
         Manager manager = agencyService.getManagerById(managerId);
-        agencyService.updateManager(userDto, manager.getId());
+        agencyService.updateManager(updateUserDto, manager.getId());
         return ResponseEntity.noContent().build();
     }
 
