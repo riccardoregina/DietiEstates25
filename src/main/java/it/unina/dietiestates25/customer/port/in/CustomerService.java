@@ -1,7 +1,6 @@
 package it.unina.dietiestates25.customer.port.in;
 
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UpdateUserDto;
-import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UserDto;
 import it.unina.dietiestates25.customer.port.out.CustomerRepository;
 import it.unina.dietiestates25.exception.EntityAlreadyExistsException;
 import it.unina.dietiestates25.exception.EntityNotExistsException;

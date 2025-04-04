@@ -1,9 +1,7 @@
 package it.unina.dietiestates25.agency.port.in;
 
-import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.AgentDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UpdateAgentDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UpdateUserDto;
-import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UserDto;
 import it.unina.dietiestates25.agency.port.out.AdminRepository;
 import it.unina.dietiestates25.agency.port.out.AgencyRepository;
 import it.unina.dietiestates25.agency.port.out.AgentRepository;

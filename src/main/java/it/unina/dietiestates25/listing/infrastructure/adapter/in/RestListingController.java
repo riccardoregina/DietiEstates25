@@ -17,7 +17,6 @@ import it.unina.dietiestates25.listing.model.search.HouseSearch;
 import it.unina.dietiestates25.listing.model.search.LandSearch;
 import it.unina.dietiestates25.listing.port.in.ListingService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
