@@ -17,28 +17,28 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../components/schemas.yaml#/User'
+            $ref: '../components/schemas.yaml#/User'
     '401':
       description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: '../../components/dtos.yaml#/ErrorDetails'
+            $ref: '../components/dtos.yaml#/ErrorDetails'
     '403':
       description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '../../components/dtos.yaml#/ErrorDetails'
+            $ref: '../components/dtos.yaml#/ErrorDetails'
     '404':
       description: Not found
       content:
         application/json:
           schema:
-            $ref: '../../components/dtos.yaml#/ErrorDetails'
+            $ref: '../components/dtos.yaml#/ErrorDetails'
     '500':
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '../../components/dtos.yaml#/ErrorDetails'
+            $ref: '../components/dtos.yaml#/ErrorDetails'
