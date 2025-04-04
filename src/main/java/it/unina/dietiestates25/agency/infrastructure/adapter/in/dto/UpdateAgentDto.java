@@ -18,6 +18,5 @@ public record UpdateAgentDto(
     String password,
     @NullOrNotBlank
     String profilePicUrl,
-    @NullOrNotBlank
     String bio
 ) {}
