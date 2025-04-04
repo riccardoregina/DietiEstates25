@@ -2,6 +2,7 @@ package it.unina.dietiestates25.agency.infrastructure.adapter.in;
 
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.AgentDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.SignUpAgencyResponse;
+import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UpdateAgentDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UserDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.SignUpAgencyRequest;
 import it.unina.dietiestates25.agency.model.Admin;
@@ -182,13 +183,13 @@ public class RestAgencyController {
 
     @PutMapping("/{agency-id}/agents/{agent-id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'AGENT')")
-    public ResponseEntity<Void> updateAgent(@Valid @RequestBody AgentDto agentDto,
+    public ResponseEntity<Void> updateAgent(@Valid @RequestBody UpdateAgentDto updateAgentDto,
                                             @PathVariable("agency-id") String agencyId,
                                             @PathVariable("agent-id") String agentId,
                                             @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
         validateUserAccess(agencyId, agentId, userDetails);
-        agencyService.updateAgent(agentDto, agentId);
+        agencyService.updateAgent(updateAgentDto, agentId);
         return ResponseEntity.noContent().build();
     }
 
@@ -237,8 +238,7 @@ public class RestAgencyController {
                                           @PathVariable("agent-id") String agentId,
                                           @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
-        Agency agency = agencyService.getAgencyByManagerEmail(userDetails.getUsername());
-        validateAgency(agencyId, agency, FORBIDDEN_EXCEPTION_MSG_AGENCY);
+        validateUserAccess(agencyId, agentId, userDetails);
         return ResponseEntity.ok().body(agencyService.getAgentById(agentId));
     }
 

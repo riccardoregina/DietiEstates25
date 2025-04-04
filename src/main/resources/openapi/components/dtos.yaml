@@ -29,6 +29,31 @@ AgentDto:
     - email
     - dob
     - password
+UpdateAgentDto:
+  type: object
+  properties:
+    firstName:
+      type: string
+      nullable: true
+    lastName:
+      type: string
+      nullable: true
+    email:
+      type: string
+      nullable: true
+    dob:
+      type: string
+      format: date
+      nullable: true
+    password:
+      type: string
+      nullable: true
+    profilePicUrl:
+      type: string
+      nullable: true
+    bio:
+      type: string
+      nullable: true
 
 SignUpAgencyRequest:
   type: object

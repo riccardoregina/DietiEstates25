@@ -1,6 +1,7 @@
 package it.unina.dietiestates25.agency.port.in;
 
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.AgentDto;
+import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UpdateAgentDto;
 import it.unina.dietiestates25.agency.infrastructure.adapter.in.dto.UserDto;
 import it.unina.dietiestates25.agency.port.out.AdminRepository;
 import it.unina.dietiestates25.agency.port.out.AgencyRepository;
@@ -124,17 +125,17 @@ public class AgencyService {
     }
 
     @Transactional
-    public void updateAgent(AgentDto agentDto, String id)
+    public void updateAgent(UpdateAgentDto updateAgentDto, String id)
             throws EntityNotExistsException {
         Agent existingAgent = agentRepository.findById(id).orElseThrow(() ->
-                new EntityNotExistsException(String.format("Agent does not exist, email: %s", agentDto.email())));
-        existingAgent.setEmail(agentDto.email());
-        existingAgent.setFirstName(agentDto.firstName());
-        existingAgent.setLastName(agentDto.lastName());
-        existingAgent.setDob(agentDto.dob());
-        existingAgent.setPasswordHash(passwordEncoder.encode(agentDto.password()));
-        if (agentDto.profilePicUrl() != null) existingAgent.setProfilePicUrl(agentDto.profilePicUrl());
-        if (agentDto.bio() != null) existingAgent.setBio(agentDto.bio());
+                new EntityNotExistsException(String.format("Agent does not exist, id: %s", id)));
+        if (updateAgentDto.email() != null) {existingAgent.setEmail(updateAgentDto.email());}
+        if (updateAgentDto.firstName() != null) {existingAgent.setFirstName(updateAgentDto.firstName());}
+        if (updateAgentDto.lastName() != null) {existingAgent.setLastName(updateAgentDto.lastName());}
+        if (updateAgentDto.dob() != null) {existingAgent.setDob(updateAgentDto.dob());}
+        if (updateAgentDto.password() != null) {existingAgent.setPasswordHash(passwordEncoder.encode(updateAgentDto.password()));}
+        if (updateAgentDto.profilePicUrl() != null) existingAgent.setProfilePicUrl(updateAgentDto.profilePicUrl());
+        if (updateAgentDto.bio() != null) existingAgent.setBio(updateAgentDto.bio());
     }
 
     public List<Agent> getAgents(Agency agency) {
