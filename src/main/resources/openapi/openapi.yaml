@@ -7,6 +7,8 @@ paths:
     $ref: './paths/login.yaml'
   /api/customers:
     $ref: './paths/customers.yaml'
+  /api/customers/{customer-id}:
+    $ref: './paths/customer-id.yaml'
   /api/agencies:
     $ref: './paths/agencies/agencies.yaml'
   /api/agencies/{agency-id}/managers:

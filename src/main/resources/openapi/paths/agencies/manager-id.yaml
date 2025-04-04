@@ -1,7 +1,7 @@
 get:
   tags:
     - Manager
-  description: Only admins can make this request
+  description: Only the admin and managers can make this request
   operationId: get-manager
   security:
     - BearerAuth: []
