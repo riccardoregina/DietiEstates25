@@ -489,9 +489,7 @@ public class ListingService {
         if (!listing.getAgent().equals(agent)) {
             throw new ForbiddenException(FORBIDDEN_MSG);
         }
-
-        paths = paths.stream().map(this::getRelativePath).toList();
-        imageRepository.deleteAll(paths);
+        imageRepository.deleteAll(paths.stream().map(this::getRelativePath).toList());
         listing.getPhotos().removeAll(paths);
     }
 
