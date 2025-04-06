@@ -46,4 +46,16 @@ public class NotificationSettings {
     public boolean isRecommendedListings() {
         return recommendedListings;
     }
+
+    public void setStarredListings(boolean starredListings) {
+        this.starredListings = starredListings;
+    }
+
+    public void setVisit(boolean visit) {
+        this.visit = visit;
+    }
+
+    public void setRecommendedListings(boolean recommendedListings) {
+        this.recommendedListings = recommendedListings;
+    }
 }
