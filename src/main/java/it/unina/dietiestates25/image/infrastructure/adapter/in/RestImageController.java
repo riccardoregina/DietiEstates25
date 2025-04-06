@@ -56,7 +56,7 @@ public class RestImageController {
                                                 @AuthenticationPrincipal UserDetails userDetails)
             throws ForbiddenException, EntityNotExistsException {
         String imageUrl = userService.setProfilePic(file, userId, userDetails.getUsername());
-        return ResponseEntity.ok(imageUrl);
+        return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(imageUrl);
     }
 
     @DeleteMapping("/users/{user-id}")
