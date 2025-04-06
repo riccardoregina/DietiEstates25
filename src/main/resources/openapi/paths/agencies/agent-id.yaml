@@ -48,98 +48,98 @@ get:
           schema:
             $ref: '../../components/dtos.yaml#/ErrorDetails'
 put:
-tags:
-  - Agent
-operationId: update-agent
-description: Only the admin, the manager and the agent itself can make this request
-security:
-  - BearerAuth: [ ]
-parameters:
-  - name: agency-id
-    in: path
-    required: true
-    schema:
-      type: string
-  - name: agent-id
-    in: path
-    required: true
-    schema:
-      type: string
-requestBody:
-  content:
-    application/json:
+  tags:
+    - Agent
+  operationId: update-agent
+  description: Only the admin, the manager and the agent itself can make this request
+  security:
+    - BearerAuth: [ ]
+  parameters:
+    - name: agency-id
+      in: path
+      required: true
       schema:
-        $ref: '../../components/dtos.yaml#/UpdateAgentDto'
-  required: true
-responses:
-  '204':
-    description: Ok
-  '401':
-    description: Unauthorized
+        type: string
+    - name: agent-id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
     content:
       application/json:
         schema:
-          $ref: '../../components/dtos.yaml#/ErrorDetails'
-  '403':
-    description: Forbidden
-    content:
-      application/json:
-        schema:
-          $ref: '../../components/dtos.yaml#/ErrorDetails'
-  '404':
-    description: Not found
-    content:
-      application/json:
-        schema:
-          $ref: '../../components/dtos.yaml#/ErrorDetails'
-  '500':
-    description: Internal Server Error
-    content:
-      application/json:
-        schema:
-          $ref: '../../components/dtos.yaml#/ErrorDetails'
+          $ref: '../../components/dtos.yaml#/UpdateAgentDto'
+    required: true
+  responses:
+    '204':
+      description: Ok
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
 delete:
-tags:
-  - Agent
-operationId: delete-agent
-description: Only the admin and the agent's manager can make this request
-security:
-  - BearerAuth: [ ]
-parameters:
-  - name: agency-id
-    in: path
-    required: true
-    schema:
-      type: string
-  - name: agent-id
-    in: path
-    required: true
-    schema:
-      type: string
-responses:
-  '204':
-    description: Ok
-  '401':
-    description: Unauthorized
-    content:
-      application/json:
-        schema:
-          $ref: '../../components/dtos.yaml#/ErrorDetails'
-  '403':
-    description: Forbidden
-    content:
-      application/json:
-        schema:
-          $ref: '../../components/dtos.yaml#/ErrorDetails'
-  '404':
-    description: Not found
-    content:
-      application/json:
-        schema:
-          $ref: '../../components/dtos.yaml#/ErrorDetails'
-  '500':
-    description: Internal Server Error
-    content:
-      application/json:
-        schema:
-          $ref: '../../components/dtos.yaml#/ErrorDetails'
+  tags:
+    - Agent
+  operationId: delete-agent
+  description: Only the admin and the agent's manager can make this request
+  security:
+    - BearerAuth: [ ]
+  parameters:
+    - name: agency-id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: agent-id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '204':
+      description: Ok
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/dtos.yaml#/ErrorDetails'

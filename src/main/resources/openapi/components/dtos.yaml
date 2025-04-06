@@ -355,3 +355,16 @@ VisitRequestDto:
       type: array
       items:
         $ref: '../components/schemas.yaml#/Availability'
+
+NotificationSettingsDto:
+  type: object
+  properties:
+    starredListings:
+      type: boolean
+      nullable: true
+    visit:
+      type: boolean
+      nullable: true
+    recommendedListings:
+      type: boolean
+      nullable: true

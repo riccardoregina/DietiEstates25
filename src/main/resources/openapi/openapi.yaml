@@ -45,6 +45,8 @@ paths:
     $ref: './paths/agent-review-agent-id.yaml'
   /api/notifications:
     $ref: './paths/notifications.yaml'
+  /api/notifications/settings:
+    $ref: './paths/notification-settings.yaml'
   /api/starred-listings:
     $ref: './paths/starred-listings.yaml'
   /api/visits:

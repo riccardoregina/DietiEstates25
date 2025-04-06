@@ -1,6 +1,9 @@
 delete:
+  tags:
+    - Listing
   summary: Listing
   description: Deletes a listing. Only agents and admins can delete a listing.
+  operationId: delete-listing
   security:
     - BearerAuth: [ ]
   parameters:
