@@ -53,11 +53,13 @@ public class NotificationService {
                 listing.getTitle();
         listing.getFollowingUsers()
                 .forEach(user -> {
-                    Notification notification = new ListingNotification(user, message, listing);
-                    messagingTemplate.convertAndSendToUser(user.getEmail(),
-                            DESTINATION_PATH,
-                            notification);
-                    notificationRepository.save(notification);
+                    if (user.getNotificationSettings().isStarredListings()) {
+                        Notification notification = new ListingNotification(user, message, listing);
+                        messagingTemplate.convertAndSendToUser(user.getEmail(),
+                                DESTINATION_PATH,
+                                notification);
+                        notificationRepository.save(notification);
+                    }
                 });
     }
 
