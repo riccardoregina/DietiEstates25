@@ -4,6 +4,9 @@ import it.unina.dietiestates25.listing.port.out.SearchRepository;
 import it.unina.dietiestates25.listing.model.ListingType;
 import it.unina.dietiestates25.listing.model.search.Search;
 import it.unina.dietiestates25.auth.model.User;
+
+import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +29,8 @@ public class RecentSearchService {
         return searchRepository.findNotifiableUsersByListingTypeAndCityAndTypeSearch(listingType, city, searchClass);
     }
 
-    public List<Search> getRecentSearches(User user, Class<? extends Search> searchClass) {
-        return searchRepository.findAllByUserAndSearchType(user, searchClass);
+    public List<Search> getRecentSearches(User user, Class<? extends Search> searchClass, Pageable pageable) {
+
+        return searchRepository.findAllByUserAndSearchType(user, searchClass, pageable).getContent();
     }
 }

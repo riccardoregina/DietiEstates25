@@ -6,6 +6,10 @@ import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
 import it.unina.dietiestates25.listing.model.search.*;
 import it.unina.dietiestates25.listing.port.in.RecentSearchService;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +19,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/recent-searches")
 public class RestRecentSearchController {
+    private static final int PAGE_SIZE = 5;
+    private static final String DEFAULT_SORTBY_VALUE = "timestamp";
 
     private final RecentSearchService recentSearchService;
     private final UserService userService;
@@ -26,10 +32,12 @@ public class RestRecentSearchController {
     }
 
     @GetMapping("/{user_id}")
-    public List<Search> getRecentSearches(@PathVariable("user_id") String userId,
+    public ResponseEntity<List<Search>> getRecentSearches(@PathVariable("user_id") String userId,
                                           @RequestParam(
                                                   required = false,
                                                   defaultValue = "") String searchType,
+                                          @RequestParam(required = false, 
+                                                        defaultValue = "0") Integer page,
                                           @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException, ForbiddenException {
         User user = userService.getUser(userDetails.getUsername());
@@ -45,6 +53,12 @@ public class RestRecentSearchController {
             default -> Search.class;
         };
 
-        return recentSearchService.getRecentSearches(user, searchClass);
+        Sort sort = Sort.by(DEFAULT_SORTBY_VALUE).descending();
+        List<Search> searches = recentSearchService
+                                    .getRecentSearches(user, 
+                                                       searchClass, 
+                                                       PageRequest.of(page, PAGE_SIZE, sort));
+
+        return ResponseEntity.ok().body(searches);
     }
 }
