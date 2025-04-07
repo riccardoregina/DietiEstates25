@@ -48,7 +48,7 @@ class JwtUtilTests {
     }
 
     @Test
-    void givenExpiredToken_whenIsTokenValidCalled_thenInvalidTokenExceptionIsThrown() throws InvalidTokenException {
+    void givenExpiredToken_whenIsTokenValidCalled_thenInvalidTokenExceptionIsThrown() {
         var email = faker.internet().emailAddress();
         var password = faker.internet().password();
         var userDetails = User.builder()

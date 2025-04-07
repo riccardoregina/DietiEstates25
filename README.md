@@ -22,7 +22,22 @@ docker-compose up
 ```
 
 ## Running tests
-You can run the tests by running the maven test target
-```bash
-./mvnw test
+### Setup
+If you are on Windows, run:
+```powershell
+.\test.ps1
+```
+Otherwise, you can run manually:
+```
+./mvnw clean package -DskipTests
+```
+```
+docker build -t dietiestates25 .
+```
+```
+docker-compose up postgis
+```
+### Run tests
+```
+docker-compose run --rm test
 ```
