@@ -30,7 +30,7 @@ post:
     '200':
       description: Profile picture successfully set
       content:
-        application/json:
+        text/plain:
           schema:
             type: string
             format: uri
