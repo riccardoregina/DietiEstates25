@@ -38,6 +38,7 @@ docker build -t dietiestates25 .
 docker-compose up postgis
 ```
 ### Run tests
+In another shell instance:
 ```
 docker-compose run --rm test
 ```
