@@ -17,6 +17,8 @@ import it.unina.dietiestates25.listing.model.search.HouseSearch;
 import it.unina.dietiestates25.listing.model.search.LandSearch;
 import it.unina.dietiestates25.listing.port.in.ListingService;
 import jakarta.validation.Valid;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -149,7 +151,7 @@ public class RestListingController {
     }
 
     @GetMapping("/houses")
-    public ResponseEntity<List<HouseListing>> getHouseListings(
+    public ResponseEntity<Page<HouseListing>> getHouseListings(
             @RequestParam(required = false) ListingType listingType,
             @RequestParam(required = false) String region,
             @RequestParam(required = false) String city,
@@ -202,13 +204,13 @@ public class RestListingController {
         }
         Sort sort = ordering.equalsIgnoreCase("asc") ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        List<HouseListing> listings = listingService
+        Page<HouseListing> listings = listingService
                 .getHouseListings(houseSearch, PageRequest.of(page, PAGE_SIZE, sort));
         return ResponseEntity.ok().body(listings);
     }
 
     @GetMapping("/garages")
-    public ResponseEntity<List<GarageListing>> getGarageListings(
+    public ResponseEntity<Page<GarageListing>> getGarageListings(
             @RequestParam(required = false) ListingType listingType,
             @RequestParam(required = false) String region,
             @RequestParam(required = false) String city,
@@ -249,13 +251,13 @@ public class RestListingController {
         }
         Sort sort = ordering.equalsIgnoreCase("asc") ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        List<GarageListing> listings = listingService
+        Page<GarageListing> listings = listingService
                 .getGarageListings(garageSearch, PageRequest.of(page, PAGE_SIZE, sort));
         return ResponseEntity.ok().body(listings);
     }
 
     @GetMapping("/lands")
-    public ResponseEntity<List<LandListing>> getLandListings(
+    public ResponseEntity<Page<LandListing>> getLandListings(
             @RequestParam(required = false) ListingType listingType,
             @RequestParam(required = false) String region,
             @RequestParam(required = false) String city,
@@ -294,13 +296,13 @@ public class RestListingController {
         }
         Sort sort = ordering.equalsIgnoreCase("asc") ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        List<LandListing> listings = listingService
+        Page<LandListing> listings = listingService
                 .getLandListings(landSearch, PageRequest.of(page, PAGE_SIZE, sort));
         return ResponseEntity.ok().body(listings);
     }
 
     @GetMapping("/buildings")
-    public ResponseEntity<List<BuildingListing>> getBuildingListings(
+    public ResponseEntity<Page<BuildingListing>> getBuildingListings(
             @RequestParam(required = false) ListingType listingType,
             @RequestParam(required = false) String region,
             @RequestParam(required = false) String city,
@@ -339,7 +341,7 @@ public class RestListingController {
         }
         Sort sort = ordering.equalsIgnoreCase("asc") ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        List<BuildingListing> listings = listingService
+        Page<BuildingListing> listings = listingService
                 .getBuildingListings(buildingSearch, PageRequest.of(page, PAGE_SIZE, sort));
         return ResponseEntity.ok().body(listings);
     }

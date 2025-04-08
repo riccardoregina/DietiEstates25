@@ -315,7 +315,7 @@ public class ListingService {
     }
 
     @Transactional
-    public List<HouseListing> getHouseListings(HouseSearch houseSearch, Pageable pageable) {
+    public Page<HouseListing> getHouseListings(HouseSearch houseSearch, Pageable pageable) {
         Page<HouseListing> listings;
         if (houseSearch.getCenterCoordinates() != null && houseSearch.getRadius() != null) {
             listings = houseListingRepository
@@ -358,11 +358,11 @@ public class ListingService {
         if (houseSearch.getUser() != null) {
             recentSearchService.saveSearch(houseSearch);
         }
-        return listings.getContent();
+        return listings;
     }
 
     @Transactional
-    public List<GarageListing> getGarageListings(GarageSearch garageSearch, Pageable pageable) {
+    public Page<GarageListing> getGarageListings(GarageSearch garageSearch, Pageable pageable) {
         Page<GarageListing> listings;
         if (garageSearch.getCenterCoordinates() != null && garageSearch.getRadius() != null) {
             listings = garageListingRepository
@@ -395,11 +395,11 @@ public class ListingService {
         if (garageSearch.getUser() != null) {
             recentSearchService.saveSearch(garageSearch);
         }
-        return listings.getContent();
+        return listings;
     }
 
     @Transactional
-    public List<LandListing> getLandListings(LandSearch landSearch, Pageable pageable) {
+    public Page<LandListing> getLandListings(LandSearch landSearch, Pageable pageable) {
         Page<LandListing> listings;
         if (landSearch.getCenterCoordinates() != null && landSearch.getRadius() != null) {
             listings = landListingRepository
@@ -430,11 +430,11 @@ public class ListingService {
         if (landSearch.getUser() != null) {
             recentSearchService.saveSearch(landSearch);
         }
-        return listings.getContent();
+        return listings;
     }
 
     @Transactional
-    public List<BuildingListing> getBuildingListings(BuildingSearch buildingSearch, Pageable pageable) {
+    public Page<BuildingListing> getBuildingListings(BuildingSearch buildingSearch, Pageable pageable) {
         Page<BuildingListing> listings;
         if (buildingSearch.getCenterCoordinates() != null && buildingSearch.getRadius() != null) {
             listings = buildingListingRepository
@@ -463,7 +463,7 @@ public class ListingService {
         if (buildingSearch.getUser() != null) {
             recentSearchService.saveSearch(buildingSearch);
         }
-        return listings.getContent();
+        return listings;
     }
 
     @Transactional
