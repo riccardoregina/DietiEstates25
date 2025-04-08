@@ -32,7 +32,7 @@ try {
 
     # Step 5: Start containers
     Write-Host "Starting containers..." -ForegroundColor Yellow
-    docker-compose up
+    docker-compose up postgis app
     if (-not $?) { throw "Failed to start containers" }
 
 } catch {
