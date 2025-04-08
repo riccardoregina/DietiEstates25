@@ -11,6 +11,7 @@ public record VisitRequestDto(
         @NotBlank
         String listingId,
 
+        @NotNull
         List<Availability> availabilities
 ) {
 }
