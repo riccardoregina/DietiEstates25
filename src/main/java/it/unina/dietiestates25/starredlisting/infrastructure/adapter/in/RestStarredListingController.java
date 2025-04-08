@@ -4,6 +4,7 @@ import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
 import it.unina.dietiestates25.listing.model.listing.Listing;
 import it.unina.dietiestates25.starredlisting.port.in.StarredListingService;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +23,7 @@ public class RestStarredListingController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addStarredListing(@RequestBody String listingId,
+    public ResponseEntity<Void> addStarredListing(@NotBlank @RequestBody String listingId,
                                                   @AuthenticationPrincipal UserDetails userDetails)
             throws EntityNotExistsException {
         starredListingService.addStarredListing(userDetails.getUsername(), listingId);
