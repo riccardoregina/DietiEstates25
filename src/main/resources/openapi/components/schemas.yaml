@@ -264,8 +264,10 @@ BuildingSearch:
       type: string
     city:
       type: string
-    centerCoordinates:
-      type: string
+    longitude:
+      type: number
+    latitude:
+      type: number
     radius:
       type: integer
     priceMin:
@@ -300,8 +302,10 @@ GarageSearch:
       type: string
     city:
       type: string
-    centerCoordinates:
-      type: string
+    longitude:
+      type: number
+    latitude:
+      type: number
     radius:
       type: integer
     priceMin:
@@ -338,8 +342,10 @@ HouseSearch:
       type: string
     city:
       type: string
-    centerCoordinates:
-      type: string
+    longitude:
+      type: number
+    latitude:
+      type: number
     radius:
       type: integer
     priceMin:
@@ -389,8 +395,10 @@ LandSearch:
       type: string
     city:
       type: string
-    centerCoordinates:
-      type: string
+    longitude:
+      type: number
+    latitude:
+      type: number
     radius:
       type: integer
     priceMin:
@@ -425,8 +433,10 @@ Search:
       type: string
     city:
       type: string
-    centerCoordinates:
-      type: string
+    longitude:
+      type: number
+    latitude:
+      type: number
     radius:
       type: integer
     priceMin:

@@ -32,8 +32,10 @@ public class Location implements Serializable {
     )
     private String address;
 
-    @Column(nullable = false,
-            columnDefinition = "geography(Point,4326)")
+    @Column(
+            nullable = false,
+            columnDefinition = "geography(Point,4326)"
+    )
     private Point coordinates;
 
     public Location() {}

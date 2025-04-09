@@ -137,8 +137,17 @@ public class Search {
         return city;
     }
 
+    @JsonIgnore
     public Point getCenterCoordinates() {
         return centerCoordinates;
+    }
+
+    public double getLongitude() {
+        return centerCoordinates.getX();
+    }
+
+    public double getLatitude() {
+        return centerCoordinates.getY();
     }
 
     public Integer getRadius() {
@@ -165,7 +174,9 @@ public class Search {
         return agentId;
     }
 
-    public LocalDateTime getTimestamp() {return timestamp;}
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 
     public String getId() {
         return id;
