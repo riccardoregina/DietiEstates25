@@ -1,3 +1,46 @@
+get:
+  tags: 
+    - Notification Settings
+  operationId: get-notification-settings
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: 
+      in: userId
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/NotificationSettingsDto'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '../components/dtos.yaml#/ErrorDetails'
 put:
   tags:
     - Notification Settings

@@ -5,6 +5,7 @@ import it.unina.dietiestates25.exception.EntityNotExistsException;
 import it.unina.dietiestates25.exception.ForbiddenException;
 import it.unina.dietiestates25.notification.infrastructure.adapter.in.dto.NotificationSettingsDto;
 import it.unina.dietiestates25.notification.model.Notification;
+import it.unina.dietiestates25.notification.model.NotificationSettings;
 import it.unina.dietiestates25.auth.model.User;
 import it.unina.dietiestates25.notification.port.in.NotificationService;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,17 @@ public class RestNotificationController {
         }
         userService.updateNotificationSettings(user, notificationSettingsDto);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/settings")
+    public ResponseEntity<NotificationSettings> getNotificationSettings(@RequestParam String userId,
+                                                @AuthenticationPrincipal UserDetails userDetails) 
+            throws ForbiddenException, EntityNotExistsException {
+        User user = userService.getUser(userDetails.getUsername());
+        if (!user.getId().equals(userId)) {
+            throw new ForbiddenException("Users can only modify their own settings");
+        }
+        return ResponseEntity.ok(userService.getNotificationSettings(user));
     }
 
     @GetMapping

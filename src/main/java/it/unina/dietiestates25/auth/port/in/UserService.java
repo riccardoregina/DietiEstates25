@@ -5,6 +5,7 @@ import it.unina.dietiestates25.auth.model.User;
 import it.unina.dietiestates25.exception.ForbiddenException;
 import it.unina.dietiestates25.image.port.out.ImageRepository;
 import it.unina.dietiestates25.notification.infrastructure.adapter.in.dto.NotificationSettingsDto;
+import it.unina.dietiestates25.notification.model.NotificationSettings;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
 import it.unina.dietiestates25.auth.port.out.UserRepository;
@@ -78,6 +79,10 @@ public class UserService implements UserDetailsService {
 
     imageRepository.delete(user.getProfilePicUrl().replaceFirst("^.*?dietiestates25/", ""));
     user.setProfilePicUrl(null);
+  }
+
+  public NotificationSettings getNotificationSettings(User user) {
+    return user.getNotificationSettings();
   }
 
   @Transactional
