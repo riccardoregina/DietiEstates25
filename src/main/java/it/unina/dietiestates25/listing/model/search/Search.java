@@ -142,12 +142,14 @@ public class Search {
         return centerCoordinates;
     }
 
-    public double getLongitude() {
-        return centerCoordinates.getX();
+    public Double getLongitude() {
+        return (centerCoordinates == null) ?
+            null : centerCoordinates.getX();
     }
 
-    public double getLatitude() {
-        return centerCoordinates.getY();
+    public Double getLatitude() {
+        return (centerCoordinates == null) ?
+            null : centerCoordinates.getY();
     }
 
     public Integer getRadius() {
