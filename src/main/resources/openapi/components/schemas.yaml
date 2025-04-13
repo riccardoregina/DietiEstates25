@@ -433,9 +433,9 @@ Search:
       type: string
     city:
       type: string
-    longitude:
+    centerlongitude:
       type: number
-    latitude:
+    centerlatitude:
       type: number
     radius:
       type: integer
